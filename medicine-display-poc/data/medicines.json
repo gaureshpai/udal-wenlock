@@ -1,0 +1,497 @@
+[
+  {
+    "id": 4,
+    "name": "Amoxicillin",
+    "available": true
+  },
+  {
+    "id": 5,
+    "name": "Azithromycin",
+    "available": false
+  },
+  {
+    "id": 6,
+    "name": "Ciprofloxacin",
+    "available": true
+  },
+  {
+    "id": 7,
+    "name": "Metformin",
+    "available": false
+  },
+  {
+    "id": 8,
+    "name": "Gliclazide",
+    "available": false
+  },
+  {
+    "id": 9,
+    "name": "Insulin",
+    "available": false
+  },
+  {
+    "id": 11,
+    "name": "Amlodipine",
+    "available": true
+  },
+  {
+    "id": 12,
+    "name": "Losartan",
+    "available": true
+  },
+  {
+    "id": 13,
+    "name": "Enalapril",
+    "available": true
+  },
+  {
+    "id": 14,
+    "name": "Ramipril",
+    "available": true
+  },
+  {
+    "id": 15,
+    "name": "Hydrochlorothiazide",
+    "available": true
+  },
+  {
+    "id": 16,
+    "name": "Furosemide",
+    "available": true
+  },
+  {
+    "id": 17,
+    "name": "Spironolactone",
+    "available": true
+  },
+  {
+    "id": 18,
+    "name": "Omeprazole",
+    "available": true
+  },
+  {
+    "id": 19,
+    "name": "Pantoprazole",
+    "available": false
+  },
+  {
+    "id": 20,
+    "name": "Ranitidine",
+    "available": true
+  },
+  {
+    "id": 21,
+    "name": "Loratadine",
+    "available": true
+  },
+  {
+    "id": 22,
+    "name": "Cetirizine",
+    "available": true
+  },
+  {
+    "id": 23,
+    "name": "Fexofenadine",
+    "available": true
+  },
+  {
+    "id": 24,
+    "name": "Salbutamol",
+    "available": true
+  },
+  {
+    "id": 25,
+    "name": "Budesonide",
+    "available": false
+  },
+  {
+    "id": 26,
+    "name": "Fluticasone",
+    "available": true
+  },
+  {
+    "id": 27,
+    "name": "Montelukast",
+    "available": true
+  },
+  {
+    "id": 28,
+    "name": "Prednisolone",
+    "available": true
+  },
+  {
+    "id": 29,
+    "name": "Dexamethasone",
+    "available": true
+  },
+  {
+    "id": 30,
+    "name": "Hydrocortisone",
+    "available": true
+  },
+  {
+    "id": 31,
+    "name": "Warfarin",
+    "available": true
+  },
+  {
+    "id": 32,
+    "name": "Clopidogrel",
+    "available": true
+  },
+  {
+    "id": 33,
+    "name": "Atorvastatin",
+    "available": true
+  },
+  {
+    "id": 34,
+    "name": "Simvastatin",
+    "available": true
+  },
+  {
+    "id": 35,
+    "name": "Rosuvastatin",
+    "available": true
+  },
+  {
+    "id": 36,
+    "name": "Erythromycin",
+    "available": true
+  },
+  {
+    "id": 37,
+    "name": "Doxycycline",
+    "available": true
+  },
+  {
+    "id": 38,
+    "name": "Tetracycline",
+    "available": true
+  },
+  {
+    "id": 39,
+    "name": "Linezolid",
+    "available": true
+  },
+  {
+    "id": 40,
+    "name": "Vancomycin",
+    "available": true
+  },
+  {
+    "id": 41,
+    "name": "Gentamicin",
+    "available": true
+  },
+  {
+    "id": 42,
+    "name": "Tobramycin",
+    "available": true
+  },
+  {
+    "id": 43,
+    "name": "Clarithromycin",
+    "available": true
+  },
+  {
+    "id": 44,
+    "name": "Levofloxacin",
+    "available": true
+  },
+  {
+    "id": 45,
+    "name": "Moxifloxacin",
+    "available": true
+  },
+  {
+    "id": 46,
+    "name": "Chloramphenicol",
+    "available": true
+  },
+  {
+    "id": 47,
+    "name": "Nitrofurantoin",
+    "available": true
+  },
+  {
+    "id": 48,
+    "name": "Rifampicin",
+    "available": true
+  },
+  {
+    "id": 49,
+    "name": "Isoniazid",
+    "available": true
+  },
+  {
+    "id": 50,
+    "name": "Ethambutol",
+    "available": true
+  },
+  {
+    "id": 51,
+    "name": "Pyrazinamide",
+    "available": true
+  },
+  {
+    "id": 52,
+    "name": "Metronidazole",
+    "available": true
+  },
+  {
+    "id": 53,
+    "name": "Tinidazole",
+    "available": true
+  },
+  {
+    "id": 54,
+    "name": "Albendazole",
+    "available": true
+  },
+  {
+    "id": 55,
+    "name": "Mebendazole",
+    "available": true
+  },
+  {
+    "id": 56,
+    "name": "Ivermectin",
+    "available": true
+  },
+  {
+    "id": 57,
+    "name": "Hydroxychloroquine",
+    "available": true
+  },
+  {
+    "id": 58,
+    "name": "Chloroquine",
+    "available": true
+  },
+  {
+    "id": 59,
+    "name": "Artemether-Lumefantrine",
+    "available": true
+  },
+  {
+    "id": 60,
+    "name": "Quinine",
+    "available": true
+  },
+  {
+    "id": 61,
+    "name": "Morphine",
+    "available": true
+  },
+  {
+    "id": 62,
+    "name": "Codeine",
+    "available": true
+  },
+  {
+    "id": 63,
+    "name": "Tramadol",
+    "available": true
+  },
+  {
+    "id": 64,
+    "name": "Fentanyl",
+    "available": true
+  },
+  {
+    "id": 65,
+    "name": "Ketorolac",
+    "available": false
+  },
+  {
+    "id": 66,
+    "name": "Naproxen",
+    "available": true
+  },
+  {
+    "id": 67,
+    "name": "Diclofenac",
+    "available": true
+  },
+  {
+    "id": 68,
+    "name": "Celecoxib",
+    "available": true
+  },
+  {
+    "id": 69,
+    "name": "Etoricoxib",
+    "available": true
+  },
+  {
+    "id": 70,
+    "name": "Zidovudine",
+    "available": true
+  },
+  {
+    "id": 71,
+    "name": "Lamivudine",
+    "available": true
+  },
+  {
+    "id": 72,
+    "name": "Tenofovir",
+    "available": true
+  },
+  {
+    "id": 73,
+    "name": "Efavirenz",
+    "available": true
+  },
+  {
+    "id": 74,
+    "name": "Nevirapine",
+    "available": true
+  },
+  {
+    "id": 75,
+    "name": "Ritonavir",
+    "available": true
+  },
+  {
+    "id": 76,
+    "name": "Lopinavir",
+    "available": true
+  },
+  {
+    "id": 77,
+    "name": "Oseltamivir",
+    "available": true
+  },
+  {
+    "id": 78,
+    "name": "Acyclovir",
+    "available": true
+  },
+  {
+    "id": 79,
+    "name": "Valacyclovir",
+    "available": true
+  },
+  {
+    "id": 80,
+    "name": "Ganciclovir",
+    "available": true
+  },
+  {
+    "id": 81,
+    "name": "Amphotericin B",
+    "available": true
+  },
+  {
+    "id": 82,
+    "name": "Fluconazole",
+    "available": true
+  },
+  {
+    "id": 83,
+    "name": "Itraconazole",
+    "available": true
+  },
+  {
+    "id": 84,
+    "name": "Voriconazole",
+    "available": true
+  },
+  {
+    "id": 85,
+    "name": "Terbinafine",
+    "available": true
+  },
+  {
+    "id": 86,
+    "name": "Ketoconazole",
+    "available": true
+  },
+  {
+    "id": 87,
+    "name": "Carbamazepine",
+    "available": true
+  },
+  {
+    "id": 88,
+    "name": "Valproate",
+    "available": false
+  },
+  {
+    "id": 89,
+    "name": "Phenytoin",
+    "available": true
+  },
+  {
+    "id": 90,
+    "name": "Levetiracetam",
+    "available": true
+  },
+  {
+    "id": 91,
+    "name": "Diazepam",
+    "available": false
+  },
+  {
+    "id": 92,
+    "name": "Lorazepam",
+    "available": true
+  },
+  {
+    "id": 93,
+    "name": "Alprazolam",
+    "available": true
+  },
+  {
+    "id": 94,
+    "name": "Sertraline",
+    "available": true
+  },
+  {
+    "id": 95,
+    "name": "Fluoxetine",
+    "available": false
+  },
+  {
+    "id": 96,
+    "name": "Escitalopram",
+    "available": false
+  },
+  {
+    "id": 97,
+    "name": "Amitriptyline",
+    "available": true
+  },
+  {
+    "id": 98,
+    "name": "Olanzapine",
+    "available": false
+  },
+  {
+    "id": 99,
+    "name": "Risperidone",
+    "available": false
+  },
+  {
+    "id": 100,
+    "name": "Haloperidol",
+    "available": true
+  },
+  {
+    "id": 101,
+    "name": "Paracetamol",
+    "available": false
+  },
+  {
+    "id": 102,
+    "name": "Aspirin",
+    "available": true
+  },
+  {
+    "id": 103,
+    "name": "Amlodipine",
+    "available": true
+  }
+]

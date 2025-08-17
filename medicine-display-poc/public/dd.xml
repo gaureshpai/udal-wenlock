@@ -1,0 +1,22 @@
+<root xmlns="urn:schemas-upnp-org:device-1-0">
+  <specVersion>
+    <major>1</major>
+    <minor>0</minor>
+  </specVersion>
+  <device>
+    <deviceType>urn:schemas-upnp-org:device:MediaServer:1</deviceType>
+    <friendlyName>Medicine Display POC</friendlyName>
+    <manufacturer>Gemini</manufacturer>
+    <modelName>Medicine Display POC</modelName>
+    <UDN>uuid:12345678-1234-1234-1234-1234567890ab</UDN>
+    <serviceList>
+      <service>
+        <serviceType>urn:upnp-org:serviceId:ContentDirectory</serviceType>
+        <controlURL>/service/ContentDirectory/control</controlURL>
+        <eventSubURL>/service/ContentDirectory/event</eventSubURL>
+        <SCPDURL>/service/ContentDirectory/scpd.xml</SCPDURL>
+      </service>
+    </serviceList>
+    <presentationURL>http://0.0.0.0:3000/display.html</presentationURL>
+  </device>
+</root>

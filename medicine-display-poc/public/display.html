@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Available Medicines</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f9fafb;
+      color: #111;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    header,
+    footer {
+      background: #fff;
+      border-bottom: 2px solid #e5e7eb;
+      flex-shrink: 0;
+    }
+
+    header img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #scrollViewport {
+      overflow: hidden;
+      width: 100%;
+      background: #fff;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    tbody {
+      transition: transform 0.8s ease;
+    }
+
+    td {
+      padding: 18px 22px;
+      font-weight: bold;
+      font-size: 3rem;
+      vertical-align: middle;
+      background-color: #fff;
+    }
+
+    tr:nth-child(even) td {
+      background-color: #f3f4f6;
+    }
+
+    td.serial {
+      width: 150px;
+      text-align: center;
+    }
+
+    td.name {
+      text-align: center;
+    }
+
+    td.status {
+      text-align: center;
+      color: #fff;
+      background-color: #16a34a !important;
+      min-width: 160px;
+      white-space: nowrap;
+      border-bottom: 2px solid #d1d5db;
+    }
+
+    .empty {
+      padding: 40px 20px;
+      text-align: center;
+      color: #6b7280;
+      font-size: 18px;
+      display: none;
+    }
+
+    footer {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 16px;
+      border-top: 2px solid #e5e7eb;
+      font-size: 16px;
+      color: #374151;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <img src="./wenlock_logo.png" alt="Wenlock Logo">
+  </header>
+
+  <main>
+    <div id="scrollViewport">
+      <table>
+        <tbody id="medBody"></tbody>
+      </table>
+    </div>
+    <div id="empty" class="empty">No medicines available</div>
+  </main>
+
+  <footer>
+    <span id="meta"></span>
+    <span id="pageInfo"></span>
+  </footer>
+
+  <script>
+    var ROWS_PER_PAGE = 6;
+    var PAGE_HOLD_MS = 4200;
+    var SLIDE_MS = 800;
+    var REFRESH_MS = 30000;
+
+    var tbody = document.getElementById("medBody");
+    var viewport = document.getElementById("scrollViewport");
+    var empty = document.getElementById("empty");
+    var meta = document.getElementById("meta");
+    var pageInfo = document.getElementById("pageInfo");
+
+    var medicines = [];
+    var currentIndex = 0;
+    var rowHeight = 0;
+    var pageTimer = null;
+    var refreshTimer = null;
+    var lastHash = "";
+
+    function sleep(ms, cb) {
+      setTimeout(cb, ms);
+    }
+
+    function fetchData(callback) {
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', '/medicines/available', true);
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            try {
+              var data = JSON.parse(xhr.responseText);
+              callback(null, data);
+            } catch (e) { callback(e, null); }
+          } else {
+            callback(new Error("XHR failed"), null);
+          }
+        }
+      };
+      xhr.send();
+    }
+
+    function hashData(list) {
+      var names = [];
+      for (var i = 0; i < list.length; i++) { names.push(list[i].name); }
+      return JSON.stringify(names);
+    }
+
+    function setTransform(yPx, withTransition) {
+      tbody.style.transition = withTransition ? "transform " + SLIDE_MS + "ms ease" : "none";
+      tbody.style.transform = "translateY(" + yPx + "px)";
+    }
+
+    function renderRows(data) {
+      tbody.innerHTML = "";
+      if (!data || data.length === 0) {
+        empty.style.display = "block";
+        viewport.style.height = "0px";
+        return;
+      }
+      empty.style.display = "none";
+      for (var i = 0; i < data.length; i++) {
+        var m = data[i];
+        var tr = document.createElement("tr");
+
+        var tdSerial = document.createElement("td");
+        tdSerial.className = "serial";
+        tdSerial.textContent = i + 1;
+        tr.appendChild(tdSerial);
+
+        var tdName = document.createElement("td");
+        tdName.className = "name";
+        tdName.textContent = (m.name || "").toUpperCase();
+        tr.appendChild(tdName);
+
+        var tdStatus = document.createElement("td");
+        tdStatus.className = "status";
+        tdStatus.textContent = "AVAILABLE";
+        tr.appendChild(tdStatus);
+
+        tbody.appendChild(tr);
+      }
+
+      var firstRow = tbody.querySelector("tr");
+      rowHeight = firstRow ? Math.ceil(firstRow.getBoundingClientRect().height) : 100;
+      viewport.style.height = (rowHeight * Math.min(ROWS_PER_PAGE, data.length)) + "px";
+      currentIndex = 0;
+      setTransform(0, false);
+    }
+
+    function pageCount() {
+      if (!medicines.length) return 0;
+      return Math.ceil(medicines.length / ROWS_PER_PAGE);
+    }
+
+    function goToPage(pageIdx) {
+      currentIndex = Math.min(pageIdx * ROWS_PER_PAGE, Math.max(0, medicines.length - 1));
+      var offset = -(currentIndex * rowHeight);
+      setTransform(offset, true);
+      pageInfo.textContent = "Page " + (Math.floor(currentIndex / ROWS_PER_PAGE) + 1) +
+        " of " + pageCount() + " • " + medicines.length + " items";
+    }
+
+    function stepPager() {
+      if (document.hidden) return;
+      if (medicines.length <= ROWS_PER_PAGE) return;
+
+      var totalPages = pageCount();
+      var currentPage = Math.floor(currentIndex / ROWS_PER_PAGE);
+      var nextPage = (currentPage + 1) % totalPages;
+
+      if (nextPage === 0) {
+        sleep(SLIDE_MS, function () { setTransform(0, false); });
+      }
+
+      goToPage(nextPage);
+    }
+
+    function startPager() { stopPager(); pageTimer = setInterval(stepPager, PAGE_HOLD_MS); }
+    function stopPager() { if (pageTimer) clearInterval(pageTimer); pageTimer = null; }
+
+    function refreshLoop() {
+      fetchData(function (err, payload) {
+        if (err) { meta.textContent = "Error fetching data"; return; }
+        var list = payload && payload.data && payload.data.length ? payload.data : [];
+        var newHash = hashData(list);
+        if (newHash !== lastHash) {
+          medicines = list;
+          renderRows(medicines);
+          lastHash = newHash;
+        }
+        var now = new Date();
+        meta.textContent = "Last updated: " + now.toLocaleTimeString();
+      });
+    }
+
+    function startRefresh() { stopRefresh(); refreshLoop(); refreshTimer = setInterval(refreshLoop, REFRESH_MS); }
+    function stopRefresh() { if (refreshTimer) clearInterval(refreshTimer); refreshTimer = null; }
+
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden) stopPager();
+      else { if (medicines.length) renderRows(medicines); startPager(); }
+    });
+
+    window.addEventListener("resize", function () {
+      if (!medicines.length) return;
+      var prevPage = Math.floor(currentIndex / ROWS_PER_PAGE);
+      renderRows(medicines);
+      goToPage(Math.min(prevPage, pageCount() - 1));
+    });
+
+    // Kickoff
+    startRefresh();
+    startPager();
+  </script>
+</body>
+
+</html>
