@@ -1,8 +1,8 @@
 const express = require("express");
-const req = require("express/lib/request");
+
 const fs = require("fs");
 const path = require("path");
-const https = require("https");
+const http = require("http");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -12,10 +12,19 @@ const DATA_FILE = path.join(DATA_DIR, "medicines.json");
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
-const options = {
-  key: fs.readFileSync('./ssl/0.0.0.0+1-key.pem'),
-  cert: fs.readFileSync('./ssl/0.0.0.0+1.pem')
-};
+
+function ensureDataFile() {
+  if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
+  if (!fs.existsSync(DATA_FILE)) {
+    const seed = [
+      { id: 1, name: "Paracetamol 500mg", available: true },
+      { id: 2, name: "Ibuprofen 200mg", available: false },
+      { id: 3, name: "Cough Syrup", available: true },
+      { id: 4, name: "Vitamin C", available: true }
+    ];
+    fs.writeFileSync(DATA_FILE, JSON.stringify(seed, null, 2));
+  }
+}
 
 function loadData() {
   try {
@@ -102,6 +111,6 @@ app.get("/medicines/available", (req, res) => {
   res.json({ page, totalPages, count: data.length, total, data });
 });
 
-https.createServer(options, app).listen(3000, '0.0.0.0', () => {
-  console.log('HTTPS Server running on http://0.0.0.0:3000');
+http.createServer(app).listen(PORT, '0.0.0.0', () => {
+  console.log(`HTTP Server running on http://0.0.0.0:${PORT}`);
 });

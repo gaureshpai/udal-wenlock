@@ -142,21 +142,19 @@
     }
 
     function fetchData(callback) {
-      var xhr = new XMLHttpRequest();
-      xhr.open('GET', '/medicines/available', true);
-      xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4) {
-          if (xhr.status === 200) {
-            try {
-              var data = JSON.parse(xhr.responseText);
-              callback(null, data);
-            } catch (e) { callback(e, null); }
-          } else {
-            callback(new Error("XHR failed"), null);
+      fetch('/medicines/available')
+        .then(function (response) {
+          if (!response.ok) {
+            throw new Error('HTTP error, status = ' + response.status);
           }
-        }
-      };
-      xhr.send();
+          return response.json();
+        })
+        .then(function (data) {
+          callback(null, data);
+        })
+        .catch(function (error) {
+          callback(error, null);
+        });
     }
 
     function hashData(list) {

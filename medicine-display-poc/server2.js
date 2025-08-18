@@ -10,10 +10,9 @@ function getIPAddress() {
   const interfaces = os.networkInterfaces();
   for (const name of Object.keys(interfaces)) {
     for (const iface of interfaces[name]) {
-      if ('IPv4' !== iface.family || iface.internal !== false) {
-        continue;
+      if (iface.family === 'IPv4' && iface.internal === false) {
+        return iface.address;
       }
-      return iface.address;
     }
   }
 }
@@ -24,6 +23,7 @@ if (!serverIp) {
   console.error('Could not determine IP address. SSDP server not starting.');
   process.exit(1);
 }
+console.log('Server IP:', serverIp);
 
 const message = Buffer.from(
   `NOTIFY * HTTP/1.1\r\n` +
@@ -37,22 +37,36 @@ const message = Buffer.from(
   `\r\n`
 );
 
-const client = dgram.createSocket('udp4');
+// ---- Broadcaster ----
+const client = dgram.createSocket({ type: 'udp4', reuseAddr: true });
 
 client.on('listening', () => {
-  console.log('UDP client listening for messages');
+  console.log('UDP client ready to broadcast SSDP NOTIFY');
   client.setBroadcast(true);
   client.setMulticastTTL(128);
   client.addMembership(SSDP_ADDRESS);
 });
 
-setInterval(() => {
-  console.log('Sending SSDP NOTIFY');
-  client.send(message, 0, message.length, SSDP_PORT, SSDP_ADDRESS, (err) => {
-    if (err) {
-      console.error('Error sending SSDP NOTIFY:', err);
-    }
-  });
-}, 5000);
+// use ephemeral port instead of 1900
+client.bind(() => {
+  setInterval(() => {
+    console.log('Sending SSDP NOTIFY');
+    client.send(message, 0, message.length, SSDP_PORT, SSDP_ADDRESS, (err) => {
+      if (err) {
+        console.error('Error sending SSDP NOTIFY:', err);
+      }
+    });
+  }, 5000);
+});
 
-client.bind(SSDP_PORT);
+// ---- Listener ----
+const listener = dgram.createSocket({ type: 'udp4', reuseAddr: true });
+
+listener.on('message', (msg, rinfo) => {
+  console.log(`Got SSDP message from ${rinfo.address}:${rinfo.port}\n${msg.toString()}`);
+});
+
+listener.bind(SSDP_PORT, () => {
+  listener.addMembership(SSDP_ADDRESS);
+  console.log('Listening for SSDP messages on 239.255.255.250:1900');
+});
