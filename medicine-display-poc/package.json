@@ -1,21 +1,16 @@
 {
   "name": "pharmacy_display",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "concurrently \"node server.js\" \"node server2.js\""
+    "start": "node server.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "udal dc fellowship team wenlock",
   "license": "ISC",
   "dependencies": {
-    "concurrently": "^9.2.0",
-    "dgram": "^1.0.1",
-    "express": "^5.1.0",
-    "multer": "^2.0.2",
-    "ws": "^8.18.3",
-    "xlsx": "^0.18.5"
+    "express": "^5.1.0"
   },
-  "description": ""
+  "description": "This project is a proof-of-concept for a simple medicine availability display system for hospitals or pharmacies."
 }

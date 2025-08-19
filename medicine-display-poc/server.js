@@ -1,5 +1,4 @@
 const express = require("express");
-
 const fs = require("fs");
 const path = require("path");
 const http = require("http");
@@ -11,20 +10,6 @@ const DATA_FILE = path.join(DATA_DIR, "medicines.json");
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
-
-
-function ensureDataFile() {
-  if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
-  if (!fs.existsSync(DATA_FILE)) {
-    const seed = [
-      { id: 1, name: "Paracetamol 500mg", available: true },
-      { id: 2, name: "Ibuprofen 200mg", available: false },
-      { id: 3, name: "Cough Syrup", available: true },
-      { id: 4, name: "Vitamin C", available: true }
-    ];
-    fs.writeFileSync(DATA_FILE, JSON.stringify(seed, null, 2));
-  }
-}
 
 function loadData() {
   try {
