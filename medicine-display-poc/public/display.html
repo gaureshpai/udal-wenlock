@@ -186,7 +186,19 @@
 
                     const tdName = document.createElement("td");
                     tdName.className = "name";
-                    tdName.textContent = (m.name || "").toUpperCase();
+
+                    const englishName = document.createElement("div");
+                    englishName.textContent = (m.name || "").toUpperCase();
+                    tdName.appendChild(englishName);
+
+                    if (m.kn_name) {
+                        const kannadaName = document.createElement("div");
+                        kannadaName.textContent = m.kn_name;
+                        kannadaName.style.fontSize = "2.5vh";
+                        kannadaName.style.color = "#555";
+                        tdName.appendChild(kannadaName);
+                    }
+
                     tr.appendChild(tdName);
 
                     const tdStatus = document.createElement("td");

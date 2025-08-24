@@ -2,491 +2,595 @@
   {
     "id": 5,
     "name": "Azithromycin",
-    "available": true
+    "available": true,
+    "kn_name": "ಅಜಿಥ್ರೋಮೈಸಿನ್"
   },
   {
     "id": 6,
     "name": "Ciprofloxacin",
-    "available": true
+    "available": true,
+    "kn_name": "ಸಿಪ್ರೋಫ್ಲಾಕ್ಸಾಸಿನ್"
   },
   {
     "id": 7,
     "name": "Metformin",
-    "available": false
+    "available": false,
+    "kn_name": "ಮೆಟ್ಫಾರ್ಮಿನ್"
   },
   {
     "id": 8,
     "name": "Gliclazide",
-    "available": false
+    "available": false,
+    "kn_name": "ಗ್ಲಿಕ್ಲಾಜೈಡ್"
   },
   {
     "id": 9,
     "name": "Insulin",
-    "available": false
+    "available": false,
+    "kn_name": "ಇನ್ಸುಲಿನ್"
   },
   {
     "id": 11,
     "name": "Amlodipine",
-    "available": true
+    "available": true,
+    "kn_name": "ಆಮ್ಲೋಡಿಪೈನ್"
   },
   {
     "id": 12,
     "name": "Losartan",
-    "available": true
+    "available": true,
+    "kn_name": "ಲೋಸಾರ್ಟನ್"
   },
   {
     "id": 13,
     "name": "Enalapril",
-    "available": true
+    "available": true,
+    "kn_name": "ಎನಲಪ್ರಿಲ್"
   },
   {
     "id": 14,
     "name": "Ramipril",
-    "available": true
+    "available": true,
+    "kn_name": "ರಾಮಿಪ್ರಿಲ್"
   },
   {
     "id": 15,
     "name": "Hydrochlorothiazide",
-    "available": true
+    "available": true,
+    "kn_name": "ಹೈಡ್ರೊಕ್ಲೋರೊಥಿಯಾಜೈಡ್"
   },
   {
     "id": 16,
     "name": "Furosemide",
-    "available": true
+    "available": true,
+    "kn_name": "ಫ್ಯೂರೋಸೆಮೈಡ್"
   },
   {
     "id": 17,
     "name": "Spironolactone",
-    "available": true
+    "available": true,
+    "kn_name": "ಸ್ಪಿರೊನೊಲ್ಯಾಕ್ಟೋನ್"
   },
   {
     "id": 18,
     "name": "Omeprazole",
-    "available": true
+    "available": true,
+    "kn_name": "ಒಮೆಪ್ರಜೋಲ್"
   },
   {
     "id": 19,
     "name": "Pantoprazole",
-    "available": false
+    "available": false,
+    "kn_name": "ಪ್ಯಾಂಟೊಪ್ರಜೋಲ್"
   },
   {
     "id": 20,
     "name": "Ranitidine",
-    "available": true
+    "available": true,
+    "kn_name": "ರಾನಿಟಿಡೈನ್"
   },
   {
     "id": 21,
     "name": "Loratadine",
-    "available": true
+    "available": true,
+    "kn_name": "ಲೊರಾಟಾಡಿನ್"
   },
   {
     "id": 22,
     "name": "Cetirizine",
-    "available": true
+    "available": true,
+    "kn_name": "ಸಿಟಿರಿಜಿನ್"
   },
   {
     "id": 23,
     "name": "Fexofenadine",
-    "available": true
+    "available": true,
+    "kn_name": "ಫೆಕ್ಸೋಫೆನಾಡಿನ್"
   },
   {
     "id": 24,
     "name": "Salbutamol",
-    "available": true
+    "available": true,
+    "kn_name": "ಸಾಲ್ಬುಟಾಮಾಲ್"
   },
   {
     "id": 25,
     "name": "Budesonide",
-    "available": false
+    "available": false,
+    "kn_name": "ಬುಡೆಸೋನೈಡ್"
   },
   {
     "id": 26,
     "name": "Fluticasone",
-    "available": true
+    "available": true,
+    "kn_name": "ಫ್ಲೂಟಿಕಾಸೋನ್"
   },
   {
     "id": 27,
     "name": "Montelukast",
-    "available": true
+    "available": true,
+    "kn_name": "ಮಾಂಟೆಲುಕಾಸ್ಟ್"
   },
   {
     "id": 28,
     "name": "Prednisolone",
-    "available": true
+    "available": true,
+    "kn_name": "ಪ್ರೆಡ್ನಿಸೋಲೋನ್"
   },
   {
     "id": 29,
     "name": "Dexamethasone",
-    "available": true
+    "available": true,
+    "kn_name": "ಡೆಕ್ಸಾಮೆಥಾಸೋನ್"
   },
   {
     "id": 30,
     "name": "Hydrocortisone",
-    "available": true
+    "available": true,
+    "kn_name": "ಹೈಡ್ರೊಕಾರ್ಟಿಸೋನ್"
   },
   {
     "id": 31,
     "name": "Warfarin",
-    "available": true
+    "available": true,
+    "kn_name": "ವಾರ್ಫರಿನ್"
   },
   {
     "id": 32,
     "name": "Clopidogrel",
-    "available": true
+    "available": true,
+    "kn_name": "ಕ್ಲೋಪಿಡೋಗ್ರೆಲ್"
   },
   {
     "id": 33,
     "name": "Atorvastatin",
-    "available": true
+    "available": true,
+    "kn_name": "ಅಟಾರ್ವಾಸ್ಟಾಟಿನ್"
   },
   {
     "id": 34,
     "name": "Simvastatin",
-    "available": true
+    "available": true,
+    "kn_name": "ಸಿಮ್ವಸ್ಟಾಟಿನ್"
   },
   {
     "id": 35,
     "name": "Rosuvastatin",
-    "available": true
+    "available": true,
+    "kn_name": "ರೋಸುವಾಸ್ಟಾಟಿನ್"
   },
   {
     "id": 36,
     "name": "Erythromycin",
-    "available": true
+    "available": true,
+    "kn_name": "ಎರಿಥ್ರೋಮೈಸಿನ್"
   },
   {
     "id": 37,
     "name": "Doxycycline",
-    "available": true
+    "available": true,
+    "kn_name": "ಡಾಕ್ಸಿಸೈಕ್ಲೈನ್"
   },
   {
     "id": 38,
     "name": "Tetracycline",
-    "available": true
+    "available": true,
+    "kn_name": "ಟೆಟ್ರಾಸೈಕ್ಲೈನ್"
   },
   {
     "id": 39,
     "name": "Linezolid",
-    "available": true
+    "available": true,
+    "kn_name": "ಲೈನ್ಜೋಲಿಡ್"
   },
   {
     "id": 40,
     "name": "Vancomycin",
-    "available": true
+    "available": true,
+    "kn_name": "ವ್ಯಾಂಕೋಮೈಸಿನ್"
   },
   {
     "id": 41,
     "name": "Gentamicin",
-    "available": true
+    "available": true,
+    "kn_name": "ಜೆಂಟಮಿಸಿನ್"
   },
   {
     "id": 42,
     "name": "Tobramycin",
-    "available": true
+    "available": true,
+    "kn_name": "ಟೊಬ್ರಾಮೈಸಿನ್"
   },
   {
     "id": 43,
     "name": "Clarithromycin",
-    "available": true
+    "available": true,
+    "kn_name": "ಕ್ಲಾರಿಥ್ರೋಮೈಸಿನ್"
   },
   {
     "id": 44,
     "name": "Levofloxacin",
-    "available": true
+    "available": true,
+    "kn_name": "ಲೆವೊಫ್ಲಾಕ್ಸಾಸಿನ್"
   },
   {
     "id": 45,
     "name": "Moxifloxacin",
-    "available": true
+    "available": true,
+    "kn_name": "ಮೊಕ್ಸಿಫ್ಲಾಕ್ಸಾಸಿನ್"
   },
   {
     "id": 46,
     "name": "Chloramphenicol",
-    "available": true
+    "available": true,
+    "kn_name": "ಕ್ಲೋರಾಂಫೆನಿಕಾಲ್"
   },
   {
     "id": 47,
     "name": "Nitrofurantoin",
-    "available": true
+    "available": true,
+    "kn_name": "ನೈಟ್ರೋಫ್ಯುರಾಂಟೊಯಿನ್"
   },
   {
     "id": 48,
     "name": "Rifampicin",
-    "available": true
+    "available": true,
+    "kn_name": "ರಿಫಾಂಪಿಸಿನ್"
   },
   {
     "id": 49,
     "name": "Isoniazid",
-    "available": true
+    "available": true,
+    "kn_name": " ⁇ ಸೋನಿಯಾಜಿಡ್"
   },
   {
     "id": 50,
     "name": "Ethambutol",
-    "available": true
+    "available": true,
+    "kn_name": "ಎಥಂಬುಟೋಲ್"
   },
   {
     "id": 51,
     "name": "Pyrazinamide",
-    "available": true
+    "available": true,
+    "kn_name": "ಪೈರಾಜಿನಮೈಡ್"
   },
   {
     "id": 52,
     "name": "Metronidazole",
-    "available": true
+    "available": true,
+    "kn_name": "ಮೆಟ್ರೊನಿಡಾಜೋಲ್"
   },
   {
     "id": 53,
     "name": "Tinidazole",
-    "available": true
+    "available": true,
+    "kn_name": "ಟಿನಿಡಾಜೋಲ್"
   },
   {
     "id": 54,
     "name": "Albendazole",
-    "available": true
+    "available": true,
+    "kn_name": "ಅಲ್ಬೆಂಡಾಜೋಲ್"
   },
   {
     "id": 55,
     "name": "Mebendazole",
-    "available": true
+    "available": true,
+    "kn_name": "ಮೆಬೆಂಡಾಜೋಲ್"
   },
   {
     "id": 56,
     "name": "Ivermectin",
-    "available": true
+    "available": true,
+    "kn_name": "ಇವರ್ಮೆಕ್ಟಿನ್"
   },
   {
     "id": 57,
     "name": "Hydroxychloroquine",
-    "available": true
+    "available": true,
+    "kn_name": "ಹೈಡ್ರಾಕ್ಸಿಕ್ಲೋರೊಕ್ವಿನ್"
   },
   {
     "id": 58,
     "name": "Chloroquine",
-    "available": true
+    "available": true,
+    "kn_name": "ಕ್ಲೋರೊಕ್ವಿನ್"
   },
   {
     "id": 59,
     "name": "Artemether-Lumefantrine",
-    "available": true
+    "available": true,
+    "kn_name": "ಆರ್ಟೆಮಿಥರ್ಲುಮ್ಫಾಂಟ್ರಿನ್"
   },
   {
     "id": 60,
     "name": "Quinine",
-    "available": true
+    "available": true,
+    "kn_name": "ಕ್ವಿನೈನ್"
   },
   {
     "id": 61,
     "name": "Morphine",
-    "available": true
+    "available": true,
+    "kn_name": "ಮಾರ್ಫಿನ್"
   },
   {
     "id": 62,
     "name": "Codeine",
-    "available": true
+    "available": true,
+    "kn_name": "ಕೊಡೀನ್"
   },
   {
     "id": 63,
     "name": "Tramadol",
-    "available": true
+    "available": true,
+    "kn_name": "ಟ್ರಾಮಾಡಾಲ್"
   },
   {
     "id": 64,
     "name": "Fentanyl",
-    "available": true
+    "available": true,
+    "kn_name": "ಫೆಂಟನೈಲ್"
   },
   {
     "id": 65,
     "name": "Ketorolac",
-    "available": false
+    "available": false,
+    "kn_name": "ಕೆಟೊರೊಲಾಕ್"
   },
   {
     "id": 66,
     "name": "Naproxen",
-    "available": true
+    "available": true,
+    "kn_name": "ನಾಪ್ರೊಕ್ಸೆನ್"
   },
   {
     "id": 67,
     "name": "Diclofenac",
-    "available": true
+    "available": true,
+    "kn_name": "ಡಿಕ್ಲೋಫೆನಾಕ್"
   },
   {
     "id": 68,
     "name": "Celecoxib",
-    "available": true
+    "available": true,
+    "kn_name": "ಸೆಲೆಕಾಕ್ಸಿಬ್"
   },
   {
     "id": 69,
     "name": "Etoricoxib",
-    "available": true
+    "available": true,
+    "kn_name": "ಎಟೋರಿಕಾಕ್ಸಿಬ್"
   },
   {
     "id": 70,
     "name": "Zidovudine",
-    "available": true
+    "available": true,
+    "kn_name": "ಜಿಡೋವುದಿನೆ"
   },
   {
     "id": 71,
     "name": "Lamivudine",
-    "available": true
+    "available": true,
+    "kn_name": "ಲ್ಯಾಮಿವುಡಿನ್"
   },
   {
     "id": 72,
     "name": "Tenofovir",
-    "available": true
+    "available": true,
+    "kn_name": "ಟೆನೋಫೋವಿರ್"
   },
   {
     "id": 73,
     "name": "Efavirenz",
-    "available": true
+    "available": true,
+    "kn_name": "ಎಫಾವೈರೆಂಜ್"
   },
   {
     "id": 74,
     "name": "Nevirapine",
-    "available": true
+    "available": true,
+    "kn_name": "ನೆವಿರಾಪೈನ್"
   },
   {
     "id": 75,
     "name": "Ritonavir",
-    "available": true
+    "available": true,
+    "kn_name": "ರಿಟೋನಾವಿರ್"
   },
   {
     "id": 76,
     "name": "Lopinavir",
-    "available": true
+    "available": true,
+    "kn_name": "ಲೋಪಿನಾವಿರ್"
   },
   {
     "id": 77,
     "name": "Oseltamivir",
-    "available": true
+    "available": true,
+    "kn_name": "ಒಸೆಲ್ಟಾಮಿವಿರ್"
   },
   {
     "id": 78,
     "name": "Acyclovir",
-    "available": true
+    "available": true,
+    "kn_name": "ಅಸಿಕ್ಲೋವಿರ್"
   },
   {
     "id": 79,
     "name": "Valacyclovir",
-    "available": true
+    "available": true,
+    "kn_name": "ವ್ಯಾಲಾಸೈಕ್ಲೋವಿರ್"
   },
   {
     "id": 80,
     "name": "Ganciclovir",
-    "available": true
+    "available": true,
+    "kn_name": "ಗ್ಯಾನ್ಸಿಕ್ಲೋವಿರ್"
   },
   {
     "id": 81,
     "name": "Amphotericin B",
-    "available": true
+    "available": true,
+    "kn_name": "ಆಂಫೋಟೆರಿಸಿನ್ ಬೀ"
   },
   {
     "id": 82,
     "name": "Fluconazole",
-    "available": true
+    "available": true,
+    "kn_name": "ಫ್ಲುಕೋನಾಜೋಲ್"
   },
   {
     "id": 83,
     "name": "Itraconazole",
-    "available": true
+    "available": true,
+    "kn_name": "ಇಟ್ರಾಕೋನಾಜೋಲ್"
   },
   {
     "id": 84,
     "name": "Voriconazole",
-    "available": true
+    "available": true,
+    "kn_name": "ವೊರಿಕೊನಜೋಲ್"
   },
   {
     "id": 85,
     "name": "Terbinafine",
-    "available": true
+    "available": true,
+    "kn_name": "ಟೆರ್ಬಿನಾಫೈನ್"
   },
   {
     "id": 86,
     "name": "Ketoconazole",
-    "available": true
+    "available": true,
+    "kn_name": "ಕೆಟೊಕೊನಾಜೋಲ್"
   },
   {
     "id": 87,
     "name": "Carbamazepine",
-    "available": true
+    "available": true,
+    "kn_name": "ಕಾರ್ಬಮ್ಯಾಜೆಪೈನ್"
   },
   {
     "id": 88,
     "name": "Valproate",
-    "available": false
+    "available": false,
+    "kn_name": "ವ್ಯಾಲ್ಪ್ರೊಯೇಟ್"
   },
   {
     "id": 89,
     "name": "Phenytoin",
-    "available": true
+    "available": true,
+    "kn_name": "ಫೆನಿಟಾಯಿನ್"
   },
   {
     "id": 90,
     "name": "Levetiracetam",
-    "available": true
+    "available": true,
+    "kn_name": "ಲೆವೆಟಿರಾಸಿಟಮ್"
   },
   {
     "id": 91,
     "name": "Diazepam",
-    "available": false
+    "available": false,
+    "kn_name": "ಡಯಾಜೆಪಾಮ್"
   },
   {
     "id": 92,
     "name": "Lorazepam",
-    "available": true
+    "available": true,
+    "kn_name": "ಲೊರಾಜೆಪಮ್"
   },
   {
     "id": 93,
     "name": "Alprazolam",
-    "available": true
+    "available": true,
+    "kn_name": "ಆಲ್ಪ್ರಾಜೋಲಮ್"
   },
   {
     "id": 94,
     "name": "Sertraline",
-    "available": true
+    "available": true,
+    "kn_name": "ಸೆರ್ಟ್ರಲೈನ್"
   },
   {
     "id": 95,
     "name": "Fluoxetine",
-    "available": false
+    "available": false,
+    "kn_name": "ಫ್ಲೂಕ್ಸೆಟೈನ್"
   },
   {
     "id": 96,
     "name": "Escitalopram",
-    "available": false
+    "available": false,
+    "kn_name": "ಎಸ್ಕಿಟಲೋಪ್ರಾಮ್"
   },
   {
     "id": 97,
     "name": "Amitriptyline",
-    "available": true
+    "available": true,
+    "kn_name": "ಅಮಿಟ್ರಿಪ್ಟೈಲೈನ್"
   },
   {
     "id": 98,
     "name": "Olanzapine",
-    "available": false
+    "available": false,
+    "kn_name": "ಒಳಂಜಪೈನ್"
   },
   {
     "id": 99,
     "name": "Risperidone",
-    "available": false
+    "available": false,
+    "kn_name": "ರಿಸ್ಪೆರಿಡೋನ್"
   },
   {
     "id": 100,
     "name": "Haloperidol",
-    "available": true
+    "available": true,
+    "kn_name": "ಹಾಲೊಪೆರಿಡಾಲ್"
   },
   {
     "id": 101,
     "name": "Paracetamol",
-    "available": false
+    "available": false,
+    "kn_name": "ಪ್ಯಾರಾಸಿಟಮಾಲ್"
   },
   {
     "id": 102,
     "name": "Aspirin",
-    "available": true
+    "available": true,
+    "kn_name": "ಆಸ್ಪಿರಿನ್"
   },
   {
     "id": 103,
     "name": "Amlodipine",
-    "available": true
+    "available": true,
+    "kn_name": "ಆಮ್ಲೋಡಿಪೈನ್"
+  },
+  {
+    "id": 104,
+    "name": "Paracetomol Tablet",
+    "available": true,
+    "kn_name": "ಪ್ಯಾರಾಸಿಟಮಾಲ್ ಟ್ಯಾಬ್ಲೆಟ್"
   }
 ]
