@@ -25,7 +25,7 @@ async function getKannadaTransliteration(text) {
     return transliteratedWords.join(' ');
   } catch (err) {
     console.error("Transliteration error:", err);
-    return text; // Fallback to original text
+    return text;
   }
 }
 

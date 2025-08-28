@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Blood Availability</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f9fafb;
+            color: #111;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        header {
+            background: #fff;
+            border-bottom: 2px solid #e5e7eb;
+            flex-shrink: 0;
+            padding: 0 2vw;
+            height: 10vh;
+        }
+
+        main {
+            flex: 1;
+            overflow: hidden;
+            height: calc(100vh - 15vh);
+        }
+
+        #scrollViewport {
+            height: 100%;
+            overflow: hidden;
+            background: #fff;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+        thead th {
+            background-color: #f3f4f6;
+            padding: 1.5vh 1vw;
+            font-size: 3vh;
+            font-weight: bold;
+            text-align: center;
+        }
+        th:nth-child(1) { width: 40%; }
+        th:nth-child(2) { width: 15%; }
+        th:nth-child(3) { width: 25%; }
+        th:nth-child(4) { width: 20%; }
+
+        tbody {
+            transition: transform 0.8s ease;
+        }
+
+        td {
+            padding: 1vh 1vw;
+            font-weight: bold;
+            font-size: 3.5vh;
+            vertical-align: middle;
+            background-color: #fff;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:nth-child(even) td {
+            background-color: #f3f4f6;
+        }
+
+        td.status-emergency {
+            color: #fff;
+            background-color: #dc2626 !important;
+        }
+
+        .kannada-text {
+            font-size: 2vh;
+            color: #555;
+            line-height: 1.2;
+        }
+
+        .empty {
+            padding: 40px 20px;
+            text-align: center;
+            color: #6b7280;
+            font-size: 18px;
+            display: none;
+        }
+
+        footer {
+            display: flex;
+            justify-content: space-between;
+            padding: 1vh 2vw;
+            border-top: 2px solid #e5e7eb;
+            font-size: 2.5vh;
+            color: #374151;
+            height: 5vh;
+        }
+    </style>
+</head>
+
+<body>
+    <header style="display: flex; align-items: center; justify-content: space-between;">
+        <img src="./wenlock_logo.png" alt="Wenlock Logo" style="height: 8vh; flex-shrink: 0;">
+        <div style="text-align: center; flex-grow: 1;">
+            <h1 style="margin: 0; font-size: 4vh;">Blood Availability</h1>
+            <h2 style="margin: 0; font-size: 2.5vh; font-weight: normal;">ರಕ್ತ ಲಭ್ಯತೆ</h2>
+        </div>
+    </header>
+
+    <main>
+        <div id="scrollViewport">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Age</th>
+                        <th>Component</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="bloodBody"></tbody>
+            </table>
+        </div>
+        <div id="empty" class="empty">No blood data available</div>
+    </main>
+
+    <footer>
+        <span id="meta"></span>
+        <span id="pageInfo"></span>
+    </footer>
+
+    <script>
+        const PAGE_HOLD_MS = 4200;
+        const SLIDE_MS = 800;
+        const REFRESH_MS = 10000;
+
+        const tbody = document.getElementById("bloodBody");
+        const viewport = document.getElementById("scrollViewport");
+        const empty = document.getElementById("empty");
+        const meta = document.getElementById("meta");
+        const pageInfo = document.getElementById("pageInfo");
+
+        let bloodData = [];
+        let currentIndex = 0;
+        let rowHeight = 0;
+        let pageTimer = null;
+        let refreshTimer = null;
+        let lastHash = "";
+        let rowsPerPage = 0;
+
+        function sleep(ms, cb) {
+            setTimeout(cb, ms);
+        }
+
+        async function fetchData() {
+            try {
+                const response = await fetch('/data');
+                if (!response.ok) {
+                    throw new Error(`HTTP error, status = ${response.status}`);
+                }
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error("Error fetching data:", error);
+                return null;
+            }
+        }
+
+        function hashData(list) {
+            return JSON.stringify(list.map(item => `${item.Name}-${item.kn_name}-${item.Status}` ));
+        }
+
+        function setTransform(yPx, withTransition) {
+            tbody.style.transition = withTransition ? `transform ${SLIDE_MS}ms ease` : "none";
+            tbody.style.transform = `translateY(${yPx}px)`;
+        }
+
+        function renderRows(data) {
+            return new Promise(resolve => {
+                tbody.innerHTML = "";
+                if (!data || data.length === 0) {
+                    empty.style.display = "block";
+                    resolve();
+                    return;
+                }
+                empty.style.display = "none";
+                for (let i = 0; i < data.length; i++) {
+                    const item = data[i];
+                    const tr = document.createElement("tr");
+
+                    const tdName = document.createElement("td");
+                    const englishName = document.createElement('div');
+                    englishName.textContent = (item.Name || "-").toUpperCase();
+                    tdName.appendChild(englishName);
+                    if(item.kn_name) {
+                        const kannadaName = document.createElement('div');
+                        kannadaName.className = 'kannada-text';
+                        kannadaName.textContent = item.kn_name;
+                        tdName.appendChild(kannadaName);
+                    }
+                    tr.appendChild(tdName);
+
+                    const tdAge = document.createElement("td");
+                    tdAge.textContent = item.Age || "-";
+                    tr.appendChild(tdAge);
+
+                    const tdComponent = document.createElement("td");
+                    const englishComponent = document.createElement('div');
+                    englishComponent.textContent = item.Component || "-";
+                    tdComponent.appendChild(englishComponent);
+                    if(item.kn_component) {
+                        const kannadaComponent = document.createElement('div');
+                        kannadaComponent.className = 'kannada-text';
+                        kannadaComponent.textContent = item.kn_component;
+                        tdComponent.appendChild(kannadaComponent);
+                    }
+                    tr.appendChild(tdComponent);
+
+                    const tdStatus = document.createElement("td");
+                    tdStatus.textContent = item.Status || "-";
+                    if (item.Status && item.Status.toLowerCase() === 'emergency') {
+                        tdStatus.classList.add('status-emergency');
+                    }
+                    tr.appendChild(tdStatus);
+
+                    tbody.appendChild(tr);
+                }
+
+                requestAnimationFrame(() => {
+                    const firstRow = tbody.querySelector("tr");
+                    if (firstRow) {
+                        const style = window.getComputedStyle(firstRow);
+                        rowHeight = parseFloat(style.height);
+                    }
+                    if (rowHeight > 0) {
+                        rowsPerPage = Math.floor(viewport.clientHeight / rowHeight);
+                    }
+                    currentIndex = 0;
+                    setTransform(0, false);
+                    resolve();
+                });
+            });
+        }
+
+        function goToPage(pageIdx) {
+            if (rowsPerPage === 0) return;
+
+            currentIndex = Math.min(pageIdx * rowsPerPage, Math.max(0, bloodData.length - 1));
+            const offset = -(currentIndex * rowHeight);
+            setTransform(offset, true);
+            const pageCount = Math.ceil(bloodData.length / rowsPerPage);
+            pageInfo.textContent = `Page ${Math.floor(currentIndex / rowsPerPage) + 1} of ${pageCount} • ${bloodData.length} items`;
+        }
+
+        function stepPager() {
+            if (document.hidden || bloodData.length <= rowsPerPage) return;
+
+            const pageCount = Math.ceil(bloodData.length / rowsPerPage);
+            const currentPage = Math.floor(currentIndex / rowsPerPage);
+            let nextPage = (currentPage + 1) % pageCount;
+
+            if (nextPage === 0) {
+                sleep(SLIDE_MS, () => setTransform(0, false));
+            }
+
+            goToPage(nextPage);
+        }
+
+        function startPager() {
+            stopPager();
+            pageTimer = setInterval(stepPager, PAGE_HOLD_MS);
+        }
+
+        function stopPager() {
+            if (pageTimer) clearInterval(pageTimer);
+            pageTimer = null;
+        }
+
+        async function refreshLoop() {
+            const payload = await fetchData();
+            if (!payload) {
+                meta.textContent = "Error fetching data";
+                return;
+            }
+
+            const list = Array.isArray(payload) ? payload : [];
+            const newHash = hashData(list);
+
+            if (newHash !== lastHash) {
+                bloodData = list;
+                await renderRows(bloodData);
+                lastHash = newHash;
+                goToPage(0);
+            }
+
+            meta.textContent = `Last updated: ${new Date().toLocaleTimeString()}`;
+        }
+
+        function startRefresh() {
+            stopRefresh();
+            refreshLoop();
+            refreshTimer = setInterval(refreshLoop, REFRESH_MS);
+        }
+
+        function stopRefresh() {
+            if (refreshTimer) clearInterval(refreshTimer);
+            refreshTimer = null;
+        }
+
+        document.addEventListener("visibilitychange", () => {
+            if (document.hidden) {
+                stopPager();
+            } else {
+                renderRows(bloodData).then(() => {
+                    startPager();
+                });
+            }
+        });
+
+        window.addEventListener("resize", () => {
+            if (!bloodData.length) return;
+            renderRows(bloodData).then(() => {
+                goToPage(0);
+            });
+        });
+
+        startRefresh();
+        startPager();
+    </script>
+</body>
+
+</html>
