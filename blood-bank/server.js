@@ -59,7 +59,7 @@ async function pollUpdates() {
   }
 }
 
-app.use(express.static(path.join(__dirname)));
+app.use(express.static(path.join(__dirname,'public')));
 
 app.get("/data", (req, res) => {
   res.json(bloodData);
