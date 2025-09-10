@@ -7,8 +7,9 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 let bloodData = [];
+let lastFetchedAt = null; // store last fetched time
 const SECRET_KEY = "lasdfaldf234232wqa122fsvsdlfjsdvnsasifjweiojsadlflkasdjflkasjflk32234234edswdsjfflas2 3rsd";
-const baseUrl = "https://script.google.com/macros/s/AKfycbzEckJH-sjV_vz299x0TSEAq3HjbQRTpUZ6FzXtz-tV3GCyVJYQX89zlPHocbRslVyv/exec";
+const baseUrl = "https://script.google.com/macros/s/AKfycbywGq0YQ_jD7EYchmBr9ub8TxPdWYJPrzzqi25nxYiLcQ-TApdyIj7FFvH9Qm3pBokk/exec";
 
 async function getKannadaTransliteration(text) {
   if (!text || typeof text !== 'string') return text;
@@ -30,36 +31,53 @@ async function getKannadaTransliteration(text) {
 }
 
 async function pollUpdates() {
-  let url = `${baseUrl}?key=${SECRET_KEY}`;
-
   try {
-    console.log("Fetching updates...");
+    let url = `${baseUrl}?key=${SECRET_KEY}`;
+    if (lastFetchedAt) {
+      url += `&since=${encodeURIComponent(lastFetchedAt)}`;
+    }
+    
+    console.log("Fetching updates with since:", lastFetchedAt || "first fetch");
+    lastFetchedAt = new Date().toISOString();
     const res = await fetch(url);
     const data = await res.json();
+
+    if (!Array.isArray(data) || data.length === 0) {
+      console.log("No new rows.");
+      return;
+    }
+
     console.log("Fetched rows:", data.length);
 
-    if (Array.isArray(data)) {
-        const processedData = await Promise.all(data.map(async (item) => {
-            const kn_name = await getKannadaTransliteration(item.Name);
-            const kn_component = await getKannadaTransliteration(item.Component);
-            return { ...item, kn_name, kn_component };
-        }));
+    // Process transliterations
+    const processedData = await Promise.all(data.map(async (item) => {
+      const kn_name = await getKannadaTransliteration(item.Name);
+      const kn_component = await getKannadaTransliteration(item.Component);
+      return { ...item, kn_name, kn_component };
+    }));
 
-        processedData.sort((a, b) => {
-            if (a.Status && a.Status.toLowerCase() === 'emergency') return -1;
-            if (b.Status && b.Status.toLowerCase() === 'emergency') return 1;
-            return 0;
-        });
-
-        bloodData = processedData;
+    // Merge new data into local cache
+    const existingMap = new Map(bloodData.map(d => [d.SN, d]));
+    for (const newItem of processedData) {
+      existingMap.set(newItem.SN, newItem); // overwrite or add
     }
+    bloodData = Array.from(existingMap.values());
+
+    // sort emergencies first
+    bloodData.sort((a, b) => {
+      if (a.Status && a.Status.toLowerCase() === 'emergency') return -1;
+      if (b.Status && b.Status.toLowerCase() === 'emergency') return 1;
+      return 0;
+    });
+
+    // Update last fetched time
 
   } catch (err) {
     console.error("Error fetching or processing updates:", err);
   }
 }
 
-app.use(express.static(path.join(__dirname,'public')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.get("/data", (req, res) => {
   res.json(bloodData);
