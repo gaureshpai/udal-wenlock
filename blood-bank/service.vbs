@@ -9,10 +9,10 @@ Dim WshShell, projectDir, nodeExe, entryFile, port
 Set WshShell = CreateObject("WScript.Shell")
 
 ' === CONFIGURATION ===
-projectDir = "D:\Projects\UDAL_Fellowship_Wenlock_Hospital\udal-wenlock\medicine-display-poc-1"
+projectDir = "D:\Projects\UDAL_Fellowship_Wenlock_Hospital\udal-wenlock\blood-bank"
 nodeExe    = "C:\Program Files\nodejs\node.exe"
 entryFile  = projectDir & "\server.js"
-port       = 3000
+port       = 3001
 
 ' === FUNCTIONS ===
 Sub StartService()

@@ -175,10 +175,10 @@ class Service {
     required this.id,
     required this.department,
     required this.vbsPath,
-    required this.projectDir,
-    required this.port,
-    required this.nodeExe,
-    required this.entryFile,
+    this.projectDir = '',
+    this.port = 4000,
+    this.nodeExe = r'C:\Program Files\nodejs\node.exe',
+    this.entryFile = 'server.js',
     this.status = 'stopped',
     this.pid,
     this.lastStarted,
@@ -253,26 +253,7 @@ class _ServiceControlScreenState extends State<ServiceControlScreen> {
       }
     } else {
       // Create example default file if none exists
-      services = [
-        Service(
-          id: 'example_service',
-          department: 'Example Service',
-          vbsPath: 'C:\\path\\to\\example_service.vbs',
-          projectDir: 'C:\\path\\to\\project',
-          port: 3000,
-          nodeExe: 'C:\\path\\to\\node.exe',
-          entryFile: 'app.js',
-        ),
-        Service(
-          id: 'another_service',
-          department: 'Another Service',
-          vbsPath: 'C:\\path\\to\\another_service.vbs',
-          projectDir: 'C:\\path\\to\\another_project',
-          port: 4000,
-          nodeExe: 'C:\\path\\to\\node.exe',
-          entryFile: 'server.js',
-        ),
-      ];
+      services = [];
       await _saveServices();
     }
   }
@@ -285,6 +266,10 @@ class _ServiceControlScreenState extends State<ServiceControlScreen> {
           'id': s.id.toLowerCase().replaceAll(' ', '_'),
           'department': s.department,
           'vbs_path': s.vbsPath,
+          'project_dir': s.projectDir,
+          'port': s.port,
+          'node_exe': s.nodeExe,
+          'entry_file': s.entryFile,
           'status': s.status,
           'pid': s.pid,
           'last_started': s.lastStarted,
@@ -298,16 +283,17 @@ class _ServiceControlScreenState extends State<ServiceControlScreen> {
 
   Future<void> _toggleService(Service s) async {
     try {
-      if (!s.isRunning) {
-        await Process.start('wscript', [s.vbsPath]);
-      } else {
-        // For now, assume stop_vbs has same name with _stop suffix
-        final stopScript = s.vbsPath.replaceFirst('.vbs', '_stop.vbs');
-        if (File(stopScript).existsSync()) {
-          await Process.start('wscript', [stopScript]);
-        }
-      }
-      setState(() => s.status = s.isRunning ? 'stopped' : 'running');
+      // Determine which action to perform
+      final action = s.isRunning ? 'stop' : 'start';
+
+      // Run the .vbs script with the correct argument
+      await Process.start('wscript', [s.vbsPath, action]);
+
+      // Update the UI and status
+      setState(() {
+        s.status = s.isRunning ? 'stopped' : 'running';
+      });
+
       await _saveServices();
     } catch (e) {
       if (mounted) {
@@ -323,70 +309,93 @@ class _ServiceControlScreenState extends State<ServiceControlScreen> {
       text: service?.department ?? '',
     );
     final vbsController = TextEditingController(text: service?.vbsPath ?? '');
-    final projectDirController = TextEditingController(
-      text: service?.projectDir ?? '',
-    );
-    final portController = TextEditingController(
-      text: service?.port.toString() ?? '4000',
-    );
-    final nodeExeController = TextEditingController(
-      text: service?.nodeExe ?? r'C:\Program Files\nodejs\node.exe',
-    );
-    final entryFileController = TextEditingController(
-      text: service?.entryFile ?? '',
-    );
+    String errorMessage = '';
 
     showDialog(
       context: context,
-      builder: (_) => AlertDialog(
-        title: Text(service == null ? 'Add Service' : 'Edit Service'),
-        content: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _buildTextField('Department', departmentController),
-              _buildTextField('VBS File Path', vbsController),
-              _buildTextField('Project Dir', projectDirController),
-              _buildTextField('Port', portController, isNumber: true),
-              _buildTextField('Node.js Path', nodeExeController),
-              _buildTextField('Entry File', entryFileController),
-            ],
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              final newService = Service(
-                id: (departmentController.text).toLowerCase().replaceAll(
-                  ' ',
-                  '_',
+      builder: (_) => StatefulBuilder(
+        builder: (context, setDialogState) => AlertDialog(
+          title: Text(service == null ? 'Add Service' : 'Edit Service'),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _buildTextField('Department *', departmentController),
+                _buildTextField('VBS File Path *', vbsController),
+                if (errorMessage.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: Text(
+                      errorMessage,
+                      style: const TextStyle(color: Colors.red, fontSize: 12),
+                    ),
+                  ),
+                const Padding(
+                  padding: EdgeInsets.only(top: 12.0),
+                  child: Text(
+                    'Note: Ensure your VBS file is configured with correct project settings.',
+                    style: TextStyle(fontSize: 11, color: Colors.grey),
+                  ),
                 ),
-                department: departmentController.text,
-                vbsPath: vbsController.text,
-                projectDir: projectDirController.text,
-                port: int.tryParse(portController.text) ?? 4000,
-                nodeExe: nodeExeController.text,
-                entryFile: entryFileController.text,
-              );
-
-              setState(() {
-                if (service == null) {
-                  services.add(newService);
-                } else {
-                  final index = services.indexOf(service);
-                  services[index] = newService;
-                }
-              });
-              _saveServices();
-              Navigator.pop(context);
-            },
-            child: const Text('Save'),
+              ],
+            ),
           ),
-        ],
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                final department = departmentController.text.trim();
+                final vbsPath = vbsController.text.trim();
+
+                // Validation
+                if (department.isEmpty) {
+                  setDialogState(
+                    () => errorMessage = 'Department name is required',
+                  );
+                  return;
+                }
+                if (vbsPath.isEmpty) {
+                  setDialogState(
+                    () => errorMessage = 'VBS file path is required',
+                  );
+                  return;
+                }
+                if (!await File(vbsPath).exists()) {
+                  setDialogState(
+                    () => errorMessage = 'VBS file does not exist: $vbsPath',
+                  );
+                  return;
+                }
+
+                final newService = Service(
+                  id: department.toLowerCase().replaceAll(' ', '_'),
+                  department: department,
+                  vbsPath: vbsPath,
+                  projectDir: service?.projectDir ?? '',
+                  port: service?.port ?? 4000,
+                  nodeExe:
+                      service?.nodeExe ?? r'C:\Program Files\nodejs\node.exe',
+                  entryFile: service?.entryFile ?? 'server.js',
+                );
+
+                setState(() {
+                  if (service == null) {
+                    services.add(newService);
+                  } else {
+                    final index = services.indexOf(service);
+                    services[index] = newService;
+                  }
+                });
+                _saveServices();
+                Navigator.pop(context);
+              },
+              child: const Text('Save'),
+            ),
+          ],
+        ),
       ),
     );
   }
