@@ -1,0 +1,14 @@
+{
+  "services": [
+    {
+      "id": "icu_service",
+      "department": "ICU",
+      "vbs_path": "C:\\Wenlock\\scripts\\icu.vbs",
+      "status": "stopped",
+      "pid": null,
+      "last_started": null,
+      "last_stopped": null,
+      "log_file": "D:\\webdev\\udal-wenlock\\icu-display\\service.log"
+    }
+  ]
+}
