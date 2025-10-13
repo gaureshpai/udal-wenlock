@@ -1,0 +1,32 @@
+{
+  "services": [
+    {
+      "id": "pharmaccy",
+      "department": "Pharmaccy",
+      "vbs_path": "D:\\Projects\\UDAL_Fellowship_Wenlock_Hospital\\udal-wenlock\\medicine-display-poc-1\\start_server.vbs",
+      "project_dir": "",
+      "port": 0,
+      "node_exe": "",
+      "entry_file": "",
+      "status": "running",
+      "pid": null,
+      "last_started": null,
+      "last_stopped": null,
+      "log_file": null
+    },
+    {
+      "id": "blood_bank",
+      "department": "Blood Bank",
+      "vbs_path": "D:\\Projects\\UDAL_Fellowship_Wenlock_Hospital\\udal-wenlock\\blood-bank\\service.vbs",
+      "project_dir": "",
+      "port": 4000,
+      "node_exe": "C:\\Program Files\\nodejs\\node.exe",
+      "entry_file": "server.js",
+      "status": "running",
+      "pid": null,
+      "last_started": null,
+      "last_stopped": null,
+      "log_file": null
+    }
+  ]
+}
