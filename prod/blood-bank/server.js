@@ -85,6 +85,15 @@ app.get("/data", (req, res) => {
 
 const server = http.createServer(app);
 
+fs.watchFile(path.join(__dirname, 'public', 'close.txt'), (curr, prev) => {
+  console.log('Shutdown signal received. Closing server...');
+  server.close(() => {
+    console.log('Server closed.');
+    fs.unlinkSync(path.join(__dirname, 'public', 'close.txt'));
+    process.exit(0);
+  });
+});
+
 server.listen(PORT, '0.0.0.0', () => {
   console.log(`HTTP Server running on http://localhost:${PORT}`);
   pollUpdates();
