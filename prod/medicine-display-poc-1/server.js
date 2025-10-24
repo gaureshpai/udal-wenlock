@@ -167,7 +167,18 @@ app.get("/medicines/available", async (req, res) => {
   }
 });
 
-http.createServer(app).listen(PORT, "0.0.0.0", () => {
+const server = http.createServer(app);
+
+fs.watchFile(path.join(__dirname, 'public', 'close.txt'), (curr, prev) => {
+  console.log('Shutdown signal received. Closing server...');
+  server.close(() => {
+    console.log('Server closed.');
+    fs.unlinkSync(path.join(__dirname, 'public', 'close.txt'));
+    process.exit(0);
+  });
+});
+
+server.listen(PORT, "0.0.0.0", () => {
   console.log(`HTTP Server running`);
   syncSheetToCsv().catch(err => {
     console.error("Initial sync failed on startup.", err.message);

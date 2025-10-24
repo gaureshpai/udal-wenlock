@@ -2,6 +2,9 @@ import 'dart:io';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:crypto/crypto.dart';
+import 'package:flutter/foundation.dart';
+
+import 'package:flutter/foundation.dart';
 
 void main() {
   runApp(
@@ -29,6 +32,15 @@ class _PrivilegeCheckAppState extends State<PrivilegeCheckApp> {
   }
 
   Future<void> _checkAdminPrivilege() async {
+    if (kIsWeb) {
+      if (kDebugMode) {
+        // Allow admin mode in debug web builds for testing
+        setState(() => isAdmin = true);
+      } else {
+        setState(() => isAdmin = false);
+      }
+      return;
+    }
     try {
       // Try running a command that only works under admin privileges.
       final result = await Process.run('net', ['session']);
@@ -92,65 +104,94 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: widget.role == 'Admin'
-          ? Colors.black
-          : Colors.blueGrey[900],
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                '${widget.role} Login',
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 26,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 20),
-              TextField(
-                controller: _controller,
-                obscureText: true,
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white10,
-                  hintText: 'Enter Password',
-                  hintStyle: const TextStyle(color: Colors.white54),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide.none,
-                  ),
-                ),
-                style: const TextStyle(color: Colors.white),
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _verifyPassword,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white10,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                child: const Text(
-                  'Login',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-              const SizedBox(height: 20),
-              Text(
-                _message,
-                style: TextStyle(
-                  color: _message.contains('✅')
-                      ? Colors.greenAccent
-                      : Colors.redAccent,
-                  fontSize: 16,
-                ),
-              ),
-            ],
+      backgroundColor: const Color(0xFFF9FAFB),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(100.0),
+        child: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 1,
+          flexibleSpace: Center(
+            child: SizedBox(
+              height: 80,
+              child: Image.asset('assets/wenlock_logo.png', fit: BoxFit.contain),
+            ),
           ),
+          centerTitle: true,
+        ),
+      ),
+      body: Center(
+        child: SizedBox(
+          width: 500,
+          child: Card(
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(32.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    '${widget.role} Login',
+                    style: const TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  TextField(
+                    controller: _controller,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: _verifyPassword,
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      child: const Text('Login'),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    _message,
+                    style: TextStyle(
+                      color: _message.contains('✅')
+                          ? Colors.green
+                          : Colors.red,
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+      bottomNavigationBar: Container(
+        height: 30,
+        color: Colors.white,
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              '${DateTime.now().year}@ UDAL DC Fellowship',
+              style: const TextStyle(color: Colors.grey),
+            ),
+          ],
         ),
       ),
     );
@@ -175,10 +216,10 @@ class Service {
     required this.id,
     required this.department,
     required this.vbsPath,
-    required this.projectDir,
-    required this.port,
-    required this.nodeExe,
-    required this.entryFile,
+    this.projectDir = '',
+    this.port = 4000,
+    this.nodeExe = r'C:\Program Files\nodejs\node.exe',
+    this.entryFile = 'server.js',
     this.status = 'stopped',
     this.pid,
     this.lastStarted,
@@ -242,7 +283,6 @@ class _ServiceControlScreenState extends State<ServiceControlScreen> {
       final content = await file.readAsString();
       final data = json.decode(content);
 
-      // Expect top-level key "services"
       if (data is Map<String, dynamic> && data.containsKey('services')) {
         final list = data['services'] as List;
         setState(() {
@@ -252,27 +292,7 @@ class _ServiceControlScreenState extends State<ServiceControlScreen> {
         });
       }
     } else {
-      // Create example default file if none exists
-      services = [
-        Service(
-          id: 'example_service',
-          department: 'Example Service',
-          vbsPath: 'C:\\path\\to\\example_service.vbs',
-          projectDir: 'C:\\path\\to\\project',
-          port: 3000,
-          nodeExe: 'C:\\path\\to\\node.exe',
-          entryFile: 'app.js',
-        ),
-        Service(
-          id: 'another_service',
-          department: 'Another Service',
-          vbsPath: 'C:\\path\\to\\another_service.vbs',
-          projectDir: 'C:\\path\\to\\another_project',
-          port: 4000,
-          nodeExe: 'C:\\path\\to\\node.exe',
-          entryFile: 'server.js',
-        ),
-      ];
+      services = [];
       await _saveServices();
     }
   }
@@ -280,113 +300,114 @@ class _ServiceControlScreenState extends State<ServiceControlScreen> {
   Future<void> _saveServices() async {
     final file = File('services.json');
     final data = {
-      'services': services.map((s) {
-        return {
-          'id': s.id.toLowerCase().replaceAll(' ', '_'),
-          'department': s.department,
-          'vbs_path': s.vbsPath,
-          'status': s.status,
-          'pid': s.pid,
-          'last_started': s.lastStarted,
-          'last_stopped': s.lastStopped,
-          'log_file': s.logFile,
-        };
-      }).toList(),
+      'services': services.map((s) => s.toJson()).toList(),
     };
     await file.writeAsString(const JsonEncoder.withIndent('  ').convert(data));
   }
 
   Future<void> _toggleService(Service s) async {
     try {
-      if (!s.isRunning) {
-        await Process.start('wscript', [s.vbsPath]);
-      } else {
-        // For now, assume stop_vbs has same name with _stop suffix
-        final stopScript = s.vbsPath.replaceFirst('.vbs', '_stop.vbs');
-        if (File(stopScript).existsSync()) {
-          await Process.start('wscript', [stopScript]);
-        }
-      }
-      setState(() => s.status = s.isRunning ? 'stopped' : 'running');
+      final action = s.isRunning ? 'stop' : 'start';
+      await Process.start('wscript', [s.vbsPath, action]);
+      setState(() {
+        s.status = s.isRunning ? 'stopped' : 'running';
+      });
       await _saveServices();
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('Error: $e')));
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('Error: $e')));
       }
     }
   }
 
   void _showServiceForm({Service? service}) {
-    final departmentController = TextEditingController(
-      text: service?.department ?? '',
-    );
+    final departmentController =
+        TextEditingController(text: service?.department ?? '');
     final vbsController = TextEditingController(text: service?.vbsPath ?? '');
-    final projectDirController = TextEditingController(
-      text: service?.projectDir ?? '',
-    );
-    final portController = TextEditingController(
-      text: service?.port.toString() ?? '4000',
-    );
-    final nodeExeController = TextEditingController(
-      text: service?.nodeExe ?? r'C:\Program Files\nodejs\node.exe',
-    );
-    final entryFileController = TextEditingController(
-      text: service?.entryFile ?? '',
-    );
+    String errorMessage = '';
 
     showDialog(
       context: context,
-      builder: (_) => AlertDialog(
-        title: Text(service == null ? 'Add Service' : 'Edit Service'),
-        content: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _buildTextField('Department', departmentController),
-              _buildTextField('VBS File Path', vbsController),
-              _buildTextField('Project Dir', projectDirController),
-              _buildTextField('Port', portController, isNumber: true),
-              _buildTextField('Node.js Path', nodeExeController),
-              _buildTextField('Entry File', entryFileController),
-            ],
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              final newService = Service(
-                id: (departmentController.text).toLowerCase().replaceAll(
-                  ' ',
-                  '_',
+      builder: (_) => StatefulBuilder(
+        builder: (context, setDialogState) => AlertDialog(
+          title: Text(service == null ? 'Add Service' : 'Edit Service'),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _buildTextField('Department *', departmentController),
+                _buildTextField('VBS File Path *', vbsController),
+                if (errorMessage.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: Text(
+                      errorMessage,
+                      style: const TextStyle(color: Colors.red, fontSize: 12),
+                    ),
+                  ),
+                const Padding(
+                  padding: EdgeInsets.only(top: 12.0),
+                  child: Text(
+                    'Note: Ensure your VBS file is configured with correct project settings.',
+                    style: TextStyle(fontSize: 11, color: Colors.grey),
+                  ),
                 ),
-                department: departmentController.text,
-                vbsPath: vbsController.text,
-                projectDir: projectDirController.text,
-                port: int.tryParse(portController.text) ?? 4000,
-                nodeExe: nodeExeController.text,
-                entryFile: entryFileController.text,
-              );
-
-              setState(() {
-                if (service == null) {
-                  services.add(newService);
-                } else {
-                  final index = services.indexOf(service);
-                  services[index] = newService;
-                }
-              });
-              _saveServices();
-              Navigator.pop(context);
-            },
-            child: const Text('Save'),
+              ],
+            ),
           ),
-        ],
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                final department = departmentController.text.trim();
+                final vbsPath = vbsController.text.trim();
+
+                if (department.isEmpty) {
+                  setDialogState(
+                      () => errorMessage = 'Department name is required');
+                  return;
+                }
+                if (vbsPath.isEmpty) {
+                  setDialogState(
+                      () => errorMessage = 'VBS file path is required');
+                  return;
+                }
+                if (!await File(vbsPath).exists()) {
+                  setDialogState(
+                      () => errorMessage = 'VBS file does not exist: $vbsPath');
+                  return;
+                }
+
+                final newService = Service(
+                  id: department.toLowerCase().replaceAll(' ', '_'),
+                  department: department,
+                  vbsPath: vbsPath,
+                  projectDir: service?.projectDir ?? '',
+                  port: service?.port ?? 4000,
+                  nodeExe:
+                      service?.nodeExe ?? r'C:\Program Files\nodejs\node.exe',
+                  entryFile: service?.entryFile ?? 'server.js',
+                );
+
+                setState(() {
+                  if (service == null) {
+                    services.add(newService);
+                  } else {
+                    final index = services.indexOf(service);
+                    services[index] = newService;
+                  }
+                });
+                _saveServices();
+                Navigator.pop(context);
+              },
+              child: const Text('Save'),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -412,82 +433,101 @@ class _ServiceControlScreenState extends State<ServiceControlScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFF9FAFB),
       appBar: AppBar(
-        title: Text('${widget.role} Control Panel'),
+        backgroundColor: Colors.white,
+        elevation: 1,
+        title: SizedBox(
+          height: 50,
+          child: Image.asset('assets/wenlock_logo.png', fit: BoxFit.contain),
+        ),
+        centerTitle: true,
         actions: [
           if (widget.role == 'Admin')
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Row(
-                children: [
-                  ElevatedButton.icon(
-                    icon: const Icon(Icons.add),
-                    label: const Text('Add Service'),
-                    onPressed: () => _showServiceForm(),
-                  ),
-                  const SizedBox(width: 12),
-                  ElevatedButton.icon(
-                    icon: const Icon(Icons.refresh),
-                    label: const Text('Reload Services'),
-                    onPressed: _loadServices,
-                  ),
-                ],
-              ),
+            IconButton(
+              icon: const Icon(Icons.add),
+              onPressed: () => _showServiceForm(),
+              tooltip: 'Add Service',
             ),
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: _loadServices,
+            tooltip: 'Reload Services',
+          ),
         ],
-        backgroundColor: widget.role == 'Admin'
-            ? Colors.black
-            : Colors.blueGrey[800],
       ),
-      backgroundColor: widget.role == 'Admin'
-          ? Colors.black
-          : Colors.blueGrey[900],
-      body: ListView.builder(
-        itemCount: services.length,
-        itemBuilder: (context, i) {
-          final s = services[i];
-          return Card(
-            color: Colors.white10,
-            margin: const EdgeInsets.all(10),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: ListTile(
-              title: Text(
-                s.department,
-                style: const TextStyle(color: Colors.white, fontSize: 18),
+      body: services.isEmpty
+          ? const Center(
+              child: Text(
+                'No services configured.',
+                style: TextStyle(color: Colors.grey, fontSize: 18),
               ),
-              subtitle: Text(
-                s.vbsPath,
-                style: const TextStyle(color: Colors.white54, fontSize: 12),
-              ),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: s.isRunning
-                          ? Colors.redAccent
-                          : Colors.green,
+            )
+          : ListView.builder(
+              itemCount: services.length,
+              itemBuilder: (context, i) {
+                final s = services[i];
+                return Container(
+                  color: i.isEven ? const Color(0xFFF3F4F6) : Colors.white,
+                  child: ListTile(
+                    contentPadding:
+                        const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+                    title: Text(
+                      s.department.toUpperCase(),
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 22,
+                      ),
                     ),
-                    onPressed: () => _toggleService(s),
-                    child: Text(s.isRunning ? 'Stop' : 'Start'),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          width: 120,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: s.isRunning
+                                  ? const Color(0xFF16A34A)
+                                  : Colors.grey,
+                            ),
+                            onPressed: () => _toggleService(s),
+                            child: Text(
+                              s.isRunning ? 'RUNNING' : 'STOPPED',
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ),
+                        if (widget.role == 'Admin')
+                          IconButton(
+                            icon: const Icon(Icons.delete, color: Colors.redAccent),
+                            onPressed: () {
+                              setState(() => services.remove(s));
+                              _saveServices();
+                            },
+                          ),
+                      ],
+                    ),
                   ),
-                  if (widget.role == 'Admin')
-                    IconButton(
-                      icon: const Icon(Icons.delete, color: Colors.redAccent),
-                      onPressed: () {
-                        setState(() {
-                          services.remove(s);
-                        });
-                        _saveServices();
-                      },
-                    ),
-                ],
-              ),
+                );
+              },
             ),
-          );
-        },
+      bottomNavigationBar: Container(
+        height: 30,
+        color: Colors.white,
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              '${services.length} services',
+              style: const TextStyle(color: Colors.grey),
+            ),
+            Text(
+              '${widget.role} Access',
+              style: const TextStyle(color: Colors.grey),
+            ),
+          ],
+        ),
       ),
     );
   }

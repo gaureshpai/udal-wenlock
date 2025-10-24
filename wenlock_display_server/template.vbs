@@ -59,6 +59,10 @@ Sub StartService()
         Exit Sub
     End If
 
+    If fso.FileExists(projectDir & "\public\close.txt") Then
+        fso.DeleteFile (projectDir & "\public\close.txt"), True
+    End If
+
     WshShell.CurrentDirectory = projectDir
 
     ' Install dependencies silently
@@ -84,10 +88,7 @@ Sub StopService()
         Exit Sub
     End If
 
-    ' Kill Node.js processes using this entry file path
-    Dim cmd
-    cmd = "taskkill /FI " & Chr(34) & "WINDOWTITLE eq " & departmentName & Chr(34) & " /T /F"
-    WshShell.Run "cmd /c " & cmd, 0, True
+    SaveText (projectDir & "\public\close.txt"), "stop"
 
     fso.DeleteFile pidFile, True
     Log "Stopped service for " & departmentName
