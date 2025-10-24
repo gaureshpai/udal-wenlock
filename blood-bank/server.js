@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 3001;
 let bloodData = [];
 let lastFetchedAt = null; // store last fetched time
 const SECRET_KEY = "lasdfaldf234232wqa122fsvsdlfjsdvnsasifjweiojsadlflkasdjflkasjflk32234234edswdsjfflas2 3rsd";
-const baseUrl = "https://script.google.com/macros/s/AKfycbywGq0YQ_jD7EYchmBr9ub8TxPdWYJPrzzqi25nxYiLcQ-TApdyIj7FFvH9Qm3pBokk/exec";
+const baseUrl = "https://script.google.com/macros/s/AKfycbx4wgFIQ1Dm0iKvH-NPnIg5YP7SuBSOT80GbbCxBQt7i3SKOuANdy_JJAyqwFtDVFJs/exec";
 
 async function getKannadaTransliteration(text) {
   if (!text || typeof text !== 'string') return text;
@@ -98,3 +98,4 @@ process.on('SIGTERM', () => {
     process.exit(0);
   });
 });
+
