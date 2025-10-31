@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blood Components Inventory</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        background: #8d8d8d00;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+      }
+
+      .container {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        padding: 30px;
+        max-width: 900px;
+        width: 100%;
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      .header h1 {
+        color: #dc3545;
+        font-size: 28px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .header h2 {
+        color: #0066cc;
+        font-size: 24px;
+        font-weight: bold;
+        text-transform: uppercase;
+        transition: opacity 0.5s ease;
+      }
+
+      .grid-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        margin-bottom: 20px;
+      }
+
+      .table-wrapper {
+        border: 3px solid #0066cc;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .table-header {
+        background: #0066cc;
+        color: white;
+      }
+
+      .table-header th {
+        padding: 12px;
+        font-size: 16px;
+        font-weight: bold;
+        text-transform: uppercase;
+      }
+
+      .table-header th:first-child {
+        border-right: 2px dashed white;
+      }
+
+      tbody tr {
+        background: #c8e6c9;
+      }
+
+      tbody td {
+        padding: 15px;
+        text-align: center;
+        font-size: 18px;
+        font-weight: bold;
+        border-bottom: 2px dashed #0066cc;
+      }
+
+      tbody tr:last-child td {
+        border-bottom: none;
+      }
+
+      tbody td:first-child {
+        color: #0066cc;
+        border-right: 2px dashed #0066cc;
+      }
+
+      tbody td:last-child {
+        color: #dc3545;
+      }
+
+      .total-section {
+        background: #0066cc;
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+      }
+
+      .total-section .label {
+        font-size: 24px;
+        font-weight: bold;
+        text-transform: uppercase;
+      }
+
+      .total-section .value {
+        font-size: 36px;
+        font-weight: bold;
+      }
+
+      .controls {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 20px;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        background: #28a745;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: bold;
+        transition: background 0.3s;
+      }
+
+      .btn:hover {
+        background: #218838;
+      }
+
+      .btn.pause {
+        background: #ffc107;
+      }
+
+      .btn.pause:hover {
+        background: #e0a800;
+      }
+
+      .progress-bar {
+        width: 100%;
+        height: 5px;
+        background: #e0e0e0;
+        border-radius: 3px;
+        margin-top: 15px;
+        overflow: hidden;
+      }
+
+      .progress-fill {
+        height: 100%;
+        background: #0066cc;
+        width: 0%;
+        transition: width 0.1s linear;
+      }
+
+      .component-indicator {
+        text-align: center;
+        margin-top: 15px;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .indicator-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #ccc;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+
+      .indicator-dot.active {
+        background: #0066cc;
+        transform: scale(1.3);
+      }
+
+      @media (max-width: 768px) {
+        .grid-container {
+          grid-template-columns: 1fr;
+        }
+
+        .header h1 {
+          font-size: 22px;
+        }
+
+        .header h2 {
+          font-size: 20px;
+        }
+
+        tbody td {
+          font-size: 16px;
+          padding: 12px;
+        }
+
+        .total-section .label {
+          font-size: 20px;
+        }
+
+        .total-section .value {
+          font-size: 30px;
+        }
+      }
+
+      .fade-transition {
+        animation: fadeIn 0.5s ease;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header style="display: flex; align-items: center; justify-content: space-between; position: absolute; top:0;">
+        <img src="./wenlock_logo.png" alt="Wenlock Logo" style="height: 8vh; margin-right: 25px; flex-shrink: 0;">
+        <div style="text-align: center; flex-grow: 1;">
+            <h1 style="margin: 0; font-size: 4vh;">Blood Availability</h1>
+            <h2 style="margin: 0; font-size: 2.5vh; font-weight: normal;">ರಕ್ತ ಲಭ್ಯತೆ</h2>
+        </div>
+    </header>
+    <div class="container">
+      <div class="header">
+        <h1>Daily Stock of Blood Components</h1>
+        <h2 id="component-title">Packed Red Blood Cells</h2>
+      </div>
+
+      <div class="grid-container" id="tables-container">
+        <!-- Tables will be generated dynamically -->
+      </div>
+
+      <div class="total-section">
+        <span class="label">Total</span>
+        <span class="value" id="total">0</span>
+      </div>
+
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress"></div>
+      </div>
+
+      <div class="component-indicator" id="indicators"></div>
+
+      <div class="controls">
+        <button class="btn pause" id="pauseBtn" onclick="togglePause()">
+          Pause
+        </button>
+        <button class="btn" onclick="previousComponent()">Previous</button>
+        <button class="btn" onclick="nextComponent()">Next</button>
+      </div>
+    </div>
+
+    <script>
+
+      let components ;
+
+      tally().then(()=>{
+        updateDisplay(components[0]);
+        startAutoplay()
+      });
+
+      let currentIndex = 0;
+      let isPaused = false;
+      let autoplayInterval;
+      let progressInterval;
+      let progressValue = 0;
+      const displayDuration = 5000; // 5 seconds
+      const progressStep = 100 / (displayDuration / 100);
+
+      function createIndicators() {
+        const indicatorContainer = document.getElementById("indicators");
+        indicatorContainer.innerHTML = "";
+        components.forEach((comp, index) => {
+          const dot = document.createElement("div");
+          dot.className = "indicator-dot";
+          dot.title = comp.name;
+          if (index === currentIndex) dot.classList.add("active");
+          dot.onclick = () => jumpToComponent(index);
+          indicatorContainer.appendChild(dot);
+        });
+      }
+
+      function generateTables(component) {
+        const container = document.getElementById("tables-container");
+        const bloodGroups = Object.keys(component.data);
+        const halfPoint = Math.ceil(bloodGroups.length / 2);
+
+        // Split blood groups into two columns
+        const leftGroups = bloodGroups.slice(0, halfPoint);
+        const rightGroups = bloodGroups.slice(halfPoint);
+        if(component.shortName == 'Cryo'){
+            container.innerHTML = ""
+            return;
+        }
+        // Generate left table
+        let leftTableHTML = `
+                <div class="table-wrapper">
+                    <table>
+                        <thead class="table-header">
+                            <tr>
+                                <th>Blood Group</th>
+                                <th>No. of Units</th>
+                            </tr>
+                        </thead>
+                        <tbody>`;
+
+        leftGroups.forEach((group) => {
+          leftTableHTML += `
+                    <tr>
+                        <td>${group}</td>
+                        <td class="value">${component.data[group]}</td>
+                    </tr>`;
+        });
+
+        leftTableHTML += `
+                        </tbody>
+                    </table>
+                </div>`;
+
+        // Generate right table
+        let rightTableHTML = `
+                <div class="table-wrapper">
+                    <table>
+                        <thead class="table-header">
+                            <tr>
+                                <th>Blood Group</th>
+                                <th>No. of Units</th>
+                            </tr>
+                        </thead>
+                        <tbody>`;
+
+        rightGroups.forEach((group) => {
+          rightTableHTML += `
+                    <tr>
+                        <td>${group}</td>
+                        <td class="value">${component.data[group]}</td>
+                    </tr>`;
+        });
+
+        rightTableHTML += `
+                        </tbody>
+                    </table>
+                </div>`;
+
+        container.innerHTML = leftTableHTML + rightTableHTML;
+      }
+
+      function updateDisplay() {
+        const component = components[currentIndex];
+        const title = document.getElementById("component-title");
+
+        title.style.opacity = "0";
+        setTimeout(() => {
+          title.textContent = component.name;
+          title.style.opacity = "1";
+        }, 250);
+
+        // Generate tables dynamically based on component data
+        generateTables(component);
+
+        calculateTotal();
+        updateIndicators();
+        resetProgress();
+      }
+
+      function calculateTotal() {
+        const component = components[currentIndex];
+        let total = 0;
+        for (let key in component.data) {
+          total += component.data[key];
+        }
+        document.getElementById("total").textContent = total;
+      }
+
+      function updateIndicators() {
+        const dots = document.querySelectorAll(".indicator-dot");
+        dots.forEach((dot, index) => {
+          if (index === currentIndex) {
+            dot.classList.add("active");
+          } else {
+            dot.classList.remove("active");
+          }
+        });
+      }
+
+      function nextComponent() {
+        currentIndex = (currentIndex + 1) % components.length;
+        updateDisplay();
+      }
+
+      function previousComponent() {
+        currentIndex =
+          (currentIndex - 1 + components.length) % components.length;
+        updateDisplay();
+      }
+
+      function jumpToComponent(index) {
+        currentIndex = index;
+        updateDisplay();
+      }
+
+      function togglePause() {
+        isPaused = !isPaused;
+        const btn = document.getElementById("pauseBtn");
+
+        if (isPaused) {
+          btn.textContent = "Resume";
+          btn.style.background = "#28a745";
+          clearInterval(autoplayInterval);
+          clearInterval(progressInterval);
+        } else {
+          btn.textContent = "Pause";
+          btn.style.background = "#ffc107";
+          startAutoplay();
+        }
+      }
+      
+      async function tally() {
+          const SECRET_KEY =
+            "lasdfaldf234232wqa122fsvsdlfjsdvnsasifjweiojsadlflkasdjflkasjflk32234234edswdsjfflas2 3rsd";
+          const baseUrl =
+            "https://script.google.com/macros/s/AKfycbx4wgFIQ1Dm0iKvH-NPnIg5YP7SuBSOT80GbbCxBQt7i3SKOuANdy_JJAyqwFtDVFJs/exec";
+        try {
+          const response = await fetch(`${baseUrl}?key=${SECRET_KEY}&sheet=Stock%20Availability`);
+          const data = await response.json();
+          components = data;
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      }
+
+      function resetProgress() {
+        progressValue = 0;
+        document.getElementById("progress").style.width = "0%";
+      }
+
+      function updateProgress() {
+        if (!isPaused) {
+          progressValue += progressStep;
+          if (progressValue >= 100) {
+            progressValue = 100;
+          }
+          document.getElementById("progress").style.width = progressValue + "%";
+        }
+      }
+
+      function startAutoplay() {
+        clearInterval(autoplayInterval);
+        clearInterval(progressInterval);
+
+        autoplayInterval = setInterval(() => {
+          if (!isPaused) {
+            nextComponent();
+          }
+        }, displayDuration);
+
+        progressInterval = setInterval(() => {
+          updateProgress();
+        }, 100);
+      }
+
+      // Initialize
+      createIndicators();
+      updateDisplay();
+      startAutoplay();
+    </script>
+  </body>
+</html>
