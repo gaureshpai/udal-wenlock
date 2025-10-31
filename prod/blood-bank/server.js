@@ -1,6 +1,7 @@
 const express = require("express");
 const path = require("path");
 const http = require("http");
+const fs = require("fs");
 const fetch = require('node-fetch');
 
 const app = express();
@@ -97,7 +98,7 @@ fs.watchFile(path.join(__dirname, 'public', 'close.txt'), (curr, prev) => {
 server.listen(PORT, '0.0.0.0', () => {
   console.log(`HTTP Server running on http://localhost:${PORT}`);
   pollUpdates();
-  setInterval(pollUpdates, 10000);
+  setInterval(pollUpdates, 1000);
 });
 
 process.on('SIGTERM', () => {

@@ -65,7 +65,7 @@ async function syncSheetToCsv() {
       throw new Error(`Failed to fetch sheet: ${response.statusText}`);
     }
     const csvText = await response.text();
-    const parsedSheet = Papa.parse(csvText, { header: false, skipEmptyLines: true });
+    const parsedSheet = Papa.parse(csvText, { header: true, skipEmptyLines: true });
 
     let newMedicines = [];
     for (const row of parsedSheet.data) {
