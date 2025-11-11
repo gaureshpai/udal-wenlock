@@ -7,6 +7,8 @@ const fetch = require('node-fetch');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+// https://docs.google.com/spreadsheets/d/139Lp9FCeCP_-Lm8DZfrarNfYFbyTWIBbJFn3a55FrZU/edit?gid=0#gid=0
+
 let bloodData = [];
 let lastFetchedAt = null; // store last fetched time
 const SECRET_KEY = "lasdfaldf234232wqa122fsvsdlfjsdvnsasifjweiojsadlflkasdjflkasjflk32234234edswdsjfflas2 3rsd";
