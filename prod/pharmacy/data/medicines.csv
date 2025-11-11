@@ -1,0 +1,92 @@
+name,available,kn_name
+Ibuprofen,true,ಇಬುಪ್ರೊಫೆನ್
+Diclofenac,true,ಡಿಕ್ಲೋಫೆನಾಕ್
+Amoxicillin,true,ಅಮೋಕ್ಸಿಸಿಲಿನ್
+Cefixime,true,ಸೆಫಿಕ್ಸೈಮ್
+Ceftriaxone,true,ಸೆಫ್ಟ್ರಿಯಾಕ್ಸೋನ್
+Azithromycin,true,ಅಜಿಥ್ರೋಮೈಸಿನ್
+Metronidazole,false,ಮೆಟ್ರೊನಿಡಾಜೋಲ್
+Doxycycline,true,ಡಾಕ್ಸಿಸೈಕ್ಲೈನ್
+Ciprofloxacin,false,ಸಿಪ್ರೋಫ್ಲಾಕ್ಸಾಸಿನ್
+Ofloxacin,true,ಒಫ್ಲಾಕ್ಸಾಸಿನ್
+Pantoprazole,true,ಪ್ಯಾಂಟೊಪ್ರಜೋಲ್
+Omeprazole,false,ಒಮೆಪ್ರಜೋಲ್
+Ranitidine,true,ರಾನಿಟಿಡೈನ್
+Ondansetron,false,ಒಂಡಾನ್ಸೆಟ್ರಾನ್
+Domperidone,true,ದೊಂಪೆರಿಡೋನ್
+ORS Powder,false,ಓಆರ್ಎಸ್ ಪೌಡರ್
+Albendazole,true,ಅಲ್ಬೆಂಡಾಜೋಲ್
+Chloroquine,false,ಕ್ಲೋರೊಕ್ವಿನ್
+Artemether-Lumefantrine,true,ಆರ್ಟೆಮಿಥರ್ಲುಮ್ಫಾಂಟ್ರಿನ್
+Insulin (Human Regular),false,ಇನ್ಸುಲಿನ್ ಸೈನಹುಮನ್ ರೆಗ್ಯುಲರೈಡ್
+Metformin,true,ಮೆಟ್ಫಾರ್ಮಿನ್
+Glibenclamide,false,ಗ್ಲಿಬೆಂಕ್ಲಾಮೈಡ್
+Amlodipine,true,ಆಮ್ಲೋಡಿಪೈನ್
+Atenolol,true,ಅಟೆನೊಲೋಲ್
+Losartan,true,ಲೋಸಾರ್ಟನ್
+Enalapril,true,ಎನಲಪ್ರಿಲ್
+Hydrochlorothiazide,true,ಹೈಡ್ರೊಕ್ಲೋರೊಥಿಯಾಜೈಡ್
+Furosemide,true,ಫ್ಯೂರೋಸೆಮೈಡ್
+Salbutamol (Inhaler),true,ಸಾಲ್ಬುಟಾಮಾಲ್ ಸೈನಿನ್ಹಾಲೆರಡೈನ್
+Budesonide (Inhaler),true,ಬುಡೆಸೋನೈಡ್ ಸೈನಿನ್ಹಾಲೆರಡೈನ್
+Ipratropium Bromide,false,ಇಪ್ರಾಟ್ರೋಪಿಯಮ್ ಬ್ರೊಮೈಡ್
+Cetirizine,true,ಸಿಟಿರಿಜಿನ್
+Loratadine,false,ಲೊರಾಟಾಡಿನ್
+Prednisolone,true,ಪ್ರೆಡ್ನಿಸೋಲೋನ್
+Hydrocortisone,false,ಹೈಡ್ರೊಕಾರ್ಟಿಸೋನ್
+Betamethasone Cream,true,ಬೆಟಾಮೆಥಾಸೋನ್ ಕ್ರೀಮ್
+Clotrimazole Cream,false,ಕ್ಲೋಟ್ರಿಮಜೋಲ್ ಕ್ರೀಮ್
+Miconazole Cream,true,ಮೈಕೊನಾಜೋಲ್ ಕ್ರೀಮ್
+Amphotericin B,false,ಆಂಫೋಟೆರಿಸಿನ್ ಬೀ
+Iron Folic Acid Tablets,false," ⁇ ರಾನ್ ಫೋಲಿಕ್ ಎಸಿಡ್ ಟ್ಯಾಬ್ಲೆಟ್ಸ್"
+Calcium Carbonate,true,ಕ್ಯಾಲ್ಸಿಯಮ್ ಕಾರ್ಬೊನೇಟ್
+Vitamin B Complex,false,ವಿಟಮಿನ್ ಬೀ ಕಾಂಪ್ಲೆಕ್ಸ್
+Vitamin C Tablets,true,ವಿಟಮಿನ್ ಸೀ ಟ್ಯಾಬ್ಲೆಟ್ಸ್
+Multivitamin Syrup,true,ಮಲ್ಟಿವಿಟಮಿನ್ ಸಿರಪ್
+Zinc Sulphate Tablets,true,ಜಿಂಕ್ ಸಲ್ಫೇಟ್ ಟ್ಯಾಬ್ಲೆಟ್ಸ್
+Dextrose Saline (IV),false,ಡೆಕ್ಸ್ಟ್ರೋಸ್ ಸ್ಯಾಲಿನ್ ಸೈನಿವಾಜೈನ್
+Normal Saline (IV),true,ನಾರ್ಮಲ್ ಸ್ಯಾಲಿನ್ ಸೈನಿವಾಜೈನ್
+Ringer Lactate (IV),true,ರಿಂಗರ್ ಲ್ಯಾಕ್ಟೇಟ್ ಸೈನಿವಾಜೈನ್
+Glucon-D Powder,true,ಗ್ಲುಕಾನ್ಡ್ ಪೌಡರ್
+Paracetamol Syrup,true,ಪ್ಯಾರಾಸಿಟಮಾಲ್ ಸಿರಪ್
+Cough Syrup (Ambroxol),false,ಕಫ್ ಸಿರಪ್ ಸೈನಾಂಬ್ರಾಕ್ಸೊಲೈಡ್
+Sodium Valproate,true,ಸೋಡಿಯಮ್ ವ್ಯಾಲ್ಪ್ರೊಯೇಟ್
+Phenytoin,true,ಫೆನಿಟಾಯಿನ್
+Carbamazepine,true,ಕಾರ್ಬಮ್ಯಾಜೆಪೈನ್
+Diazepam,true,ಡಯಾಜೆಪಾಮ್
+Lorazepam,false,ಲೊರಾಜೆಪಮ್
+Haloperidol,true,ಹಾಲೊಪೆರಿಡಾಲ್
+Olanzapine,true,ಒಳಂಜಪೈನ್
+Fluoxetine,false,ಫ್ಲೂಕ್ಸೆಟೈನ್
+Sertraline,true,ಸೆರ್ಟ್ರಲೈನ್
+Chlorpheniramine,false,ಕ್ಲೋರ್ಫಿನಿರಾಮೈನ್
+Adrenaline (Epinephrine),true,ಅಡ್ರಿನಲಿನ್ ಸೈನೆಪಿನೆಫ್ರೈನ್
+Atropine Sulphate,true,ಅಟ್ರೋಪೈನ್ ಸಲ್ಫೇಟ್
+Folic Acid Tablets,true,ಫೋಲಿಕ್ ಎಸಿಡ್ ಟ್ಯಾಬ್ಲೆಟ್ಸ್
+Tranexamic Acid,true,ಟ್ರಾನೆಕ್ಸಾಮಿಕ್ ಎಸಿಡ್
+Ferrous Sulphate,true,ಫೆರಸ್ ಸಲ್ಫೇಟ್
+Mefenamic Acid,true,ಮೆಫೆನಾಮಿಕ್ ಎಸಿಡ್
+Ketorolac,true,ಕೆಟೊರೊಲಾಕ್
+Insulin 70/30 Mix,true,ಇನ್ಸುಲಿನ್ 70/30 ಮಿಕ್ಸ್
+Glucose Powder,true,ಗ್ಲುಕೋಸ್ ಪೌಡರ್
+Gentamicin,true,ಜೆಂಟಮಿಸಿನ್
+Amikacin,false,ಅಮಿಕಾಸಿನ್
+Tobramycin,true,ಟೊಬ್ರಾಮೈಸಿನ್
+Erythromycin,true,ಎರಿಥ್ರೋಮೈಸಿನ್
+Clindamycin,false,ಕ್ಲಿಂಡಾಮೈಸಿನ್
+Linezolid,true,ಲೈನ್ಜೋಲಿಡ್
+Hydrocortisone Injection,false,ಹೈಡ್ರೊಕಾರ್ಟಿಸೋನ್ ಇಂಜೆಕ್ಷನ್
+Diclofenac Gel,true,ಡಿಕ್ಲೋಫೆನಾಕ್ ಗೆಲ್
+Neomycin Cream,true,ನಿಯೋಮೈಸಿನ್ ಕ್ರೀಮ್
+Lignocaine Injection,true,ಲಿಗ್ನೋಕೈನ್ ಇಂಜೆಕ್ಷನ್
+Chlorhexidine Solution,false,ಕ್ಲೋರ್ಹೆಕ್ಸಿಡೈನ್ ಸಲ್ಯೂಷನ್
+Povidone Iodine Solution,true,ಪೋವಿಡೋನ್ ಅಯೋಡಿನ್ ಸಲ್ಯೂಷನ್
+Hydrogen Peroxide Solution,false,ಹೈಡ್ರೋಜೆನ್ ಪೆರಾಕ್ಸೈಡ್ ಸಲ್ಯೂಷನ್
+Spirit (Isopropyl Alcohol),true,ಸ್ಪಿರಿಟ್ ಸೈನಿಸೊಪ್ರೊಪೈಲ್ ಆಲ್ಕೊಹಾಲೈಡೀನ್
+Dettol (Antiseptic),true,ಡೆಟ್ಟೋಲ್ ಸೈನಂಟಿಸೆಪ್ಟಿಕೈಡ್ಹ್
+Cotton Roll,true,ಕಾಟನ್ ರೋಲ್
+Bandage,true,ಬಂದಗೆ
+Adhesive Plaster,true,ಅಧೆಸಿವೆ ಪ್ಲಾಸ್ಟರ್
+Surgical Gloves,true,ಸರ್ಜಿಕಲ್ ಗ್ಲವ್ಸ್
+Disposable Syringe,true,ಡಿಸ್ಪೋಸಬಲ್ ಸಿರಿಂಜ್
+Paracetamol,false,ಪ್ಯಾರಾಸಿಟಮಾಲ್

@@ -119,12 +119,6 @@
         </div>
         <div id="empty" class="empty">No medicines available</div>
     </main>
-
-    <footer>
-        <span id="meta"></span>
-        <span id="pageInfo"></span>
-    </footer>
-
     <script>
         const PAGE_HOLD_MS = 4200;
         const SLIDE_MS = 800;
@@ -134,7 +128,6 @@
         const viewport = document.getElementById("scrollViewport");
         const empty = document.getElementById("empty");
         const meta = document.getElementById("meta");
-        const pageInfo = document.getElementById("pageInfo");
 
         let medicines = [];
         let currentIndex = 0;
@@ -150,7 +143,7 @@
 
         async function fetchData() {
             try {
-                const response = await fetch('/medicines/available');
+                const response = await fetch('/medicines');
                 if (!response.ok) {
                     throw new Error(`HTTP error, status = ${response.status}`);
                 }
@@ -232,10 +225,8 @@
             const offset = -(currentIndex * rowHeight);
             setTransform(offset, true);
             const pageCount = Math.ceil(medicines.length / rowsPerPage);
-            pageInfo.textContent = `Page ${Math.floor(currentIndex / rowsPerPage) + 1} of ${pageCount} • ${medicines.length} items`;
-        }
-
-        function stepPager() {
+            
+        }        function stepPager() {
             if (document.hidden || medicines.length <= rowsPerPage) return;
 
             const pageCount = Math.ceil(medicines.length / rowsPerPage);
@@ -266,7 +257,7 @@
                 return;
             }
 
-            const list = payload.data && payload.data.length ? payload.data : [];
+            const list = payload.filter(m => m.available);
             const newHash = hashData(list);
 
             if (newHash !== lastHash) {

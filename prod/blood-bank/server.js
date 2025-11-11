@@ -12,6 +12,10 @@ let lastFetchedAt = null; // store last fetched time
 const SECRET_KEY = "lasdfaldf234232wqa122fsvsdlfjsdvnsasifjweiojsadlflkasdjflkasjflk32234234edswdsjfflas2 3rsd";
 const baseUrl = "https://script.google.com/macros/s/AKfycbx4wgFIQ1Dm0iKvH-NPnIg5YP7SuBSOT80GbbCxBQt7i3SKOuANdy_JJAyqwFtDVFJs/exec";
 
+app.get("/", (req, res) => {
+  res.redirect("/display.html");
+});
+
 async function getKannadaTransliteration(text) {
   if (!text || typeof text !== 'string') return text;
   try {

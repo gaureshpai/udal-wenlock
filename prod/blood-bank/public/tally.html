@@ -1,505 +1,423 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blood Components Inventory</title>
     <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
+        :root {
+            --header-height: 10vh;
+            --footer-height: 5vh;
+            --primary-text: #111;
+            --secondary-text: #555;
+            --bg-light: #f9fafb;
+            --bg-white: #fff;
+            --border-color: #e5e7eb;
+            --table-header-bg: #f3f4f6;
+            --emergency-red: #dc2626;
+        }
 
-      body {
-        font-family: Arial, sans-serif;
-        background: #8d8d8d00;
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        padding: 20px;
-      }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-      .container {
-        background: white;
-        border-radius: 15px;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-        padding: 30px;
-        max-width: 900px;
-        width: 100%;
-      }
+        body {
+            font-family: Arial, sans-serif;
+            background: var(--bg-light);
+            color: var(--primary-text);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
 
-      .header {
-        text-align: center;
-        margin-bottom: 30px;
-      }
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2vw;
+            height: var(--header-height);
+            background: var(--bg-white);
+            border-bottom: 2px solid var(--border-color);
+            flex-shrink: 0;
+        }
 
-      .header h1 {
-        color: #dc3545;
-        font-size: 28px;
-        font-weight: bold;
-        margin-bottom: 10px;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-      }
+        header img {
+            height: 8vh;
+            flex-shrink: 0;
+        }
 
-      .header h2 {
-        color: #0066cc;
-        font-size: 24px;
-        font-weight: bold;
-        text-transform: uppercase;
-        transition: opacity 0.5s ease;
-      }
+        header .title-container {
+            text-align: center;
+            flex-grow: 1;
+        }
 
-      .grid-container {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 20px;
-        margin-bottom: 20px;
-      }
+        header h1 {
+            margin: 0;
+            font-size: 4vh;
+            font-weight: bold;
+        }
 
-      .table-wrapper {
-        border: 3px solid #0066cc;
-        border-radius: 10px;
-        overflow: hidden;
-      }
+        header h2 {
+            margin: 0;
+            font-size: 2.5vh;
+            font-weight: normal;
+            color: var(--secondary-text);
+        }
 
-      table {
-        width: 100%;
-        border-collapse: collapse;
-      }
+        .main-container {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow: hidden;
+        }
 
-      .table-header {
-        background: #0066cc;
-        color: white;
-      }
+        .content-wrapper {
+            background: var(--bg-white);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            flex-direction: column;
+            transition: opacity 0.5s ease;
+        }
 
-      .table-header th {
-        padding: 12px;
-        font-size: 16px;
-        font-weight: bold;
-        text-transform: uppercase;
-      }
+        .component-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
 
-      .table-header th:first-child {
-        border-right: 2px dashed white;
-      }
+        .component-header h1 {
+            color: var(--primary-text);
+            font-size: 28px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
 
-      tbody tr {
-        background: #c8e6c9;
-      }
-
-      tbody td {
-        padding: 15px;
-        text-align: center;
-        font-size: 18px;
-        font-weight: bold;
-        border-bottom: 2px dashed #0066cc;
-      }
-
-      tbody tr:last-child td {
-        border-bottom: none;
-      }
-
-      tbody td:first-child {
-        color: #0066cc;
-        border-right: 2px dashed #0066cc;
-      }
-
-      tbody td:last-child {
-        color: #dc3545;
-      }
-
-      .total-section {
-        background: #0066cc;
-        color: white;
-        padding: 20px;
-        border-radius: 10px;
-        text-align: center;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 20px;
-      }
-
-      .total-section .label {
-        font-size: 24px;
-        font-weight: bold;
-        text-transform: uppercase;
-      }
-
-      .total-section .value {
-        font-size: 36px;
-        font-weight: bold;
-      }
-
-      .controls {
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-        margin-top: 20px;
-        flex-wrap: wrap;
-      }
-
-      .btn {
-        background: #28a745;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 14px;
-        font-weight: bold;
-        transition: background 0.3s;
-      }
-
-      .btn:hover {
-        background: #218838;
-      }
-
-      .btn.pause {
-        background: #ffc107;
-      }
-
-      .btn.pause:hover {
-        background: #e0a800;
-      }
-
-      .progress-bar {
-        width: 100%;
-        height: 5px;
-        background: #e0e0e0;
-        border-radius: 3px;
-        margin-top: 15px;
-        overflow: hidden;
-      }
-
-      .progress-fill {
-        height: 100%;
-        background: #0066cc;
-        width: 0%;
-        transition: width 0.1s linear;
-      }
-
-      .component-indicator {
-        text-align: center;
-        margin-top: 15px;
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-        flex-wrap: wrap;
-      }
-
-      .indicator-dot {
-        width: 12px;
-        height: 12px;
-        border-radius: 50%;
-        background: #ccc;
-        cursor: pointer;
-        transition: all 0.3s;
-      }
-
-      .indicator-dot.active {
-        background: #0066cc;
-        transform: scale(1.3);
-      }
-
-      @media (max-width: 768px) {
         .grid-container {
-          grid-template-columns: 1fr;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
         }
 
-        .header h1 {
-          font-size: 22px;
+        .table-wrapper {
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            overflow: hidden;
         }
 
-        .header h2 {
-          font-size: 20px;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead th {
+            background: var(--table-header-bg);
+            padding: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        thead th:first-child {
+            border-right: 1px solid var(--border-color);
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: var(--table-header-bg);
         }
 
         tbody td {
-          font-size: 16px;
-          padding: 12px;
+            padding: 15px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody td:first-child {
+            color: var(--primary-text);
+            border-right: 1px solid var(--border-color);
+        }
+
+        tbody td:last-child {
+            color: var(--emergency-red);
+        }
+
+        .total-section {
+            background: var(--table-header-bg);
+            color: var(--primary-text);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 10px;
         }
 
         .total-section .label {
-          font-size: 20px;
+            font-size: 22px;
+            font-weight: bold;
+            text-transform: uppercase;
         }
 
         .total-section .value {
-          font-size: 30px;
+            font-size: 34px;
+            font-weight: bold;
+            color: var(--emergency-red);
         }
-      }
 
-      .fade-transition {
-        animation: fadeIn 0.5s ease;
-      }
+        .progress-bar {
+            width: 100%;
+            height: 5px;
+            background: var(--border-color);
+            border-radius: 3px;
+            margin-top: 25px;
+            overflow: hidden;
+        }
 
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(-10px);
+        .progress-fill {
+            height: 100%;
+            background: var(--emergency-red);
+            width: 0%;
+            transition: width 0.1s linear;
         }
-        to {
-          opacity: 1;
-          transform: translateY(0);
+
+        .component-indicator {
+            text-align: center;
+            margin-top: 15px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
         }
-      }
+
+        .indicator-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ccc;
+            transition: all 0.3s;
+        }
+
+        .indicator-dot.active {
+            background: var(--emergency-red);
+            transform: scale(1.2);
+        }
+
+        @media (max-width: 768px) {
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+
+            .component-header h1 {
+                font-size: 22px;
+            }
+
+            tbody td {
+                font-size: 16px;
+                padding: 12px;
+            }
+
+            .total-section .label {
+                font-size: 20px;
+            }
+
+            .total-section .value {
+                font-size: 30px;
+            }
+        }
     </style>
-  </head>
-  <body>
-    <header style="display: flex; align-items: center; justify-content: space-between; position: absolute; top:0;">
-        <img src="./wenlock_logo.png" alt="Wenlock Logo" style="height: 8vh; margin-right: 25px; flex-shrink: 0;">
-        <div style="text-align: center; flex-grow: 1;">
-            <h1 style="margin: 0; font-size: 4vh;">Blood Availability</h1>
-            <h2 style="margin: 0; font-size: 2.5vh; font-weight: normal;">ರಕ್ತ ಲಭ್ಯತೆ</h2>
+</head>
+
+<body>
+    <header>
+        <img src="./wenlock_logo.png" alt="Wenlock Logo">
+        <div class="title-container">
+            <h1>Blood Availability</h1>
+            <h2>ರಕ್ತ ಲಭ್ಯತೆ</h2>
         </div>
     </header>
-    <div class="container">
-      <div class="header">
-        <h1>Daily Stock of Blood Components</h1>
-        <h2 id="component-title">Packed Red Blood Cells</h2>
-      </div>
 
-      <div class="grid-container" id="tables-container">
-        <!-- Tables will be generated dynamically -->
-      </div>
+    <div class="main-container">
+        <div class="content-wrapper">
+            <div class="component-header">
+                <h1 id="component-title">Packed Red Blood Cells</h1>
+            </div>
 
-      <div class="total-section">
-        <span class="label">Total</span>
-        <span class="value" id="total">0</span>
-      </div>
+            <div class="grid-container" id="tables-container">
+                <!-- Tables will be generated dynamically -->
+            </div>
 
-      <div class="progress-bar">
-        <div class="progress-fill" id="progress"></div>
-      </div>
+            <div class="total-section">
+                <span class="label">Total Units</span>
+                <span class="value" id="total">0</span>
+            </div>
 
-      <div class="component-indicator" id="indicators"></div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress"></div>
+            </div>
 
-      <div class="controls">
-        <button class="btn pause" id="pauseBtn" onclick="togglePause()">
-          Pause
-        </button>
-        <button class="btn" onclick="previousComponent()">Previous</button>
-        <button class="btn" onclick="nextComponent()">Next</button>
-      </div>
+            <div class="component-indicator" id="indicators"></div>
+        </div>
     </div>
 
     <script>
+        let components;
+        let currentIndex = 0;
+        let autoplayInterval;
+        let progressInterval;
+        let progressValue = 0;
+        const displayDuration = 5000; // 5 seconds
+        const progressStep = 100 / (displayDuration / 100);
 
-      let components ;
-
-      tally().then(()=>{
-        updateDisplay(components[0]);
-        startAutoplay()
-      });
-
-      let currentIndex = 0;
-      let isPaused = false;
-      let autoplayInterval;
-      let progressInterval;
-      let progressValue = 0;
-      const displayDuration = 5000; // 5 seconds
-      const progressStep = 100 / (displayDuration / 100);
-
-      function createIndicators() {
-        const indicatorContainer = document.getElementById("indicators");
-        indicatorContainer.innerHTML = "";
-        components.forEach((comp, index) => {
-          const dot = document.createElement("div");
-          dot.className = "indicator-dot";
-          dot.title = comp.name;
-          if (index === currentIndex) dot.classList.add("active");
-          dot.onclick = () => jumpToComponent(index);
-          indicatorContainer.appendChild(dot);
-        });
-      }
-
-      function generateTables(component) {
-        const container = document.getElementById("tables-container");
-        const bloodGroups = Object.keys(component.data);
-        const halfPoint = Math.ceil(bloodGroups.length / 2);
-
-        // Split blood groups into two columns
-        const leftGroups = bloodGroups.slice(0, halfPoint);
-        const rightGroups = bloodGroups.slice(halfPoint);
-        if(component.shortName == 'Cryo'){
-            container.innerHTML = ""
-            return;
+        async function initialize() {
+            await tally();
+            if (components && components.length > 0) {
+                createIndicators();
+                updateDisplay();
+                startAutoplay();
+            }
         }
-        // Generate left table
-        let leftTableHTML = `
-                <div class="table-wrapper">
-                    <table>
-                        <thead class="table-header">
-                            <tr>
-                                <th>Blood Group</th>
-                                <th>No. of Units</th>
-                            </tr>
-                        </thead>
-                        <tbody>`;
 
-        leftGroups.forEach((group) => {
-          leftTableHTML += `
-                    <tr>
-                        <td>${group}</td>
-                        <td class="value">${component.data[group]}</td>
-                    </tr>`;
-        });
-
-        leftTableHTML += `
-                        </tbody>
-                    </table>
-                </div>`;
-
-        // Generate right table
-        let rightTableHTML = `
-                <div class="table-wrapper">
-                    <table>
-                        <thead class="table-header">
-                            <tr>
-                                <th>Blood Group</th>
-                                <th>No. of Units</th>
-                            </tr>
-                        </thead>
-                        <tbody>`;
-
-        rightGroups.forEach((group) => {
-          rightTableHTML += `
-                    <tr>
-                        <td>${group}</td>
-                        <td class="value">${component.data[group]}</td>
-                    </tr>`;
-        });
-
-        rightTableHTML += `
-                        </tbody>
-                    </table>
-                </div>`;
-
-        container.innerHTML = leftTableHTML + rightTableHTML;
-      }
-
-      function updateDisplay() {
-        const component = components[currentIndex];
-        const title = document.getElementById("component-title");
-
-        title.style.opacity = "0";
-        setTimeout(() => {
-          title.textContent = component.name;
-          title.style.opacity = "1";
-        }, 250);
-
-        // Generate tables dynamically based on component data
-        generateTables(component);
-
-        calculateTotal();
-        updateIndicators();
-        resetProgress();
-      }
-
-      function calculateTotal() {
-        const component = components[currentIndex];
-        let total = 0;
-        for (let key in component.data) {
-          total += component.data[key];
+        function createIndicators() {
+            const indicatorContainer = document.getElementById("indicators");
+            indicatorContainer.innerHTML = "";
+            components.forEach((comp, index) => {
+                const dot = document.createElement("div");
+                dot.className = "indicator-dot";
+                dot.title = comp.name;
+                indicatorContainer.appendChild(dot);
+            });
         }
-        document.getElementById("total").textContent = total;
-      }
 
-      function updateIndicators() {
-        const dots = document.querySelectorAll(".indicator-dot");
-        dots.forEach((dot, index) => {
-          if (index === currentIndex) {
-            dot.classList.add("active");
-          } else {
-            dot.classList.remove("active");
-          }
-        });
-      }
+        function generateTables(component) {
+            const container = document.getElementById("tables-container");
+            container.innerHTML = "";
 
-      function nextComponent() {
-        currentIndex = (currentIndex + 1) % components.length;
-        updateDisplay();
-      }
+            if (component.shortName === 'Cryo' || !component.data) {
+                return;
+            }
 
-      function previousComponent() {
-        currentIndex =
-          (currentIndex - 1 + components.length) % components.length;
-        updateDisplay();
-      }
+            const bloodGroups = Object.keys(component.data);
+            const halfPoint = Math.ceil(bloodGroups.length / 2);
+            const leftGroups = bloodGroups.slice(0, halfPoint);
+            const rightGroups = bloodGroups.slice(halfPoint);
 
-      function jumpToComponent(index) {
-        currentIndex = index;
-        updateDisplay();
-      }
+            const createTableHTML = (groups) => {
+                if (groups.length === 0) return '';
+                let tableHTML = `
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr><th>Blood Group</th><th>Units</th></tr>
+                            </thead>
+                            <tbody>`;
+                groups.forEach(group => {
+                    tableHTML += `
+                        <tr>
+                            <td>${group}</td>
+                            <td class="value">${component.data[group]}</td>
+                        </tr>`;
+                });
+                tableHTML += `</tbody></table></div>`;
+                return tableHTML;
+            };
 
-      function togglePause() {
-        isPaused = !isPaused;
-        const btn = document.getElementById("pauseBtn");
-
-        if (isPaused) {
-          btn.textContent = "Resume";
-          btn.style.background = "#28a745";
-          clearInterval(autoplayInterval);
-          clearInterval(progressInterval);
-        } else {
-          btn.textContent = "Pause";
-          btn.style.background = "#ffc107";
-          startAutoplay();
+            container.innerHTML = createTableHTML(leftGroups) + createTableHTML(rightGroups);
         }
-      }
-      
-      async function tally() {
-          const SECRET_KEY =
-            "lasdfaldf234232wqa122fsvsdlfjsdvnsasifjweiojsadlflkasdjflkasjflk32234234edswdsjfflas2 3rsd";
-          const baseUrl =
-            "https://script.google.com/macros/s/AKfycbx4wgFIQ1Dm0iKvH-NPnIg5YP7SuBSOT80GbbCxBQt7i3SKOuANdy_JJAyqwFtDVFJs/exec";
-        try {
-          const response = await fetch(`${baseUrl}?key=${SECRET_KEY}&sheet=Stock%20Availability`);
-          const data = await response.json();
-          components = data;
-        } catch (error) {
-          console.error("Error fetching data:", error);
+
+        function updateDisplay() {
+            const component = components[currentIndex];
+            const titleEl = document.getElementById("component-title");
+            const wrapper = document.querySelector('.content-wrapper');
+
+            wrapper.style.opacity = "0";
+
+            setTimeout(() => {
+                titleEl.textContent = component.name;
+                generateTables(component);
+                calculateTotal();
+                updateIndicators();
+                resetProgress();
+                wrapper.style.opacity = "1";
+            }, 300);
         }
-      }
 
-      function resetProgress() {
-        progressValue = 0;
-        document.getElementById("progress").style.width = "0%";
-      }
-
-      function updateProgress() {
-        if (!isPaused) {
-          progressValue += progressStep;
-          if (progressValue >= 100) {
-            progressValue = 100;
-          }
-          document.getElementById("progress").style.width = progressValue + "%";
+        function calculateTotal() {
+            const component = components[currentIndex];
+            let total = 0;
+            if (component.data) {
+                total = Object.values(component.data).reduce((sum, val) => sum + val, 0);
+            }
+            document.getElementById("total").textContent = total;
         }
-      }
 
-      function startAutoplay() {
-        clearInterval(autoplayInterval);
-        clearInterval(progressInterval);
+        function updateIndicators() {
+            const dots = document.querySelectorAll(".indicator-dot");
+            dots.forEach((dot, index) => {
+                dot.classList.toggle("active", index === currentIndex);
+            });
+        }
 
-        autoplayInterval = setInterval(() => {
-          if (!isPaused) {
-            nextComponent();
-          }
-        }, displayDuration);
+        function nextComponent() {
+            currentIndex = (currentIndex + 1) % components.length;
+            updateDisplay();
+        }
 
-        progressInterval = setInterval(() => {
-          updateProgress();
-        }, 100);
-      }
+        async function tally() {
+            const SECRET_KEY = "lasdfaldf234232wqa122fsvsdlfjsdvnsasifjweiojsadlflkasdjflkasjflk32234234edswdsjfflas2 3rsd";
+            const baseUrl = "https://script.google.com/macros/s/AKfycbx4wgFIQ1Dm0iKvH-NPnIg5YP7SuBSOT80GbbCxBQt7i3SKOuANdy_JJAyqwFtDVFJs/exec";
+            try {
+                const response = await fetch(`${baseUrl}?key=${SECRET_KEY}&sheet=Stock%20Availability`);
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                components = await response.json();
+            } catch (error) {
+                console.error("Error fetching data:", error);
+                components = [];
+            }
+        }
 
-      // Initialize
-      createIndicators();
-      updateDisplay();
-      startAutoplay();
+        function resetProgress() {
+            progressValue = 0;
+            document.getElementById("progress").style.width = "0%";
+        }
+
+        function updateProgress() {
+            progressValue += progressStep;
+            if (progressValue >= 100) {
+                progressValue = 100;
+            }
+            document.getElementById("progress").style.width = `${progressValue}%`;
+        }
+
+        function startAutoplay() {
+            clearInterval(autoplayInterval);
+            clearInterval(progressInterval);
+
+            autoplayInterval = setInterval(nextComponent, displayDuration);
+            progressInterval = setInterval(updateProgress, 100);
+        }
+
+        // Initialize
+        initialize();
     </script>
-  </body>
+</body>
+
 </html>
