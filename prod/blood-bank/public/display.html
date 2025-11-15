@@ -24,48 +24,43 @@
             overflow: hidden;
         }
 
-        /* Better styling for the inner component table */
-.inner-component-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 0 auto;
-}
+        .inner-component-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0 auto;
+        }
 
-.inner-component-table td {
-    padding: 4px 6px;
-    border: 1px solid #e5e7eb;
-    vertical-align: top;
-    text-align: left;
-    background: #fff;
-}
+        .inner-component-table td {
+            padding: 4px 6px;
+            border: 1px solid #e5e7eb;
+            vertical-align: top;
+            text-align: left;
+            background: #fff;
+        }
 
-/* Make the entire nested table small */
-.inner-component-table.small-text {
-    font-size: 1.6vh;    /* smaller than main table */
-    line-height: 1.2;
-}
+        .inner-component-table.small-text {
+            font-size: 1vh;
+            line-height: 1.2;
+        }
 
-/* Kannada text slightly smaller */
-.inner-component-table.small-text .kannada-text {
-    font-size: 1.4vh;
-    color: #444;
-}
-    .inner-component-table td {
-    white-space: normal !important;
-    word-wrap: break-word;
-    word-break: break-word;
-}
+        .inner-component-table.small-text .kannada-text {
+            font-size: 1.4vh;
+            color: #444;
+        }
 
+        .inner-component-table td {
+            white-space: normal !important;
+            word-wrap: break-word;
+            word-break: break-word;
+        }
 
-/* English + Kannada inside cells */
-.inner-component-table td div {
-    margin-bottom: 2px;
-}
+        .inner-component-table td div {
+            margin-bottom: 2px;
+        }
 
-/* Alternate row striping only inside nested table */
-.inner-component-table tr:nth-child(even) td {
-    background: #f9fafb;
-}
+        .inner-component-table tr:nth-child(even) td {
+            background: #f9fafb;
+        }
 
         header {
             background: #fff;
@@ -100,10 +95,22 @@
             font-weight: bold;
             text-align: center;
         }
-th:nth-child(1) { width: 25%; }  /* Name */
-th:nth-child(2) { width: 10%; }  /* Age */
-th:nth-child(3) { width: 45%; }  /* Component (big!) */
-th:nth-child(4) { width: 20%; }  /* Status */
+
+        th:nth-child(1) {
+            width: 25%;
+        }
+
+        th:nth-child(2) {
+            width: 10%;
+        }
+
+        th:nth-child(3) {
+            width: 45%;
+        }
+
+        th:nth-child(4) {
+            width: 20%;
+        }
 
         tbody {
             transition: transform 0.8s ease;
@@ -148,14 +155,44 @@ th:nth-child(4) { width: 20%; }  /* Status */
         footer {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             padding: 1vh 2vw;
             border-top: 2px solid #e5e7eb;
             font-size: 2.5vh;
             color: #374151;
             height: 5vh;
         }
-    </style>
 
+        #toast-container {
+            flex-grow: 1;
+            text-align: center;
+            overflow: hidden;
+            position: relative;
+            height: 100%;
+        }
+
+        .toast-message {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+            transform: translateY(100%);
+        }
+
+        .toast-message.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .toast-message.exiting {
+            opacity: 0;
+            transform: translateY(-100%);
+        }
+    </style>
 </head>
 
 <body>
@@ -186,6 +223,7 @@ th:nth-child(4) { width: 20%; }  /* Status */
 
     <footer>
         <span id="meta"></span>
+        <div id="toast-container"></div>
         <span id="pageInfo"></span>
     </footer>
 
@@ -193,12 +231,14 @@ th:nth-child(4) { width: 20%; }  /* Status */
         const PAGE_HOLD_MS = 4200;
         const SLIDE_MS = 800;
         const REFRESH_MS = 10000;
+        const ALERT_DISPLAY_MS = 3000;
 
         const tbody = document.getElementById("bloodBody");
         const viewport = document.getElementById("scrollViewport");
         const empty = document.getElementById("empty");
         const meta = document.getElementById("meta");
         const pageInfo = document.getElementById("pageInfo");
+        const toastContainer = document.getElementById("toast-container");
 
         let bloodData = [];
         let currentIndex = 0;
@@ -208,8 +248,62 @@ th:nth-child(4) { width: 20%; }  /* Status */
         let lastHash = "";
         let rowsPerPage = 0;
 
+        let alertMessages = [];
+        let currentAlertIndex = 0;
+        let alertTimer = null;
+
         function sleep(ms, cb) {
             setTimeout(cb, ms);
+        }
+
+        function cycleAlerts() {
+            if (alertMessages.length === 0) {
+                return;
+            }
+
+            const currentMessage = toastContainer.querySelector('.toast-message');
+            if (currentMessage) {
+                currentMessage.classList.add('exiting');
+                currentMessage.classList.remove('active');
+                setTimeout(() => {
+                    currentMessage.remove();
+                }, 500);
+            }
+
+            const newMessage = document.createElement('div');
+            newMessage.className = 'toast-message';
+            newMessage.innerHTML = alertMessages[currentAlertIndex];
+            toastContainer.appendChild(newMessage);
+
+            setTimeout(() => {
+                newMessage.classList.add('active');
+            }, 100);
+
+            currentAlertIndex = (currentAlertIndex + 1) % alertMessages.length;
+        }
+
+        async function fetchAlerts() {
+            try {
+                const response = await fetch('/alerts.csv');
+                if (!response.ok) {
+                    throw new Error(`HTTP error, status = ${response.status}`);
+                }
+                const csvText = await response.text();
+                const lines = csvText.split('\n').slice(1);
+                alertMessages = lines
+                    .map(line => line.trim())
+                    .filter(line => line)
+                    .map(line => line.slice(1, -1));
+
+                if (alertMessages.length > 0) {
+                    cycleAlerts();
+                    if (alertMessages.length > 1) {
+                        alertTimer = setInterval(cycleAlerts, ALERT_DISPLAY_MS);
+                    }
+                }
+            } catch (error) {
+                console.error("Error fetching alerts:", error);
+            }
         }
 
         async function fetchData() {
@@ -227,7 +321,7 @@ th:nth-child(4) { width: 20%; }  /* Status */
         }
 
         function hashData(list) {
-            return JSON.stringify(list.map(item => `${item.Name}-${item.kn_name}-${item.Status}` ));
+            return JSON.stringify(list.map(item => `${item.Name}-${item.kn_name}-${item.Status}`));
         }
 
         function setTransform(yPx, withTransition) {
@@ -252,7 +346,7 @@ th:nth-child(4) { width: 20%; }  /* Status */
                     const englishName = document.createElement('div');
                     englishName.textContent = (item.Name || "-").toUpperCase();
                     tdName.appendChild(englishName);
-                    if(item.kn_name) {
+                    if (item.kn_name) {
                         const kannadaName = document.createElement('div');
                         kannadaName.className = 'kannada-text';
                         kannadaName.textContent = item.kn_name;
@@ -264,56 +358,50 @@ th:nth-child(4) { width: 20%; }  /* Status */
                     tdAge.textContent = item.Age || "-";
                     tr.appendChild(tdAge);
 
-                  const tdComponent = document.createElement("td");
+                    const tdComponent = document.createElement("td");
 
-const nestedTable = document.createElement("table");
-nestedTable.className = "inner-component-table small-text";
+                    const nestedTable = document.createElement("table");
+                    nestedTable.className = "inner-component-table small-text";
 
-const labels = [
-    { en: "PRBC", kn: "ಪ್ಯಾಕ್‌ಡ್ ರೆಡ್ ಬ್ಲಡ್ ಸೆಲ್ಸ್", key: "PRBC", knKey: "kn_PRBC" },
-    { en: "FFP", kn: "ತಜ್ಜಲಿತ ಪ್ಲಾಸ್ಮಾ", key: "FFP", knKey: "kn_FFP" },
-    { en: "PLATELET CONCENTRATE", kn: "ಪ್ಲೇಟ್ಲೆಟ್ ಕಾಂಸೆಂಟ್ರೇಟ್", key: "PLATELET_CONCENTRATE", knKey: "kn_PLATELET_CONCENTRATE" },
-    { en: "CRYOPRECIPITATE", kn: "ಕ್ರಯೋಪ್ರೆಸಿಪಿಟೇಟ್", key: "CRYOPRECIPITATE", knKey: "kn_CRYOPRECIPITATE" },
-    { en: "CRYOPOOR PLASMA", kn: "ಕ್ರಯೋಪೂರ್ ಪ್ಲಾಸ್ಮಾ", key: "CRYOPOOR_PLASMA", knKey: "kn_CRYOPOOR_PLASMA" }
-];
+                    const labels = [
+                        { en: "PRBC", kn: "ಪ್ಯಾಕ್‌ಡ್ ರೆಡ್ ಬ್ಲಡ್ ಸೆಲ್ಸ್", key: "PRBC", knKey: "kn_PRBC" },
+                        { en: "FFP", kn: "ತಜ್ಜಲಿತ ಪ್ಲಾಸ್ಮಾ", key: "FFP", knKey: "kn_FFP" },
+                        { en: "PLATELET CONCENTRATE", kn: "ಪ್ಲೇಟ್ಲೆಟ್ ಕಾಂಸೆಂಟ್ರೇಟ್", key: "PLATELET_CONCENTRATE", knKey: "kn_PLATELET_CONCENTRATE" },
+                        { en: "CRYOPRECIPITATE", kn: "ಕ್ರಯೋಪ್ರೆಸಿಪಿಟೇಟ್", key: "CRYOPRECIPITATE", knKey: "kn_CRYOPRECIPITATE" },
+                        { en: "CRYOPOOR PLASMA", kn: "ಕ್ರಯೋಪೂರ್ ಪ್ಲಾಸ್ಮಾ", key: "CRYOPOOR_PLASMA", knKey: "kn_CRYOPOOR_PLASMA" }
+                    ];
 
-labels.forEach(row => {
+                    labels.forEach(row => {
+                        if (!item[row.key]) return;
 
-    // ❗ Skip this row if English value is missing/null
-    if (!item[row.key]) return;
+                        const tr = document.createElement("tr");
 
-    const tr = document.createElement("tr");
-
-    // left side hardcoded names
-    const tdLeft = document.createElement("td");
-    tdLeft.innerHTML = `
+                        const tdLeft = document.createElement("td");
+                        tdLeft.innerHTML = `
         <div>${row.en}</div>
         <div class='kannada-text'>${row.kn}</div>
     `;
 
-    // right side dynamic values
-    const tdRight = document.createElement("td");
+                        const tdRight = document.createElement("td");
 
-    const valEn = document.createElement("div");
-    valEn.textContent = item[row.key];
-    tdRight.appendChild(valEn);
+                        const valEn = document.createElement("div");
+                        valEn.textContent = item[row.key];
+                        tdRight.appendChild(valEn);
 
-    if (item[row.knKey]) {
-        const valKn = document.createElement("div");
-        valKn.className = "kannada-text";
-        valKn.textContent = item[row.knKey];
-        tdRight.appendChild(valKn);
-    }
+                        if (item[row.knKey]) {
+                            const valKn = document.createElement("div");
+                            valKn.className = "kannada-text";
+                            valKn.textContent = item[row.knKey];
+                            tdRight.appendChild(valKn);
+                        }
 
-    tr.appendChild(tdLeft);
-    tr.appendChild(tdRight);
-    nestedTable.appendChild(tr);
-});
+                        tr.appendChild(tdLeft);
+                        tr.appendChild(tdRight);
+                        nestedTable.appendChild(tr);
+                    });
 
-tdComponent.appendChild(nestedTable);
-tr.appendChild(tdComponent);
-
-
+                    tdComponent.appendChild(nestedTable);
+                    tr.appendChild(tdComponent);
 
                     const tdStatus = document.createElement("td");
                     tdStatus.textContent = item.Status || "-";
@@ -423,6 +511,7 @@ tr.appendChild(tdComponent);
             });
         });
 
+        fetchAlerts();
         startRefresh();
         startPager();
     </script>

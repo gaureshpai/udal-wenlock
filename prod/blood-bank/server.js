@@ -43,7 +43,7 @@ async function pollUpdates() {
     if (lastFetchedAt) {
       url += `&since=${encodeURIComponent(lastFetchedAt)}`;
     }
-    
+
     console.log("Fetching updates with since:", lastFetchedAt || "first fetch");
     lastFetchedAt = new Date().toISOString();
     const res = await fetch(url);
@@ -56,29 +56,23 @@ async function pollUpdates() {
 
     console.log("Fetched rows:", data.length);
 
-    // Process transliterations
     const processedData = await Promise.all(data.map(async (item) => {
       const kn_name = await getKannadaTransliteration(item.Name);
       const kn_component = await getKannadaTransliteration(item.Component);
       return { ...item, kn_name, kn_component };
     }));
 
-    // Merge new data into local cache
     const existingMap = new Map(bloodData.map(d => [d.SN, d]));
     for (const newItem of processedData) {
-      existingMap.set(newItem.SN, newItem); // overwrite or add
+      existingMap.set(newItem.SN, newItem);
     }
     bloodData = Array.from(existingMap.values());
 
-    // sort emergencies first
     bloodData.sort((a, b) => {
       if (a.Status && a.Status.toLowerCase() === 'emergency') return -1;
       if (b.Status && b.Status.toLowerCase() === 'emergency') return 1;
       return 0;
     });
-
-    // Update last fetched time
-
   } catch (err) {
     console.error("Error fetching or processing updates:", err);
   }
@@ -104,7 +98,7 @@ fs.watchFile(path.join(__dirname, 'public', 'close.txt'), (curr, prev) => {
 server.listen(PORT, '0.0.0.0', () => {
   console.log(`HTTP Server running on http://localhost:${PORT}`);
   pollUpdates();
-  setInterval(pollUpdates, 1000);
+  setInterval(pollUpdates, 30000);
 });
 
 process.on('SIGTERM', () => {
@@ -114,4 +108,3 @@ process.on('SIGTERM', () => {
     process.exit(0);
   });
 });
-
