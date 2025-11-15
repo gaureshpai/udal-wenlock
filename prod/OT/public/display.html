@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>OT Schedule</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f9fafb;
+            color: #111;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        header {
+            background: #fff;
+            border-bottom: 2px solid #e5e7eb;
+            flex-shrink: 0;
+            padding: 0 2vw;
+            height: 10vh;
+        }
+
+        main {
+            flex: 1;
+            overflow: hidden;
+            height: calc(100vh - 15vh);
+        }
+
+        #scrollViewport {
+            height: 100%;
+            overflow: hidden;
+            background: #fff;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+        thead th {
+            background-color: #f3f4f6;
+            padding: 1.5vh 1vw;
+            font-size: 2.5vh;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        tbody {
+            transition: transform 0.8s ease;
+        }
+
+        td {
+            padding: 1vh 1vw;
+            font-weight: bold;
+            font-size: 3vh;
+            vertical-align: middle;
+            background-color: #fff;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:nth-child(even) td {
+            background-color: #f3f4f6;
+        }
+
+        .kannada-text {
+            font-size: 2vh;
+            font-weight: bold;
+            line-height: 1.3;
+        }
+
+        .empty {
+            padding: 40px 20px;
+            text-align: center;
+            color: #6b7280;
+            font-size: 18px;
+            display: none;
+        }
+
+        footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1vh 2vw;
+            border-top: 2px solid #e5e7eb;
+            font-size: 2.5vh;
+            color: #374151;
+            height: 5vh;
+        }
+    </style>
+</head>
+
+<body>
+    <header style="display: flex; align-items: center; justify-content: space-between;">
+        <img src="./wenlock_logo.png" alt="Wenlock Logo" style="height: 8vh; flex-shrink: 0;">
+        <div style="text-align: center; flex-grow: 1;">
+            <h1 style="margin: 0; font-size: 4vh;">OT Schedule</h1>
+            <h2 style="margin: 0; font-size: 2.5vh; font-weight: normal;">ಆಪರೇಷನ್ ಥಿಯೇಟರ್ ವೇಳಾಪಟ್ಟಿ</h2>
+        </div>
+    </header>
+
+    <main>
+        <div id="scrollViewport">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>S/O</th>
+                        <th>Age</th>
+                        <th>Surgery Site</th>
+                        <th>Surgery</th>
+                        <th>Unit</th>
+                        <th>Surgeon Name</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="otBody"></tbody>
+            </table>
+        </div>
+        <div id="empty" class="empty">No OT data available</div>
+    </main>
+
+    <footer>
+        <span id="meta"></span>
+        <span id="pageInfo"></span>
+    </footer>
+
+    <script>
+        const PAGE_HOLD_MS = 4200;
+        const SLIDE_MS = 800;
+        const REFRESH_MS = 10000;
+
+        const tbody = document.getElementById("otBody");
+        const viewport = document.getElementById("scrollViewport");
+        const empty = document.getElementById("empty");
+        const meta = document.getElementById("meta");
+        const pageInfo = document.getElementById("pageInfo");
+
+        let otData = [];
+        let currentIndex = 0;
+        let rowHeight = 0;
+        let pageTimer = null;
+        let refreshTimer = null;
+        let lastHash = "";
+        let rowsPerPage = 0;
+
+        function sleep(ms, cb) {
+            setTimeout(cb, ms);
+        }
+
+        async function fetchData() {
+            try {
+                const response = await fetch('/data');
+                if (!response.ok) {
+                    throw new Error(`HTTP error, status = ${response.status}`);
+                }
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error("Error fetching data:", error);
+                return null;
+            }
+        }
+
+        function hashData(list) {
+            return JSON.stringify(list);
+        }
+
+        function setTransform(yPx, withTransition) {
+            tbody.style.transition = withTransition ? `transform ${SLIDE_MS}ms ease` : "none";
+            tbody.style.transform = `translateY(${yPx}px)`;
+        }
+
+        function renderRows(data) {
+            return new Promise(resolve => {
+                tbody.innerHTML = "";
+                if (!data || data.length === 0) {
+                    empty.style.display = "block";
+                    resolve();
+                    return;
+                }
+                empty.style.display = "none";
+                data.forEach(item => {
+                    const tr = document.createElement("tr");
+
+                    const nameCell = document.createElement('td');
+                    nameCell.innerHTML = `<div>${item.name || "-"}</div><div class="kannada-text">${item.kn_name || ""}</div>`;
+
+                    const surgeonCell = document.createElement('td');
+                    surgeonCell.innerHTML = `<div>${item.surgeon_name || "-"}</div><div class="kannada-text">${item.kn_surgeon_name || ""}</div>`;
+
+                    tr.innerHTML = `
+                        ${nameCell.outerHTML}
+                        <td>${item.so || "-"}</td>
+                        <td>${item.age || "-"}</td>
+                        <td>${item.surgery_site || "-"}</td>
+                        <td>${item.surgery || "-"}</td>
+                        <td>${item.unit || "-"}</td>
+                        ${surgeonCell.outerHTML}
+                        <td>${item.status || "-"}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+
+                requestAnimationFrame(() => {
+                    const firstRow = tbody.querySelector("tr");
+                    if (firstRow) {
+                        const style = window.getComputedStyle(firstRow);
+                        rowHeight = parseFloat(style.height);
+                    }
+                    if (rowHeight > 0) {
+                        rowsPerPage = Math.floor(viewport.clientHeight / rowHeight);
+                    }
+                    currentIndex = 0;
+                    setTransform(0, false);
+                    resolve();
+                });
+            });
+        }
+
+        function goToPage(pageIdx) {
+            if (rowsPerPage === 0) return;
+
+            currentIndex = Math.min(pageIdx * rowsPerPage, Math.max(0, otData.length - 1));
+            const offset = -(currentIndex * rowHeight);
+            setTransform(offset, true);
+            const pageCount = Math.ceil(otData.length / rowsPerPage);
+            pageInfo.textContent = `Page ${Math.floor(currentIndex / rowsPerPage) + 1} of ${pageCount} • ${otData.length} items`;
+        }
+
+        function stepPager() {
+            if (document.hidden || otData.length <= rowsPerPage) return;
+
+            const pageCount = Math.ceil(otData.length / rowsPerPage);
+            const currentPage = Math.floor(currentIndex / rowsPerPage);
+            let nextPage = (currentPage + 1) % pageCount;
+
+            if (nextPage === 0) {
+                sleep(SLIDE_MS, () => setTransform(0, false));
+            }
+
+            goToPage(nextPage);
+        }
+
+        function startPager() {
+            stopPager();
+            pageTimer = setInterval(stepPager, PAGE_HOLD_MS);
+        }
+
+        function stopPager() {
+            if (pageTimer) clearInterval(pageTimer);
+            pageTimer = null;
+        }
+
+        async function refreshLoop() {
+            const payload = await fetchData();
+            if (!payload) {
+                meta.textContent = "Error fetching data";
+                return;
+            }
+
+            const list = Array.isArray(payload) ? payload : [];
+            const newHash = hashData(list);
+
+            if (newHash !== lastHash) {
+                otData = list;
+                await renderRows(otData);
+                lastHash = newHash;
+                goToPage(0);
+            }
+
+            meta.textContent = `Last updated: ${new Date().toLocaleTimeString()}`;
+        }
+
+        function startRefresh() {
+            stopRefresh();
+            refreshLoop();
+            refreshTimer = setInterval(refreshLoop, REFRESH_MS);
+        }
+
+        function stopRefresh() {
+            if (refreshTimer) clearInterval(refreshTimer);
+            refreshTimer = null;
+        }
+
+        document.addEventListener("visibilitychange", () => {
+            if (document.hidden) {
+                stopPager();
+            } else {
+                renderRows(otData).then(() => {
+                    startPager();
+                });
+            }
+        });
+
+        window.addEventListener("resize", () => {
+            if (!otData.length) return;
+            renderRows(otData).then(() => {
+                goToPage(0);
+            });
+        });
+
+        startRefresh();
+        startPager();
+    </script>
+</body>
+
+</html>
