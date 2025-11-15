@@ -25,7 +25,7 @@
         }
 
         .inner-component-table {
-            width: 100%;
+            width: max-content;
             border-collapse: collapse;
             margin: 0 auto;
         }
@@ -378,15 +378,15 @@
 
                         const tdLeft = document.createElement("td");
                         tdLeft.innerHTML = `
-        <div>${row.en}</div>
+        <div>${row.en } - ${item[row.key]}</div>
         <div class='kannada-text'>${row.kn}</div>
     `;
 
-                        const tdRight = document.createElement("td");
+                        // const tdRight = document.createElement("td");
 
-                        const valEn = document.createElement("div");
-                        valEn.textContent = item[row.key];
-                        tdRight.appendChild(valEn);
+                        // const valEn = document.createElement("div");
+                        // valEn.textContent = item[row.key];
+                        // tdRight.appendChild(valEn);
 
                         if (item[row.knKey]) {
                             const valKn = document.createElement("div");
@@ -396,7 +396,7 @@
                         }
 
                         tr.appendChild(tdLeft);
-                        tr.appendChild(tdRight);
+                        //tr.appendChild(tdRight);
                         nestedTable.appendChild(tr);
                     });
 

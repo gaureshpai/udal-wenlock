@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 3001;
 let bloodData = [];
 let lastFetchedAt = null; // store last fetched time
 const SECRET_KEY = "lasdfaldf234232wqa122fsvsdlfjsdvnsasifjweiojsadlflkasdjflkasjflk32234234edswdsjfflas2 3rsd";
-const baseUrl = "https://script.google.com/macros/s/AKfycbx4wgFIQ1Dm0iKvH-NPnIg5YP7SuBSOT80GbbCxBQt7i3SKOuANdy_JJAyqwFtDVFJs/exec";
+const baseUrl = "https://script.google.com/macros/s/AKfycbweEiZ7uE7KXrQCC4Iu5gPsSGKLBRDSwa4Wi5QQsTcszvsz37ufilRu-TcBO5thRs89/exec";
 
 app.get("/", (req, res) => {
   res.redirect("/display.html");
