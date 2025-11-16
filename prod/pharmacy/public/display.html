@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <title>Available Medicines</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <style>
         *,
         *::before,
@@ -29,41 +30,75 @@
             flex-shrink: 0;
             padding: 0 2vw;
             height: 10vh;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
         header img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
+            height: 8vh;
+            flex-shrink: 0;
+        }
+
+        header .title-container {
+            text-align: center;
+            flex-grow: 1;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 4vh;
+        }
+
+        header h2 {
+            margin: 0;
+            font-size: 2.5vh;
+            font-weight: normal;
+            color: #555;
         }
 
         main {
             flex: 1;
             overflow: hidden;
             height: calc(100vh - 15vh);
+            display: flex;
+            flex-direction: column;
+        }
+
+        #tableHeader {
+            flex-shrink: 0;
         }
 
         #scrollViewport {
-            height: 100%;
-            overflow: hidden;
+            flex-grow: 1;
+            overflow-y: hidden;
             background: #fff;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
+            table-layout: fixed;
         }
 
-        tbody {
-            transition: transform 0.8s ease;
+        thead th {
+            background-color: #e5e7eb;
+            padding: 1.5vh 1vw;
+            font-size: 3.5vh;
+            font-weight: bold;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 1;
         }
 
         td {
             padding: 1.5vh 2vw;
             font-weight: bold;
-            font-size: 4.5vh;
+            font-size: 3vh;
             vertical-align: middle;
             background-color: #fff;
+            border-bottom: 1px solid #ddd;
         }
 
         tr:nth-child(even) td {
@@ -76,14 +111,19 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
+        
+        .kannada-text {
+            font-size: 2vh;
+            color: #555;
+        }
 
         td.status {
             text-align: center;
             color: #fff;
             background-color: #16a34a !important;
-            min-width: 20vw;
+            min-width: 30vw;
+            font-size: 4vh;
             white-space: nowrap;
-            border-bottom: 2px solid #d1d5db;
         }
 
         .empty {
@@ -97,6 +137,7 @@
         footer {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             padding: 1vh 2vw;
             border-top: 2px solid #e5e7eb;
             font-size: 2.5vh;
@@ -109,9 +150,23 @@
 <body>
     <header>
         <img src="./wenlock_logo.png" alt="Wenlock Logo">
+        <div class="title-container">
+            <h1>Availability of Medicines</h1>
+            <h2>ಔಷಧಗಳ ಲಭ್ಯತೆ</h2>
+        </div>
     </header>
 
     <main>
+        <div id="tableHeader">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Medicine Name</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
         <div id="scrollViewport">
             <table>
                 <tbody id="medBody"></tbody>
@@ -119,6 +174,12 @@
         </div>
         <div id="empty" class="empty">No medicines available</div>
     </main>
+
+    <footer>
+        <span id="meta"></span>
+        <span id="pageInfo"></span>
+    </footer>
+
     <script>
         const PAGE_HOLD_MS = 4200;
         const SLIDE_MS = 800;
@@ -128,6 +189,7 @@
         const viewport = document.getElementById("scrollViewport");
         const empty = document.getElementById("empty");
         const meta = document.getElementById("meta");
+        const pageInfo = document.getElementById("pageInfo");
 
         let medicines = [];
         let currentIndex = 0;
@@ -159,9 +221,26 @@
             return JSON.stringify(list.map(item => item.name));
         }
 
-        function setTransform(yPx, withTransition) {
-            tbody.style.transition = withTransition ? `transform ${SLIDE_MS}ms ease` : "none";
-            tbody.style.transform = `translateY(${yPx}px)`;
+        function setScrollTop(yPx, withAnimation) {
+            if (withAnimation) {
+                const start = viewport.scrollTop;
+                const end = yPx;
+                const duration = SLIDE_MS;
+                let startTime = null;
+
+                function animationStep(timestamp) {
+                    if (!startTime) startTime = timestamp;
+                    const progress = timestamp - startTime;
+                    const percentage = Math.min(progress / duration, 1);
+                    viewport.scrollTop = start + (end - start) * percentage;
+                    if (progress < duration) {
+                        requestAnimationFrame(animationStep);
+                    }
+                }
+                requestAnimationFrame(animationStep);
+            } else {
+                viewport.scrollTop = yPx;
+            }
         }
 
         function renderRows(data) {
@@ -186,9 +265,8 @@
 
                     if (m.kn_name) {
                         const kannadaName = document.createElement("div");
+                        kannadaName.className = "kannada-text";
                         kannadaName.textContent = m.kn_name;
-                        kannadaName.style.fontSize = "2.5vh";
-                        kannadaName.style.color = "#555";
                         tdName.appendChild(kannadaName);
                     }
 
@@ -212,7 +290,7 @@
                         rowsPerPage = Math.floor(viewport.clientHeight / rowHeight);
                     }
                     currentIndex = 0;
-                    setTransform(0, false);
+                    setScrollTop(0, false);
                     resolve();
                 });
             });
@@ -222,19 +300,22 @@
             if (rowsPerPage === 0) return;
 
             currentIndex = Math.min(pageIdx * rowsPerPage, Math.max(0, medicines.length - 1));
-            const offset = -(currentIndex * rowHeight);
-            setTransform(offset, true);
+            const offset = currentIndex * rowHeight;
+            setScrollTop(offset, true);
             const pageCount = Math.ceil(medicines.length / rowsPerPage);
-            
-        }        function stepPager() {
+            pageInfo.textContent = `${Math.floor(currentIndex / rowsPerPage) + 1} of ${pageCount} • ${medicines.length} items`;
+        }
+
+        function stepPager() {
             if (document.hidden || medicines.length <= rowsPerPage) return;
 
             const pageCount = Math.ceil(medicines.length / rowsPerPage);
             const currentPage = Math.floor(currentIndex / rowsPerPage);
-            let nextPage = (currentPage + 1) % pageCount;
+            let nextPage = (currentPage + 1);
 
-            if (nextPage === 0) {
-                sleep(SLIDE_MS, () => setTransform(0, false));
+            if (nextPage >= pageCount) {
+                sleep(SLIDE_MS, () => setScrollTop(0, false));
+                nextPage = 0;
             }
 
             goToPage(nextPage);
@@ -267,7 +348,7 @@
                 goToPage(0);
             }
 
-            meta.textContent = `Last updated: ${new Date().toLocaleTimeString()}`;
+            meta.textContent = `Last updated: ${new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}`;
         }
 
         function startRefresh() {

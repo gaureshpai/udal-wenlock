@@ -1,15 +1,13 @@
 const express = require("express");
 const path = require("path");
 const http = require("http");
-const fs = require("fs");
-const csv = require('csv-parser');
 
 const app = express();
 const PORT = process.env.PORT || 3002;
 
 let otData = [];
 
-let lastFetchedAt = null; // store last fetched time
+let lastFetchedAt = null;
 const SECRET_KEY = "lasdfaldf234232wqa122fsvsdlfjsdvnsasifjweiojsadlflkasdjflkasjflk32234234edswdsjfflas2 3rsd";
 const baseUrl = "https://script.google.com/macros/s/AKfycbzaoIRRlwryKQ8qE_sJwuQ9L3dBwsLnRck4dkhj9nDAdQisz3SZovZl3kDoxG-BBOoa/exec";
 
@@ -32,18 +30,6 @@ async function getKannadaTransliteration(text) {
   }
 }
 
-
-// function loadData() {
-//   const results = [];
-//   fs.createReadStream(path.join(__dirname, 'public', 'ot_data.csv'))
-//     .pipe(csv())
-//     .on('data', (data) => results.push(data))
-//     .on('end', () => {
-//       otData = results;
-//       console.log("OT data loaded successfully.");
-//     });
-// }
-
 async function pollUpdates() {
   try {
     let url = `${baseUrl}?key=${SECRET_KEY}&sheet=OT`;
@@ -63,33 +49,30 @@ async function pollUpdates() {
 
     console.log("Fetched rows:", data.length);
 
-   const processedData = await Promise.all(
-  data.map(async (item) => {
-    const result = { ...item };
+    const fieldsToTranslate = ["Name", "Surgery site", "Surgery", "Surgeon Name"];
 
-    // Loop through all keys in the item
-    for (const key of Object.keys(item)) {
-      const value = item[key];
+    const processedData = await Promise.all(
+      data.map(async (item) => {
+        const result = { ...item };
 
-      // Convert only if value exists and is text-like
-      if (value && typeof value === "string") {
-        const knValue = await getKannadaTransliteration(value);
-        result[`kn_${key}`] = knValue;
-      } else {
-        result[`kn_${key}`] = "";
-      }
-    }
-
-    return result;
-  })
-);
-
+        for (const key of fieldsToTranslate) {
+          const value = item[key];
+          if (value && typeof value === "string") {
+            const knValue = await getKannadaTransliteration(value);
+            result[`kn_${key}`] = knValue;
+          } else {
+            result[`kn_${key}`] = "";
+          }
+        }
+        return result;
+      })
+    );
 
     const existingMap = new Map(otData.map(d => [d.SN, d]));
     for (const newItem of processedData) {
       existingMap.set(newItem.SN, newItem);
     }
-    otData = Array.from(existingMap.values());
+    otData = Array.from(existingMap.values()).filter(d => d.Name && d.SN);
 
     const priority = {
       'in progress': 1,
@@ -120,16 +103,8 @@ app.get("/data", (req, res) => {
 
 const server = http.createServer(app);
 
-// fs.watch(path.join(__dirname, 'public', 'ot_data.csv'), (eventType, filename) => {
-//   if (filename && eventType === 'change') {
-//     console.log('ot_data.csv changed, reloading data...');
-//     loadData();
-//   }
-// });
-
 server.listen(PORT, '0.0.0.0', () => {
   console.log(`HTTP Server running on http://localhost:${PORT}`);
-  // loadData();
   pollUpdates();
   setInterval(pollUpdates, 30000);
 });

@@ -82,9 +82,9 @@
             background: var(--bg-white);
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            padding: 30px;
-            width: 100%;
-            max-width: 900px;
+            padding: 40px;
+            width: 95%;
+            max-width: 1600px;
             display: flex;
             flex-direction: column;
             transition: opacity 0.5s ease;
@@ -92,22 +92,28 @@
 
         .component-header {
             text-align: center;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
         }
 
         .component-header h1 {
             color: var(--primary-text);
-            font-size: 28px;
+            font-size: 4.5vh;
             font-weight: bold;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
+        }
+        
+        .component-header h2 {
+            color: var(--secondary-text);
+            font-size: 3vh;
+            font-weight: normal;
         }
 
         .grid-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 20px;
+            gap: 30px;
+            margin-bottom: 30px;
         }
 
         .table-wrapper {
@@ -123,11 +129,17 @@
 
         thead th {
             background: var(--table-header-bg);
-            padding: 12px;
-            font-size: 16px;
+            padding: 2vh;
+            font-size: 3vh;
             font-weight: bold;
             text-transform: uppercase;
             text-align: center;
+        }
+
+        thead th .kannada-text {
+            font-size: 2.2vh;
+            font-weight: normal;
+            color: var(--secondary-text);
         }
 
         thead th:first-child {
@@ -139,9 +151,9 @@
         }
 
         tbody td {
-            padding: 15px;
+            padding: 2.5vh;
             text-align: center;
-            font-size: 18px;
+            font-size: 3.5vh;
             font-weight: bold;
             border-bottom: 1px solid var(--border-color);
         }
@@ -162,24 +174,30 @@
         .total-section {
             background: var(--table-header-bg);
             color: var(--primary-text);
-            padding: 15px;
+            padding: 25px;
             border-radius: 10px;
             text-align: center;
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 20px;
-            margin-top: 10px;
+            gap: 30px;
+            margin-top: 20px;
         }
 
         .total-section .label {
-            font-size: 22px;
+            font-size: 4vh;
             font-weight: bold;
             text-transform: uppercase;
         }
+        
+        .total-section .label .kannada-text {
+            font-size: 3vh;
+            font-weight: normal;
+            color: var(--secondary-text);
+        }
 
         .total-section .value {
-            font-size: 34px;
+            font-size: 6vh;
             font-weight: bold;
             color: var(--emergency-red);
         }
@@ -220,6 +238,17 @@
             background: var(--emergency-red);
             transform: scale(1.2);
         }
+        
+        footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1vh 2vw;
+            border-top: 2px solid var(--border-color);
+            font-size: 2.5vh;
+            color: var(--secondary-text);
+            height: var(--footer-height);
+        }
 
         @media (max-width: 768px) {
             .grid-container {
@@ -258,25 +287,31 @@
     <div class="main-container">
         <div class="content-wrapper">
             <div class="component-header">
-                <h1 id="component-title">Packed Red Blood Cells</h1>
+                <h1 id="component-title"></h1>
+                <h2 id="component-title-kn"></h2>
             </div>
 
             <div class="grid-container" id="tables-container">
-                <!-- Tables will be generated dynamically -->
             </div>
 
             <div class="total-section">
-                <span class="label">Total Units</span>
+                <span class="label">
+                    <div>Total Units</div>
+                    <div class="kannada-text">ಒಟ್ಟು ಘಟಕಗಳು</div>
+                </span>
                 <span class="value" id="total">0</span>
             </div>
 
             <div class="progress-bar">
                 <div class="progress-fill" id="progress"></div>
             </div>
-
-            <div class="component-indicator" id="indicators"></div>
         </div>
     </div>
+
+    <footer>
+        <span id="time"></span>
+        <div class="component-indicator" id="indicators"></div>
+    </footer>
 
     <script>
         let components;
@@ -284,8 +319,27 @@
         let autoplayInterval;
         let progressInterval;
         let progressValue = 0;
-        const displayDuration = 5000; // 5 seconds
+        const displayDuration = 5000;
         const progressStep = 100 / (displayDuration / 100);
+
+        async function getKannadaTransliteration(text) {
+            if (!text || typeof text !== 'string') return text;
+            try {
+                const words = text.split(' ');
+                const transliteratedWords = await Promise.all(words.map(async (word) => {
+                    const response = await fetch(`https://transliteration.devnagri.com/api/tl/kn/${word}`);
+                    const data = await response.json();
+                    if (data && data.success && data.result) {
+                        return data.result[0];
+                    }
+                    return word;
+                }));
+                return transliteratedWords.join(' ');
+            } catch (err) {
+                console.error("Transliteration error:", err);
+                return text;
+            }
+        }
 
         async function initialize() {
             await tally();
@@ -293,6 +347,16 @@
                 createIndicators();
                 updateDisplay();
                 startAutoplay();
+            }
+            updateTime();
+            setInterval(updateTime, 1000);
+        }
+
+        function updateTime() {
+            const timeEl = document.getElementById("time");
+            if (timeEl) {
+                const now = new Date();
+                timeEl.textContent = `Last Updated: ${now.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}`;
             }
         }
 
@@ -326,7 +390,10 @@
                     <div class="table-wrapper">
                         <table>
                             <thead>
-                                <tr><th>Blood Group</th><th>Units</th></tr>
+                                <tr>
+                                    <th><div>Blood Group</div><div class="kannada-text">ರಕ್ತದ ಗುಂಪು</div></th>
+                                    <th><div>Units</div><div class="kannada-text">ಘಟಕಗಳು</div></th>
+                                </tr>
                             </thead>
                             <tbody>`;
                 groups.forEach(group => {
@@ -346,12 +413,14 @@
         function updateDisplay() {
             const component = components[currentIndex];
             const titleEl = document.getElementById("component-title");
+            const titleKnEl = document.getElementById("component-title-kn");
             const wrapper = document.querySelector('.content-wrapper');
 
             wrapper.style.opacity = "0";
 
             setTimeout(() => {
                 titleEl.textContent = component.name;
+                titleKnEl.textContent = component.kn_name || '';
                 generateTables(component);
                 calculateTotal();
                 updateIndicators();
@@ -387,7 +456,13 @@
             try {
                 const response = await fetch(`${baseUrl}?key=${SECRET_KEY}&sheet=Stock%20Availability`);
                 if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                components = await response.json();
+                const fetchedComponents = await response.json();
+                
+                components = await Promise.all(fetchedComponents.map(async (comp) => {
+                    const kn_name = await getKannadaTransliteration(comp.name);
+                    return { ...comp, kn_name };
+                }));
+
             } catch (error) {
                 console.error("Error fetching data:", error);
                 components = [];
@@ -415,7 +490,6 @@
             progressInterval = setInterval(updateProgress, 100);
         }
 
-        // Initialize
         initialize();
     </script>
 </body>

@@ -58,8 +58,15 @@ async function pollUpdates() {
 
     const processedData = await Promise.all(data.map(async (item) => {
       const kn_name = await getKannadaTransliteration(item.Name);
-      const kn_component = await getKannadaTransliteration(item.Component);
-      return { ...item, kn_name, kn_component };
+      const result = { ...item, kn_name };
+
+      const componentKeys = ["PRBC", "FFP", "PLATELET_CONCENTRATE", "CRYOPRECIPITATE", "CRYOPOOR_PLASMA"];
+      for (const key of componentKeys) {
+        if (item[key] && typeof item[key] === 'string') {
+          result[`kn_${key}`] = await getKannadaTransliteration(item[key]);
+        }
+      }
+      return result;
     }));
 
     const existingMap = new Map(bloodData.map(d => [d.SN, d]));
@@ -85,15 +92,6 @@ app.get("/data", (req, res) => {
 });
 
 const server = http.createServer(app);
-
-fs.watchFile(path.join(__dirname, 'public', 'close.txt'), (curr, prev) => {
-  console.log('Shutdown signal received. Closing server...');
-  server.close(() => {
-    console.log('Server closed.');
-    fs.unlinkSync(path.join(__dirname, 'public', 'close.txt'));
-    process.exit(0);
-  });
-});
 
 server.listen(PORT, '0.0.0.0', () => {
   console.log(`HTTP Server running on http://localhost:${PORT}`);

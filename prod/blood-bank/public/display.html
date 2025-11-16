@@ -24,44 +24,6 @@
             overflow: hidden;
         }
 
-        .inner-component-table {
-            width: max-content;
-            border-collapse: collapse;
-            margin: 0 auto;
-        }
-
-        .inner-component-table td {
-            padding: 4px 6px;
-            border: 1px solid #e5e7eb;
-            vertical-align: top;
-            text-align: left;
-            background: #fff;
-        }
-
-        .inner-component-table.small-text {
-            font-size: 1vh;
-            line-height: 1.2;
-        }
-
-        .inner-component-table.small-text .kannada-text {
-            font-size: 1.4vh;
-            color: #444;
-        }
-
-        .inner-component-table td {
-            white-space: normal !important;
-            word-wrap: break-word;
-            word-break: break-word;
-        }
-
-        .inner-component-table td div {
-            margin-bottom: 2px;
-        }
-
-        .inner-component-table tr:nth-child(even) td {
-            background: #f9fafb;
-        }
-
         header {
             background: #fff;
             border-bottom: 2px solid #e5e7eb;
@@ -74,11 +36,17 @@
             flex: 1;
             overflow: hidden;
             height: calc(100vh - 15vh);
+            display: flex;
+            flex-direction: column;
+        }
+
+        #tableHeader {
+            flex-shrink: 0;
         }
 
         #scrollViewport {
-            height: 100%;
-            overflow: hidden;
+            flex-grow: 1;
+            overflow-y: hidden;
             background: #fff;
         }
 
@@ -89,11 +57,14 @@
         }
 
         thead th {
-            background-color: #f3f4f6;
+            background-color: #e5e7eb;
             padding: 1.5vh 1vw;
-            font-size: 3vh;
+            font-size: 2.8vh;
             font-weight: bold;
             text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 1;
         }
 
         th:nth-child(1) {
@@ -117,9 +88,9 @@
         }
 
         td {
-            padding: 1vh 1vw;
+            padding: 1.2vh 1vw;
             font-weight: bold;
-            font-size: 3.5vh;
+            font-size: 3.2vh;
             vertical-align: middle;
             background-color: #fff;
             text-align: center;
@@ -139,9 +110,11 @@
         }
 
         .kannada-text {
-            font-size: 2vh;
-            color: #555;
-            line-height: 1.2;
+            font-size: 2.5vh;
+            font-weight: bold;
+            line-height: 1.5;
+            color: #333;
+            margin-top: 0.5vh;
         }
 
         .empty {
@@ -192,6 +165,30 @@
             opacity: 0;
             transform: translateY(-100%);
         }
+
+        .component-grid {
+            display: grid;
+            gap: 0.5vh 1vw;
+            width: 100%;
+        }
+
+        .component-grid-item {
+            padding: 0.5vh;
+            font-size: 2.2vh;
+            font-weight: normal;
+            text-align: left;
+            background-color: #f3f4f6;
+            border-radius: 4px;
+            padding: 1vh;
+            border: #111 solid 1px;
+        }
+
+        .component-grid-item .kannada-text {
+            font-size: 2vh;
+            color: #555;
+            margin-top: 0.2vh;
+            line-height: 1.2;
+        }
     </style>
 </head>
 
@@ -205,7 +202,7 @@
     </header>
 
     <main>
-        <div id="scrollViewport">
+        <div id="tableHeader">
             <table>
                 <thead>
                     <tr>
@@ -215,6 +212,10 @@
                         <th>Status</th>
                     </tr>
                 </thead>
+            </table>
+        </div>
+        <div id="scrollViewport">
+            <table>
                 <tbody id="bloodBody"></tbody>
             </table>
         </div>
@@ -251,15 +252,17 @@
         let alertMessages = [];
         let currentAlertIndex = 0;
         let alertTimer = null;
+        let isAlertAnimating = false;
 
         function sleep(ms, cb) {
             setTimeout(cb, ms);
         }
 
         function cycleAlerts() {
-            if (alertMessages.length === 0) {
+            if (alertMessages.length === 0 || isAlertAnimating) {
                 return;
             }
+            isAlertAnimating = true;
 
             const currentMessage = toastContainer.querySelector('.toast-message');
             if (currentMessage) {
@@ -280,6 +283,10 @@
             }, 100);
 
             currentAlertIndex = (currentAlertIndex + 1) % alertMessages.length;
+
+            setTimeout(() => {
+                isAlertAnimating = false;
+            }, 1000);
         }
 
         async function fetchAlerts() {
@@ -324,9 +331,26 @@
             return JSON.stringify(list.map(item => `${item.Name}-${item.kn_name}-${item.Status}`));
         }
 
-        function setTransform(yPx, withTransition) {
-            tbody.style.transition = withTransition ? `transform ${SLIDE_MS}ms ease` : "none";
-            tbody.style.transform = `translateY(${yPx}px)`;
+        function setScrollTop(yPx, withAnimation) {
+            if (withAnimation) {
+                const start = viewport.scrollTop;
+                const end = yPx;
+                const duration = SLIDE_MS;
+                let startTime = null;
+
+                function animationStep(timestamp) {
+                    if (!startTime) startTime = timestamp;
+                    const progress = timestamp - startTime;
+                    const percentage = Math.min(progress / duration, 1);
+                    viewport.scrollTop = start + (end - start) * percentage;
+                    if (progress < duration) {
+                        requestAnimationFrame(animationStep);
+                    }
+                }
+                requestAnimationFrame(animationStep);
+            } else {
+                viewport.scrollTop = yPx;
+            }
         }
 
         function renderRows(data) {
@@ -359,48 +383,46 @@
                     tr.appendChild(tdAge);
 
                     const tdComponent = document.createElement("td");
-
-                    const nestedTable = document.createElement("table");
-                    nestedTable.className = "inner-component-table small-text";
+                    const componentGrid = document.createElement("div");
+                    componentGrid.className = "component-grid";
 
                     const labels = [
-                        { en: "PRBC", kn: "ಪ್ಯಾಕ್‌ಡ್ ರೆಡ್ ಬ್ಲಡ್ ಸೆಲ್ಸ್", key: "PRBC", knKey: "kn_PRBC" },
-                        { en: "FFP", kn: "ತಜ್ಜಲಿತ ಪ್ಲಾಸ್ಮಾ", key: "FFP", knKey: "kn_FFP" },
-                        { en: "PLATELET CONCENTRATE", kn: "ಪ್ಲೇಟ್ಲೆಟ್ ಕಾಂಸೆಂಟ್ರೇಟ್", key: "PLATELET_CONCENTRATE", knKey: "kn_PLATELET_CONCENTRATE" },
-                        { en: "CRYOPRECIPITATE", kn: "ಕ್ರಯೋಪ್ರೆಸಿಪಿಟೇಟ್", key: "CRYOPRECIPITATE", knKey: "kn_CRYOPRECIPITATE" },
-                        { en: "CRYOPOOR PLASMA", kn: "ಕ್ರಯೋಪೂರ್ ಪ್ಲಾಸ್ಮಾ", key: "CRYOPOOR_PLASMA", knKey: "kn_CRYOPOOR_PLASMA" }
+                        { en: "PRBC", kn: "ಪ್ಯಾಕ್‌ಡ್ ರೆಡ್ ಬ್ಲಡ್ ಸೆಲ್ಸ್", key: "PRBC" },
+                        { en: "FFP", kn: "ತಜ್ಜಲಿತ ಪ್ಲಾಸ್ಮಾ", key: "FFP" },
+                        { en: "PLATELET CONCENTRATE", kn: "ಪ್ಲೇಟ್ಲೆಟ್ ಕಾಂಸೆಂಟ್ರೇಟ್", key: "PLATELET_CONCENTRATE" },
+                        { en: "CRYOPRECIPITATE", kn: "ಕ್ರಯೋಪ್ರೆಸಿಪಿಟೇಟ್", key: "CRYOPRECIPITATE" },
+                        { en: "CRYOPOOR PLASMA", kn: "ಕ್ರಯೋಪೂರ್ ಪ್ಲಾಸ್ಮಾ", key: "CRYOPOOR_PLASMA" }
                     ];
 
-                    labels.forEach(row => {
-                        if (!item[row.key]) return;
+                    const neededComponents = labels.filter(label => item[label.key]);
+                    const count = neededComponents.length;
 
-                        const tr = document.createElement("tr");
+                    if (count === 1) {
+                        componentGrid.style.gridTemplateColumns = "1fr";
+                    } else if (count === 2) {
+                        componentGrid.style.gridTemplateColumns = "1fr 1fr";
+                    } else if (count >= 3) {
+                        componentGrid.style.gridTemplateColumns = "1fr 1fr";
+                    }
 
-                        const tdLeft = document.createElement("td");
-                        tdLeft.innerHTML = `
-        <div>${row.en } - ${item[row.key]}</div>
-        <div class='kannada-text'>${row.kn}</div>
-    `;
+                    neededComponents.forEach(row => {
+                        const gridItem = document.createElement("div");
+                        gridItem.className = "component-grid-item";
 
-                        // const tdRight = document.createElement("td");
+                        const englishDiv = document.createElement("div");
+                        englishDiv.textContent = `${row.en} - ${item[row.key]}`;
+                        gridItem.appendChild(englishDiv);
 
-                        // const valEn = document.createElement("div");
-                        // valEn.textContent = item[row.key];
-                        // tdRight.appendChild(valEn);
-
-                        if (item[row.knKey]) {
-                            const valKn = document.createElement("div");
-                            valKn.className = "kannada-text";
-                            valKn.textContent = item[row.knKey];
-                            tdRight.appendChild(valKn);
+                        if (item[`kn_${row.key}`]) {
+                            const kannadaDiv = document.createElement("div");
+                            kannadaDiv.className = "kannada-text";
+                            kannadaDiv.textContent = `${row.kn} - ${item[`kn_${row.key}`]}`;
+                            gridItem.appendChild(kannadaDiv);
                         }
-
-                        tr.appendChild(tdLeft);
-                        //tr.appendChild(tdRight);
-                        nestedTable.appendChild(tr);
+                        componentGrid.appendChild(gridItem);
                     });
 
-                    tdComponent.appendChild(nestedTable);
+                    tdComponent.appendChild(componentGrid);
                     tr.appendChild(tdComponent);
 
                     const tdStatus = document.createElement("td");
@@ -423,7 +445,7 @@
                         rowsPerPage = Math.floor(viewport.clientHeight / rowHeight);
                     }
                     currentIndex = 0;
-                    setTransform(0, false);
+                    setScrollTop(0, false);
                     resolve();
                 });
             });
@@ -433,10 +455,10 @@
             if (rowsPerPage === 0) return;
 
             currentIndex = Math.min(pageIdx * rowsPerPage, Math.max(0, bloodData.length - 1));
-            const offset = -(currentIndex * rowHeight);
-            setTransform(offset, true);
+            const offset = currentIndex * rowHeight;
+            setScrollTop(offset, true);
             const pageCount = Math.ceil(bloodData.length / rowsPerPage);
-            pageInfo.textContent = `Page ${Math.floor(currentIndex / rowsPerPage) + 1} of ${pageCount} • ${bloodData.length} items`;
+            pageInfo.textContent = `${Math.floor(currentIndex / rowsPerPage) + 1} of ${pageCount} • ${bloodData.length} items`;
         }
 
         function stepPager() {
@@ -444,10 +466,11 @@
 
             const pageCount = Math.ceil(bloodData.length / rowsPerPage);
             const currentPage = Math.floor(currentIndex / rowsPerPage);
-            let nextPage = (currentPage + 1) % pageCount;
+            let nextPage = (currentPage + 1);
 
-            if (nextPage === 0) {
-                sleep(SLIDE_MS, () => setTransform(0, false));
+            if (nextPage >= pageCount) {
+                sleep(SLIDE_MS, () => setScrollTop(0, false));
+                nextPage = 0;
             }
 
             goToPage(nextPage);
@@ -480,7 +503,7 @@
                 goToPage(0);
             }
 
-            meta.textContent = `Last updated: ${new Date().toLocaleTimeString()}`;
+            meta.textContent = `Last updated: ${new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}`;
         }
 
         function startRefresh() {

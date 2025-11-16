@@ -243,30 +243,6 @@ app.get("/medicines/available", (req, res) => {
 const server = http.createServer(app);
 let syncInterval;
 
-fs.watchFile(path.join(__dirname, 'public', 'close.txt'), (curr, prev) => {
-  console.log('Shutdown signal received. Closing server...');
-  isShuttingDown = true;
-  clearInterval(syncInterval);
-
-  const waitForSyncs = () => {
-    if (activeSyncs > 0) {
-      console.log(`Waiting for ${activeSyncs} sync(s) to complete...`);
-      setTimeout(waitForSyncs, 500);
-    } else {
-      server.close(() => {
-        console.log('Server closed.');
-        if (fs.existsSync(path.join(__dirname, 'public', 'close.txt'))) {
-          fs.unlinkSync(path.join(__dirname, 'public', 'close.txt'));
-        }
-        process.exit(0);
-      });
-    }
-  };
-
-  console.log("Waiting for active connections to close...");
-  waitForSyncs();
-});
-
 server.listen(PORT, "0.0.0.0", () => {
   console.log(`HTTP Server running on port ${PORT}`);
   syncSheetToCsv().catch(err => {
