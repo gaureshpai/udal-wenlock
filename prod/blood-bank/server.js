@@ -39,7 +39,7 @@ async function getKannadaTransliteration(text) {
 
 async function pollUpdates() {
   try {
-    let url = `${baseUrl}?key=${SECRET_KEY}`;
+    let url = `${baseUrl}?key=${SECRET_KEY}&sheet=Blood%20Requests`;
     if (lastFetchedAt) {
       url += `&since=${encodeURIComponent(lastFetchedAt)}`;
     }

@@ -188,51 +188,60 @@
         }
 
         function renderRows(data) {
-            return new Promise(resolve => {
-                tbody.innerHTML = "";
-                if (!data || data.length === 0) {
-                    empty.style.display = "block";
-                    resolve();
-                    return;
-                }
-                empty.style.display = "none";
-                data.forEach(item => {
-                    const tr = document.createElement("tr");
-
-                    const nameCell = document.createElement('td');
-                    nameCell.innerHTML = `<div>${item.name || "-"}</div><div class="kannada-text">${item.kn_name || ""}</div>`;
-
-                    const surgeonCell = document.createElement('td');
-                    surgeonCell.innerHTML = `<div>${item.surgeon_name || "-"}</div><div class="kannada-text">${item.kn_surgeon_name || ""}</div>`;
-
-                    tr.innerHTML = `
-                        ${nameCell.outerHTML}
-                        <td>${item.so || "-"}</td>
-                        <td>${item.age || "-"}</td>
-                        <td>${item.surgery_site || "-"}</td>
-                        <td>${item.surgery || "-"}</td>
-                        <td>${item.unit || "-"}</td>
-                        ${surgeonCell.outerHTML}
-                        <td>${item.status || "-"}</td>
-                    `;
-                    tbody.appendChild(tr);
-                });
-
-                requestAnimationFrame(() => {
-                    const firstRow = tbody.querySelector("tr");
-                    if (firstRow) {
-                        const style = window.getComputedStyle(firstRow);
-                        rowHeight = parseFloat(style.height);
-                    }
-                    if (rowHeight > 0) {
-                        rowsPerPage = Math.floor(viewport.clientHeight / rowHeight);
-                    }
-                    currentIndex = 0;
-                    setTransform(0, false);
-                    resolve();
-                });
-            });
+    return new Promise(resolve => {
+        tbody.innerHTML = "";
+        
+        if (!data || data.length === 0) {
+            empty.style.display = "block";
+            resolve();
+            return;
         }
+
+        empty.style.display = "none";
+
+        data.forEach(item => {
+            const tr = document.createElement("tr");
+
+            const fields = [
+                "Name",
+                "S/O",
+                "Age",
+                "Surgery site",
+                "Surgery",
+                "Unit",
+                "Surgeon Name",
+                "Status"
+            ];
+
+            const cellsHtml = fields
+                .map(key => `
+                    <td>
+                        <div>${item[key] || "-"}</div>
+                        <div class="kannada-text">${item[`kn_${key}`] || ""}</div>
+                    </td>
+                `)
+                .join("");
+
+            tr.innerHTML = cellsHtml;
+
+            tbody.appendChild(tr);
+        });
+
+        requestAnimationFrame(() => {
+            const firstRow = tbody.querySelector("tr");
+            if (firstRow) {
+                const style = window.getComputedStyle(firstRow);
+                rowHeight = parseFloat(style.height);
+            }
+            if (rowHeight > 0) {
+                rowsPerPage = Math.floor(viewport.clientHeight / rowHeight);
+            }
+            currentIndex = 0;
+            setTransform(0, false);
+            resolve();
+        });
+    });
+}
 
         function goToPage(pageIdx) {
             if (rowsPerPage === 0) return;
