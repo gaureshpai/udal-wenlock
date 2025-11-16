@@ -63,11 +63,27 @@ async function pollUpdates() {
 
     console.log("Fetched rows:", data.length);
 
-    const processedData = await Promise.all(data.map(async (item) => {
-      const kn_name = await getKannadaTransliteration(item.Name);
-      // const kn_component = await getKannadaTransliteration(item.Component);
-      return { ...item, kn_name };
-    }));
+   const processedData = await Promise.all(
+  data.map(async (item) => {
+    const result = { ...item };
+
+    // Loop through all keys in the item
+    for (const key of Object.keys(item)) {
+      const value = item[key];
+
+      // Convert only if value exists and is text-like
+      if (value && typeof value === "string") {
+        const knValue = await getKannadaTransliteration(value);
+        result[`kn_${key}`] = knValue;
+      } else {
+        result[`kn_${key}`] = "";
+      }
+    }
+
+    return result;
+  })
+);
+
 
     const existingMap = new Map(otData.map(d => [d.SN, d]));
     for (const newItem of processedData) {
