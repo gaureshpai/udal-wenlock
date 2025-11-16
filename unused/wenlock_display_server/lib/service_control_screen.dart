@@ -472,7 +472,7 @@ class _ServiceControlScreenState extends State<ServiceControlScreen> {
                           IconButton(
                             icon: const Icon(
                               Icons.delete,
-                              size: 48,
+                              size: 24,
                               color: Colors.redAccent,
                             ),
                             onPressed: () {

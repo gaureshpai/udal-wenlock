@@ -9,7 +9,7 @@ Dim WshShell, projectDir, nodeExe, entryFile, port
 Set WshShell = CreateObject("WScript.Shell")
 
 ' === CONFIGURATION ===
-projectDir = "D:\webdev\udal-wenlock\prod\pharmacy"
+projectDir = "D:\Projects\UDAL_Fellowship_Wenlock_Hospital\gauresh\udal-wenlock\prod\pharmacy"
 nodeExe    = "C:\Program Files\nodejs\node.exe"
 entryFile  = projectDir & "\server.js"
 port       = 3000

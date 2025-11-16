@@ -12,7 +12,7 @@ Set WshShell = CreateObject("WScript.Shell")
 projectDir = "D:\Projects\UDAL_Fellowship_Wenlock_Hospital\gauresh\udal-wenlock\prod\OT"
 nodeExe    = "C:\Program Files\nodejs\node.exe"
 entryFile  = projectDir & "\server.js"
-port       = 3001
+port       = 3002
 
 ' === FUNCTIONS ===
 Sub StartService()
