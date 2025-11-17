@@ -49,7 +49,7 @@ async function pollUpdates() {
 
     console.log("Fetched rows:", data.length);
 
-    const fieldsToTranslate = ["Name", "Surgery site", "Surgery", "Surgeon Name"];
+    const fieldsToTranslate = ["Name", "Surgery site", "Surgery", "Surgeon Name", "Department", "Time"];
 
     const processedData = await Promise.all(
       data.map(async (item) => {

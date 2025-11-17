@@ -104,10 +104,48 @@
             background-color: #f3f4f6;
         }
 
-        td.status-emergency {
+        tr.status-emergency td {
             color: #fff;
             background-color: #dc2626 !important;
         }
+
+        tr.status-ready td {
+            background-color: #d4edda !important; /* Light Green */
+            color: #155724 !important;
+        }
+        tr.status-pending td {
+            background-color: #fff3cd !important; /* Light Yellow */
+            color: #856404 !important;
+        }
+        tr.status-in-progress td {
+            background-color: #cce5ff !important; /* Light Blue */
+            color: #004085 !important;
+        }
+        tr.status-collected td {
+            background-color: #d1ecf1 !important; /* Light Cyan */
+            color: #0c5460 !important;
+        }
+        tr.status-crossmatched td {
+            background-color: #e2d9f3 !important; /* Light Purple */
+            color: #4b0082 !important;
+        }
+        tr.status-issued td {
+            background-color: #ffe0b2 !important; /* Light Orange */
+            color: #e65100 !important;
+        }
+        tr.status-completed td {
+            background-color: #d4edda !important; /* Same as ready, or a slightly darker green */
+            color: #155724 !important;
+        }
+        tr.status-cancelled td {
+            background-color: #f8d7da !important; /* Light Red */
+            color: #721c24 !important;
+        }
+
+        td:nth-child(1) { text-align: left; }
+        td:nth-child(2) { text-align: center; }
+        td:nth-child(3) { text-align: center; }
+        td:nth-child(4) { text-align: center; }
 
         .kannada-text {
             font-size: 2.5vh;
@@ -253,6 +291,34 @@
         let currentAlertIndex = 0;
         let alertTimer = null;
         let isAlertAnimating = false;
+
+        const statusTranslations = {
+            "Ready": "ತಯಾರಾಗಿದೆ",
+            "Available": "ಲಭ್ಯವಿದೆ",
+            "Emergency": "ತುರ್ತು",
+            "Pending": "ಬಾಕಿ ಇದೆ",
+            "Requested": "ವಿನಂತಿಸಲಾಗಿದೆ",
+            "In Progress": "ಪ್ರಗತಿಯಲ್ಲಿದೆ",
+            "Collected": "ಸಂಗ್ರಹಿಸಲಾಗಿದೆ",
+            "Crossmatched": "ಕ್ರಾಸ್‌ಮ್ಯಾಚ್ ಮಾಡಲಾಗಿದೆ",
+            "Issued": "ವಿತರಿಸಲಾಗಿದೆ",
+            "Completed": "ಪೂರ್ಣಗೊಂಡಿದೆ",
+            "Cancelled": "ರದ್ದುಗೊಳಿಸಲಾಗಿದೆ"
+        };
+
+        const statusColorClasses = {
+            "Ready": "status-ready",
+            "Available": "status-ready",
+            "Emergency": "status-emergency",
+            "Pending": "status-pending",
+            "Requested": "status-pending",
+            "In Progress": "status-in-progress",
+            "Collected": "status-collected",
+            "Crossmatched": "status-crossmatched",
+            "Issued": "status-issued",
+            "Completed": "status-completed",
+            "Cancelled": "status-cancelled"
+        };
 
         function sleep(ms, cb) {
             setTimeout(cb, ms);
@@ -426,9 +492,19 @@
                     tr.appendChild(tdComponent);
 
                     const tdStatus = document.createElement("td");
-                    tdStatus.textContent = item.Status || "-";
-                    if (item.Status && item.Status.toLowerCase() === 'emergency') {
-                        tdStatus.classList.add('status-emergency');
+                    const englishStatus = document.createElement('div');
+                    englishStatus.textContent = item.Status || "-";
+                    tdStatus.appendChild(englishStatus);
+
+                    if (item.Status && statusTranslations[item.Status]) {
+                        const kannadaStatus = document.createElement('div');
+                        kannadaStatus.className = 'kannada-text';
+                        kannadaStatus.textContent = statusTranslations[item.Status];
+                        tdStatus.appendChild(kannadaStatus);
+                    }
+
+                    if (item.Status && statusColorClasses[item.Status]) {
+                        tr.classList.add(statusColorClasses[item.Status]);
                     }
                     tr.appendChild(tdStatus);
 

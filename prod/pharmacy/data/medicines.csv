@@ -1,92 +1,127 @@
 name,available,kn_name
-Ibuprofen,true,ಇಬುಪ್ರೊಫೆನ್
-Diclofenac,true,ಡಿಕ್ಲೋಫೆನಾಕ್
-Amoxicillin,true,ಅಮೋಕ್ಸಿಸಿಲಿನ್
-Cefixime,true,ಸೆಫಿಕ್ಸೈಮ್
-Ceftriaxone,true,ಸೆಫ್ಟ್ರಿಯಾಕ್ಸೋನ್
-Azithromycin,true,ಅಜಿಥ್ರೋಮೈಸಿನ್
-Metronidazole,false,ಮೆಟ್ರೊನಿಡಾಜೋಲ್
-Doxycycline,true,ಡಾಕ್ಸಿಸೈಕ್ಲೈನ್
-Ciprofloxacin,false,ಸಿಪ್ರೋಫ್ಲಾಕ್ಸಾಸಿನ್
-Ofloxacin,true,ಒಫ್ಲಾಕ್ಸಾಸಿನ್
-Pantoprazole,true,ಪ್ಯಾಂಟೊಪ್ರಜೋಲ್
-Omeprazole,false,ಒಮೆಪ್ರಜೋಲ್
-Ranitidine,true,ರಾನಿಟಿಡೈನ್
-Ondansetron,false,ಒಂಡಾನ್ಸೆಟ್ರಾನ್
-Domperidone,true,ದೊಂಪೆರಿಡೋನ್
-ORS Powder,false,ಓಆರ್ಎಸ್ ಪೌಡರ್
-Albendazole,true,ಅಲ್ಬೆಂಡಾಜೋಲ್
-Chloroquine,false,ಕ್ಲೋರೊಕ್ವಿನ್
-Artemether-Lumefantrine,true,ಆರ್ಟೆಮಿಥರ್ಲುಮ್ಫಾಂಟ್ರಿನ್
-Insulin (Human Regular),false,ಇನ್ಸುಲಿನ್ ಸೈನಹುಮನ್ ರೆಗ್ಯುಲರೈಡ್
-Metformin,true,ಮೆಟ್ಫಾರ್ಮಿನ್
-Glibenclamide,false,ಗ್ಲಿಬೆಂಕ್ಲಾಮೈಡ್
-Amlodipine,true,ಆಮ್ಲೋಡಿಪೈನ್
-Atenolol,true,ಅಟೆನೊಲೋಲ್
-Losartan,true,ಲೋಸಾರ್ಟನ್
-Enalapril,true,ಎನಲಪ್ರಿಲ್
-Hydrochlorothiazide,true,ಹೈಡ್ರೊಕ್ಲೋರೊಥಿಯಾಜೈಡ್
-Furosemide,true,ಫ್ಯೂರೋಸೆಮೈಡ್
-Salbutamol (Inhaler),true,ಸಾಲ್ಬುಟಾಮಾಲ್ ಸೈನಿನ್ಹಾಲೆರಡೈನ್
-Budesonide (Inhaler),true,ಬುಡೆಸೋನೈಡ್ ಸೈನಿನ್ಹಾಲೆರಡೈನ್
-Ipratropium Bromide,false,ಇಪ್ರಾಟ್ರೋಪಿಯಮ್ ಬ್ರೊಮೈಡ್
-Cetirizine,true,ಸಿಟಿರಿಜಿನ್
-Loratadine,false,ಲೊರಾಟಾಡಿನ್
-Prednisolone,true,ಪ್ರೆಡ್ನಿಸೋಲೋನ್
-Hydrocortisone,false,ಹೈಡ್ರೊಕಾರ್ಟಿಸೋನ್
-Betamethasone Cream,true,ಬೆಟಾಮೆಥಾಸೋನ್ ಕ್ರೀಮ್
-Clotrimazole Cream,false,ಕ್ಲೋಟ್ರಿಮಜೋಲ್ ಕ್ರೀಮ್
-Miconazole Cream,true,ಮೈಕೊನಾಜೋಲ್ ಕ್ರೀಮ್
-Amphotericin B,false,ಆಂಫೋಟೆರಿಸಿನ್ ಬೀ
-Iron Folic Acid Tablets,false," ⁇ ರಾನ್ ಫೋಲಿಕ್ ಎಸಿಡ್ ಟ್ಯಾಬ್ಲೆಟ್ಸ್"
-Calcium Carbonate,true,ಕ್ಯಾಲ್ಸಿಯಮ್ ಕಾರ್ಬೊನೇಟ್
-Vitamin B Complex,false,ವಿಟಮಿನ್ ಬೀ ಕಾಂಪ್ಲೆಕ್ಸ್
-Vitamin C Tablets,true,ವಿಟಮಿನ್ ಸೀ ಟ್ಯಾಬ್ಲೆಟ್ಸ್
-Multivitamin Syrup,true,ಮಲ್ಟಿವಿಟಮಿನ್ ಸಿರಪ್
-Zinc Sulphate Tablets,true,ಜಿಂಕ್ ಸಲ್ಫೇಟ್ ಟ್ಯಾಬ್ಲೆಟ್ಸ್
-Dextrose Saline (IV),false,ಡೆಕ್ಸ್ಟ್ರೋಸ್ ಸ್ಯಾಲಿನ್ ಸೈನಿವಾಜೈನ್
-Normal Saline (IV),true,ನಾರ್ಮಲ್ ಸ್ಯಾಲಿನ್ ಸೈನಿವಾಜೈನ್
-Ringer Lactate (IV),true,ರಿಂಗರ್ ಲ್ಯಾಕ್ಟೇಟ್ ಸೈನಿವಾಜೈನ್
-Glucon-D Powder,true,ಗ್ಲುಕಾನ್ಡ್ ಪೌಡರ್
-Paracetamol Syrup,true,ಪ್ಯಾರಾಸಿಟಮಾಲ್ ಸಿರಪ್
-Cough Syrup (Ambroxol),false,ಕಫ್ ಸಿರಪ್ ಸೈನಾಂಬ್ರಾಕ್ಸೊಲೈಡ್
-Sodium Valproate,true,ಸೋಡಿಯಮ್ ವ್ಯಾಲ್ಪ್ರೊಯೇಟ್
-Phenytoin,true,ಫೆನಿಟಾಯಿನ್
-Carbamazepine,true,ಕಾರ್ಬಮ್ಯಾಜೆಪೈನ್
-Diazepam,true,ಡಯಾಜೆಪಾಮ್
-Lorazepam,false,ಲೊರಾಜೆಪಮ್
-Haloperidol,true,ಹಾಲೊಪೆರಿಡಾಲ್
-Olanzapine,true,ಒಳಂಜಪೈನ್
-Fluoxetine,false,ಫ್ಲೂಕ್ಸೆಟೈನ್
-Sertraline,true,ಸೆರ್ಟ್ರಲೈನ್
-Chlorpheniramine,false,ಕ್ಲೋರ್ಫಿನಿರಾಮೈನ್
-Adrenaline (Epinephrine),true,ಅಡ್ರಿನಲಿನ್ ಸೈನೆಪಿನೆಫ್ರೈನ್
-Atropine Sulphate,true,ಅಟ್ರೋಪೈನ್ ಸಲ್ಫೇಟ್
-Folic Acid Tablets,true,ಫೋಲಿಕ್ ಎಸಿಡ್ ಟ್ಯಾಬ್ಲೆಟ್ಸ್
-Tranexamic Acid,true,ಟ್ರಾನೆಕ್ಸಾಮಿಕ್ ಎಸಿಡ್
-Ferrous Sulphate,true,ಫೆರಸ್ ಸಲ್ಫೇಟ್
-Mefenamic Acid,true,ಮೆಫೆನಾಮಿಕ್ ಎಸಿಡ್
-Ketorolac,true,ಕೆಟೊರೊಲಾಕ್
-Insulin 70/30 Mix,true,ಇನ್ಸುಲಿನ್ 70/30 ಮಿಕ್ಸ್
-Glucose Powder,true,ಗ್ಲುಕೋಸ್ ಪೌಡರ್
-Gentamicin,true,ಜೆಂಟಮಿಸಿನ್
-Amikacin,false,ಅಮಿಕಾಸಿನ್
-Tobramycin,true,ಟೊಬ್ರಾಮೈಸಿನ್
-Erythromycin,true,ಎರಿಥ್ರೋಮೈಸಿನ್
-Clindamycin,false,ಕ್ಲಿಂಡಾಮೈಸಿನ್
-Linezolid,true,ಲೈನ್ಜೋಲಿಡ್
-Hydrocortisone Injection,false,ಹೈಡ್ರೊಕಾರ್ಟಿಸೋನ್ ಇಂಜೆಕ್ಷನ್
-Diclofenac Gel,true,ಡಿಕ್ಲೋಫೆನಾಕ್ ಗೆಲ್
-Neomycin Cream,true,ನಿಯೋಮೈಸಿನ್ ಕ್ರೀಮ್
-Lignocaine Injection,true,ಲಿಗ್ನೋಕೈನ್ ಇಂಜೆಕ್ಷನ್
-Chlorhexidine Solution,false,ಕ್ಲೋರ್ಹೆಕ್ಸಿಡೈನ್ ಸಲ್ಯೂಷನ್
-Povidone Iodine Solution,true,ಪೋವಿಡೋನ್ ಅಯೋಡಿನ್ ಸಲ್ಯೂಷನ್
-Hydrogen Peroxide Solution,false,ಹೈಡ್ರೋಜೆನ್ ಪೆರಾಕ್ಸೈಡ್ ಸಲ್ಯೂಷನ್
-Spirit (Isopropyl Alcohol),true,ಸ್ಪಿರಿಟ್ ಸೈನಿಸೊಪ್ರೊಪೈಲ್ ಆಲ್ಕೊಹಾಲೈಡೀನ್
-Dettol (Antiseptic),true,ಡೆಟ್ಟೋಲ್ ಸೈನಂಟಿಸೆಪ್ಟಿಕೈಡ್ಹ್
-Cotton Roll,true,ಕಾಟನ್ ರೋಲ್
-Bandage,true,ಬಂದಗೆ
-Adhesive Plaster,true,ಅಧೆಸಿವೆ ಪ್ಲಾಸ್ಟರ್
-Surgical Gloves,true,ಸರ್ಜಿಕಲ್ ಗ್ಲವ್ಸ್
-Disposable Syringe,true,ಡಿಸ್ಪೋಸಬಲ್ ಸಿರಿಂಜ್
-Paracetamol,false,ಪ್ಯಾರಾಸಿಟಮಾಲ್
+Tab Baclofen 25mg,true,ಟ್ಯಾಬ್ ಬ್ಯಾಕ್ಲೋಫೆನ್ ಇಎಚ್ಎಂಜಿ
+Tab Amitriptyline 25mg,true,ಟ್ಯಾಬ್ ಅಮಿಟ್ರಿಪ್ಟೈಲೈನ್ ಇಎಚ್ಎಂಜಿ
+Tab Amisulpride 100mg,true,ಟ್ಯಾಬ್ ಅಮಿಸುಲ್ಪ್ರೈಡ್ ಇಎಚ್ಎಂಜಿ
+Tab Alprazolam 0.25mg,true,ಟ್ಯಾಬ್ ಆಲ್ಪ್ರಾಜೋಲಮ್ ಇಷುರಿಎಮ್ಜಿ
+Tab Alprazolam 0.5mg,true,ಟ್ಯಾಬ್ ಆಲ್ಪ್ರಾಜೋಲಮ್ ಇಷುರಿಎಮ್ಜಿ
+Tab Clonazepam 0.5mg,true,ಟ್ಯಾಬ್ ಕ್ಲೋನಾಜೆಪಮ್ ಇಷುರಿಎಮ್ಜಿ
+Tab Clobazam 10mg,true,ಟ್ಯಾಬ್ ಕ್ಲೋಬಜಾಮ್ ಇಎಚ್ಎಂಜಿ
+Tab Clozapine 50mg,true,ಟ್ಯಾಬ್ ಕ್ಲೋಜಪೈನ್ ಇಎಚ್ಎಂಜಿ
+Tab Clozapine 100mg,true,ಟ್ಯಾಬ್ ಕ್ಲೋಜಪೈನ್ ಇಎಚ್ಎಂಜಿ
+Tab Chlorpromazine 100mg,true,ಟ್ಯಾಬ್ ಕ್ಲೋರಪ್ರೊಮಾಜಿನ್ ಇಎಚ್ಎಂಜಿ
+Tab Carbamazepine 400mg,true,ಟ್ಯಾಬ್ ಕಾರ್ಬಮ್ಯಾಜೆಪೈನ್ ಇಎಚ್ಎಂಜಿ
+Tab Diazepam 5mg,true,ಟ್ಯಾಬ್ ಡಯಾಜೆಪಾಮ್ ಇಎಚ್ಎಂಜಿ
+Tab Escitalopram 10mg,true,ಟ್ಯಾಬ್ ಎಸ್ಕಿಟಲೋಪ್ರಾಮ್ ಇಎಚ್ಎಂಜಿ
+Tab Fluvoxamine 20mg,true,ಟ್ಯಾಬ್ ಫ್ಲುವೊಕ್ಸಮೈನ್ ಇಎಚ್ಎಂಜಿ
+Tab Haloperidol 5mg,true,ಟ್ಯಾಬ್ ಹಾಲೊಪೆರಿಡಾಲ್ ಇಎಚ್ಎಂಜಿ
+Tab Lithium Carbonate 300mg,true,ಟ್ಯಾಬ್ ಲಿಥಿಯಮ್ ಕಾರ್ಬೊನೇಟ್ ಇಎಚ್ಎಂಜಿ
+Tab Lorazepam 2mg,true,ಟ್ಯಾಬ್ ಲೊರಾಜೆಪಮ್ ಇಎಚ್ಎಂಜಿ
+Tab Olanzapine 10mg,true,ಟ್ಯಾಬ್ ಒಳಂಜಪೈನ್ ಇಎಚ್ಎಂಜಿ
+Tab Phenobarbitone 60mg,true,ಟ್ಯಾಬ್ ಫೆನೋಬಾರ್ಬಿಟೋನ್ ಇಎಚ್ಎಂಜಿ
+Tab Phenytoin 100mg,true,ಟ್ಯಾಬ್ ಫೆನಿಟಾಯಿನ್ ಇಎಚ್ಎಂಜಿ
+Tab Quetiapine Fumarate 25mg,true,ಟ್ಯಾಬ್ ಕ್ವೆಟಿಯಾಪೈನ್ ಫ್ಯುಮರೇಟ್ ಇಎಚ್ಎಂಜಿ
+Tab Risperidone 2mg,true,ಟ್ಯಾಬ್ ರಿಸ್ಪೆರಿಡೋನ್ ಇಎಚ್ಎಂಜಿ
+Tab Sertraline 50mg,true,ಟ್ಯಾಬ್ ಸೆರ್ಟ್ರಲೈನ್ ಇಎಚ್ಎಂಜಿ
+Tab Sodium Valproate 200mg,true,ಟ್ಯಾಬ್ ಸೋಡಿಯಮ್ ವ್ಯಾಲ್ಪ್ರೊಯೇಟ್ ಇಎಚ್ಎಂಜಿ
+Tab Sodium Valproate 500mg,true,ಟ್ಯಾಬ್ ಸೋಡಿಯಮ್ ವ್ಯಾಲ್ಪ್ರೊಯೇಟ್ ಇಎಚ್ಎಂಜಿ
+Tab Trihexyphenidyl HCL 2mg,true,ಟ್ಯಾಬ್ ಟ್ರೈಹೆಕ್ಸಿಫೆನಿಡೈಲ್ ಹೆಚ್ಸೀಎಲ್ ಇಎಚ್ಎಂಜಿ
+Syrup Amoxycillin 125mg,true,ಸಿರಪ್ ಅಮೋಕ್ಸಿಸಿಲಿನ್ ಇಎಚ್ಎಂಜಿ
+Syrup Cefixime 100mg/ml,true,ಸಿರಪ್ ಸೆಫಿಕ್ಸೈಮ್ 100mg/ml
+Syrup Cetrizine 60ml,true,ಸಿರಪ್ ಸೆಟ್ರಿಜಿನ್ ಇಎಚ್ಎಂಎಲ್
+Syrup Co-trimazole Oral 50ml,true,ಸಿರಪ್ ಕೋಟ್ರಿಮಜೋಲ್ ಒರಾಲ್ ಇಎಚ್ಎಂಎಲ್
+Syrup Domperidone 30ml,true,ಸಿರಪ್ ದೊಂಪೆರಿಡೋನ್ ಇಎಚ್ಎಂಎಲ್
+Syrup Iron and Folic Acid 100ml,true,ಸಿರಪ್  ⁇ ರಾನ್ ಆಂಡ್ ಫೋಲಿಕ್ ಎಸಿಡ್ ಇಎಚ್ಎಂಎಲ್
+Syrup Multivitami,true,ಸಿರಪ್ ಮಲ್ಟಿವಿಟಮಿ
+Syrup Salbutamol 100m,true,ಸಿರಪ್ ಸಾಲ್ಬುಟಾಮಾಲ್ ಇಎಚ್ಎಂ
+Syrup Paracetamol 125mg 60ml,true,ಸಿರಪ್ ಪ್ಯಾರಾಸಿಟಮಾಲ್ ಇಎಚ್ಎಂಜಿ ಇಎಚ್ಎಂಎಲ್
+Cough Syrup,true,ಕಫ್ ಸಿರಪ್
+Lotion Gaba Benzene,true,ಲೋಷನ್ ಗಾಬಾ ಬೆಂಜೀನ್
+Oint Betamethasone,true,ಒಯಿಂಟ್ ಬೆಟಾಮೆಥಾಸೋನ್
+Oint Fusid-B,true,ಒಯಿಂಟ್ ಫ್ಯೂಸಿಡೆಬ್
+Oint Fusid,true,ಒಯಿಂಟ್ ಫ್ಯೂಸಿಡ್
+Oint Clotrimazole,true,ಒಯಿಂಟ್ ಕ್ಲೋಟ್ರಿಮಜೋಲ್
+Oint Povidone,true,ಒಯಿಂಟ್ ಪೋವಿಡೋನ್
+Oint Permethrin,true,ಒಯಿಂಟ್ ಪರ್ಮೆಥ್ರಿನ್
+Oint Terbinafine,true,ಒಯಿಂಟ್ ಟೆರ್ಬಿನಾಫೈನ್
+Oint Whitefield’s,true,ಒಯಿಂಟ್ ವೈಟ್ಫೀಲ್ಡೀಸ್
+Oint Silver Sulphadiazine,true,ಒಯಿಂಟ್ ಸಿಲ್ವರ್ ಸಲ್ಫಾಡಿಯಾಜಿನ್
+Iodine Gel,true,ಅಯೋಡಿನ್ ಗೆಲ್
+Lignocaine Gel,true,ಲಿಗ್ನೋಕೈನ್ ಗೆಲ್
+O.R.S,true,ಒಎರ್ಆಸ್
+Clotrimazole Powder,true,ಕ್ಲೋಟ್ರಿಮಜೋಲ್ ಪೌಡರ್
+Ciprofloxacin Eye Drops,true,ಸಿಪ್ರೋಫ್ಲಾಕ್ಸಾಸಿನ್  ⁇ ಯೆ ಡ್ರಾಪ್ಸ್
+Ciprofloxacin + D Drops,true,ಸಿಪ್ರೋಫ್ಲಾಕ್ಸಾಸಿನ್ ಇಎಚ್ ಡೀ ಡ್ರಾಪ್ಸ್
+C.M.C Drops,true,ಸಿಎಂಎಂಸಿ ಡ್ರಾಪ್ಸ್
+Moxifloxacin Eye Drops,true,ಮೊಕ್ಸಿಫ್ಲಾಕ್ಸಾಸಿನ್  ⁇ ಯೆ ಡ್ರಾಪ್ಸ್
+Tropicamide + P Drops,true,ಟ್ರಾಪಿಕಾಮೈಡ್ ಇಎಚ್ ಪೀ ಡ್ರಾಪ್ಸ್
+Nasal Saline Drops,true,ನಾಸಲ್ ಸ್ಯಾಲಿನ್ ಡ್ರಾಪ್ಸ್
+Clotrimazole Ear Drops,true,ಕ್ಲೋಟ್ರಿಮಜೋಲ್ ಇಯರ್ ಡ್ರಾಪ್ಸ್
+Wax Ear Drops,true,ವಾಕ್ಸ್ ಇಯರ್ ಡ್ರಾಪ್ಸ್
+Xylomet Adult Nasal Drops,true,ಕ್ಸಿಲೋಮೆಟ್ ಅಡಲ್ಟ್ ನಾಸಲ್ ಡ್ರಾಪ್ಸ್
+Xylomet Paed Nasal Drops,true,ಕ್ಸಿಲೋಮೆಟ್ ಪೇಡ್ ನಾಸಲ್ ಡ್ರಾಪ್ಸ್
+Fluticasone Nasal Drops,true,ಫ್ಲೂಟಿಕಾಸೋನ್ ನಾಸಲ್ ಡ್ರಾಪ್ಸ್
+Cap Amoxycillin 500mg,true,ಕ್ಯಾಪ್ ಅಮೋಕ್ಸಿಸಿಲಿನ್ ಇಎಚ್ಎಂಜಿ
+Tab Azithromycin 500mg,true,ಟ್ಯಾಬ್ ಅಜಿಥ್ರೋಮೈಸಿನ್ ಇಎಚ್ಎಂಜಿ
+Tab Ciprofloxacin 500mg,true,ಟ್ಯಾಬ್ ಸಿಪ್ರೋಫ್ಲಾಕ್ಸಾಸಿನ್ ಇಎಚ್ಎಂಜಿ
+Tab Cefixime 200mg,true,ಟ್ಯಾಬ್ ಸೆಫಿಕ್ಸೈಮ್ ಇಎಚ್ಎಂಜಿ
+Tab Cefadroxil 500mg,true,ಟ್ಯಾಬ್ ಸೆಫಾಡ್ರಾಕ್ಸಿಲ್ ಇಎಚ್ಎಂಜಿ
+Tab Co-trimazole D,true,ಟ್ಯಾಬ್ ಕೋಟ್ರಿಮಜೋಲ್ ಡೀ
+Tab Doxycycline 100mg,true,ಟ್ಯಾಬ್ ಡಾಕ್ಸಿಸೈಕ್ಲೈನ್ ಇಎಚ್ಎಂಜಿ
+Tab Metronidazole 400mg,true,ಟ್ಯಾಬ್ ಮೆಟ್ರೊನಿಡಾಜೋಲ್ ಇಎಚ್ಎಂಜಿ
+Tab Norfloxacin 400mg,true,ಟ್ಯಾಬ್ ನಾರ್ಫ್ಲಾಕ್ಸಾಸಿನ್ ಇಎಚ್ಎಂಜಿ
+Tab Acyclovir 400mg,true,ಟ್ಯಾಬ್ ಅಸಿಕ್ಲೋವಿರ್ ಇಎಚ್ಎಂಜಿ
+Cap Fluconazole 150mg,true,ಕ್ಯಾಪ್ ಫ್ಲುಕೋನಾಜೋಲ್ ಇಎಚ್ಎಂಜಿ
+Tab Albendazole 400mg,true,ಟ್ಯಾಬ್ ಅಲ್ಬೆಂಡಾಜೋಲ್ ಇಎಚ್ಎಂಜಿ
+Tab Ofloxacin 200mg,true,ಟ್ಯಾಬ್ ಒಫ್ಲಾಕ್ಸಾಸಿನ್ ಇಎಚ್ಎಂಜಿ
+Tab Diclofenac Sodium 50mg,true,ಟ್ಯಾಬ್ ಡಿಕ್ಲೋಫೆನಾಕ್ ಸೋಡಿಯಮ್ ಇಎಚ್ಎಂಜಿ
+Tab Paracetamol 500mg,true,ಟ್ಯಾಬ್ ಪ್ಯಾರಾಸಿಟಮಾಲ್ ಇಎಚ್ಎಂಜಿ
+Tab Serratiopeptidase 10mg,true,ಟ್ಯಾಬ್ ಸೆರಾಟಿಯೋಪೆಪ್ಟಿಡೇಸ್ ಇಎಚ್ಎಂಜಿ
+Tab Ibuprofen 400mg,true,ಟ್ಯಾಬ್ ಇಬುಪ್ರೊಫೆನ್ ಇಎಚ್ಎಂಜಿ
+Tab Amlodipine 5mg,true,ಟ್ಯಾಬ್ ಆಮ್ಲೋಡಿಪೈನ್ ಇಎಚ್ಎಂಜಿ
+Tab Amlodipine 10mg,true,ಟ್ಯಾಬ್ ಆಮ್ಲೋಡಿಪೈನ್ ಇಎಚ್ಎಂಜಿ
+Tab Atorvastatin 10mg,true,ಟ್ಯಾಬ್ ಅಟಾರ್ವಾಸ್ಟಾಟಿನ್ ಇಎಚ್ಎಂಜಿ
+Tab Atorvastatin 20mg,true,ಟ್ಯಾಬ್ ಅಟಾರ್ವಾಸ್ಟಾಟಿನ್ ಇಎಚ್ಎಂಜಿ
+Tab Atenolol 50mg,true,ಟ್ಯಾಬ್ ಅಟೆನೊಲೋಲ್ ಇಎಚ್ಎಂಜಿ
+Tab Acetylsalicylic Acid 75mg,true,ಟ್ಯಾಬ್ ಅಸಿಟೈಲ್ಸಾಲಿಸಿಲಿಕ್ ಎಸಿಡ್ ಇಎಚ್ಎಂಜಿ
+Tab Clopidogrel 75mg,true,ಟ್ಯಾಬ್ ಕ್ಲೋಪಿಡೋಗ್ರೆಲ್ ಇಎಚ್ಎಂಜಿ
+Tab Digoxin 0.25mg,true,ಟ್ಯಾಬ್ ಡಿಗಾಕ್ಸಿನ್ ಇಷುರಿಎಮ್ಜಿ
+Tab Enalapril Maleate 5mg,true,ಟ್ಯಾಬ್ ಎನಲಪ್ರಿಲ್ ಮಾಲಿಯೇಟ್ ಇಎಚ್ಎಂಜಿ
+Tab Losartan Potassium 50mg,true,ಟ್ಯಾಬ್ ಲೋಸಾರ್ಟನ್ ಪೊಟ್ಯಾಸಿಯಮ್ ಇಎಚ್ಎಂಜಿ
+Tab Propranolol 40mg,true,ಟ್ಯಾಬ್ ಪ್ರೊಪ್ರಾನೊಲಾಲ್ ಇಎಚ್ಎಂಜಿ
+Tab Telmisartan 40mg,true,ಟ್ಯಾಬ್ ಟೆಲ್ಮಿಸಾರ್ಟನ್ ಇಎಚ್ಎಂಜಿ
+Tab Isosorbide Dinitrate 10mg,true,ಟ್ಯಾಬ್  ⁇ ಸೋಸಾರ್ಬೈಡ್ ಡಿನಿಟ್ರೇಟ್ ಇಎಚ್ಎಂಜಿ
+Tab Warfarin Sodium 5mg,true,ಟ್ಯಾಬ್ ವಾರ್ಫರಿನ್ ಸೋಡಿಯಮ್ ಇಎಚ್ಎಂಜಿ
+Tab Acetazolamide 250mg,true,ಟ್ಯಾಬ್ ಅಸಿಟಾಜೊಲಮೈಡ್ ಇಎಚ್ಎಂಜಿ
+Tab Chlorthalidone 12.5mg,true,ಟ್ಯಾಬ್ ಕ್ಲೋರ್ಥಾಲಿಡೋನ್ ಇಷುರಿಎಮ್ಜಿ
+Tab Frusamide 40mg,true,ಟ್ಯಾಬ್ ಫ್ರುಸಮೈಡ್ ಇಎಚ್ಎಂಜಿ
+Tab Glimepiride 1mg,true,ಟ್ಯಾಬ್ ಗ್ಲೈಮ್ಪಿರೈಡ್ ಇಎಚ್ಎಂಜಿ
+Tab Glimepiride 2mg,true,ಟ್ಯಾಬ್ ಗ್ಲೈಮ್ಪಿರೈಡ್ ಇಎಚ್ಎಂಜಿ
+Tab Metformin 500mg,true,ಟ್ಯಾಬ್ ಮೆಟ್ಫಾರ್ಮಿನ್ ಇಎಚ್ಎಂಜಿ
+Tab B Complex,true,ಟ್ಯಾಬ್ ಬೀ ಕಾಂಪ್ಲೆಕ್ಸ್
+Tab Calcium Carbonate with Vitamin D3 500mg,true,ಟ್ಯಾಬ್ ಕ್ಯಾಲ್ಸಿಯಮ್ ಕಾರ್ಬೊನೇಟ್ ವಿಥ್ ವಿಟಮಿನ್ ಡಿಎಚ್ ಇಎಚ್ಎಂಜಿ
+Tab Folic Acid 400mcg,true,ಟ್ಯಾಬ್ ಫೋಲಿಕ್ ಎಸಿಡ್ ಇಎಚ್ಎಂಸಿಜಿ
+Tab Ferrous Sulphate,true,ಟ್ಯಾಬ್ ಫೆರಸ್ ಸಲ್ಫೇಟ್
+Tab Pyridoxine 40mg,true,ಟ್ಯಾಬ್ ಪೈರಿಡಾಕ್ಸಿನ್ ಇಎಚ್ಎಂಜಿ
+Tab Vitamin C 500mg,true,ಟ್ಯಾಬ್ ವಿಟಮಿನ್ ಸೀ ಇಎಚ್ಎಂಜಿ
+Tab Thiamine 100mg,true,ಟ್ಯಾಬ್ ಥಿಯಾಮಿನ್ ಇಎಚ್ಎಂಜಿ
+Tab N-Acetyl L-Cysteine 600mg,true,ಟ್ಯಾಬ್ ನಯಾಸೆಟೈಲ್ ಲೈಸಿಸ್ಟೀನ್ ಇಎಚ್ಎಂಜಿ
+Tab Etophylline + Theophylline 100mg,true,ಟ್ಯಾಬ್ ಎಟೊಫಿಲೈನ್ ಇಎಚ್ ಥಿಯೋಫಿಲೈನ್ ಇಎಚ್ಎಂಜಿ
+Tab Salbutamol 4mg,true,ಟ್ಯಾಬ್ ಸಾಲ್ಬುಟಾಮಾಲ್ ಇಎಚ್ಎಂಜಿ
+Tab Albendazole 400mg,true,ಟ್ಯಾಬ್ ಅಲ್ಬೆಂಡಾಜೋಲ್ ಇಎಚ್ಎಂಜಿ
+Tab Hydroxychloroquine 200mg,true,ಟ್ಯಾಬ್ ಹೈಡ್ರಾಕ್ಸಿಕ್ಲೋರೊಕ್ವಿನ್ ಇಎಚ್ಎಂಜಿ
+Tab Bisacodyl 5mg,true,ಟ್ಯಾಬ್ ಬಿಸಾಕೊಡೈಲ್ ಇಎಚ್ಎಂಜಿ
+Tab Loperamide 2mg,true,ಟ್ಯಾಬ್ ಲೋಪೆರಮೈಡ್ ಇಎಚ್ಎಂಜಿ
+Tab Cetrizine 10mg,true,ಟ್ಯಾಬ್ ಸೆಟ್ರಿಜಿನ್ ಇಎಚ್ಎಂಜಿ
+Tab Chlorpheniramine Maleate 4mg,true,ಟ್ಯಾಬ್ ಕ್ಲೋರ್ಫಿನಿರಾಮೈನ್ ಮಾಲಿಯೇಟ್ ಇಎಚ್ಎಂಜಿ
+Tab Levocetirizine 5mg,true,ಟ್ಯಾಬ್ ಲೆವೊಸಿಟಿರಿಜಿನ್ ಇಎಚ್ಎಂಜಿ
+Tab Betahistine 8mg,true,ಟ್ಯಾಬ್ ಬೆಟಹಿಸ್ತೀನ್ ಇಎಚ್ಎಂಜಿ
+Tab Montelukast 5mg,true,ಟ್ಯಾಬ್ ಮಾಂಟೆಲುಕಾಸ್ಟ್ ಇಎಚ್ಎಂಜಿ
+Tab Diethylcarbamazine 100mg,true,ಟ್ಯಾಬ್ ಡೈಥೈಲ್ಕಾರ್ಬಮಜಿನ್ ಇಎಚ್ಎಂಜಿ
+Tab Domperidone 10mg,true,ಟ್ಯಾಬ್ ದೊಂಪೆರಿಡೋನ್ ಇಎಚ್ಎಂಜಿ
+Tab Dicyclomine 10mg,true,ಟ್ಯಾಬ್ ಡೈಸೈಕ್ಲೋಮೈನ್ ಇಎಚ್ಎಂಜಿ
+Tab Ondansetron 4mg,true,ಟ್ಯಾಬ್ ಒಂಡಾನ್ಸೆಟ್ರಾನ್ ಇಎಚ್ಎಂಜಿ
+Tab Ranitidine 150mg,true,ಟ್ಯಾಬ್ ರಾನಿಟಿಡೈನ್ ಇಎಚ್ಎಂಜಿ
+Tab Thyroxine 50mcg,true,ಟ್ಯಾಬ್ ಥೈರಾಕ್ಸಿನ್ ಇಎಚ್ಎಂಸಿಜಿ
+Tab Prednisolone 5mg,true,ಟ್ಯಾಬ್ ಪ್ರೆಡ್ನಿಸೋಲೋನ್ ಇಎಚ್ಎಂಜಿ
+Tab Prednisolone 10mg,true,ಟ್ಯಾಬ್ ಪ್ರೆಡ್ನಿಸೋಲೋನ್ ಇಎಚ್ಎಂಜಿ
+Tab Silodosin 8mg,true,ಟ್ಯಾಬ್ ಸಿಲೊಡೋಸಿನ್ ಇಎಚ್ಎಂಜಿ
