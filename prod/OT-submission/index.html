@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -187,6 +188,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h1>📊 Excel to JSON API</h1>
@@ -203,7 +205,10 @@
             <div class="file-name" id="fileName"></div>
             <div class="file-details" id="fileDetails"></div>
         </div>
-
+        <div class="input-group">
+            <label for="password">API Password</label>
+            <input type="password" id="password" placeholder="Enter API password">
+        </div>
 
 
         <button id="uploadBtn" disabled>Upload to API</button>
@@ -212,14 +217,15 @@
     </div>
 
     <script>
-        const API_URL = 'https://script.google.com/macros/s/AKfycbwaFqYcTZm3q48PQQa5m3fU2vn9ovyTS1VQo0GsXurYGMt9_SjOueyuVT8IRxTmJ6pO/exec'; // Replace with your actual API endpoint
-        
+        const API_URL = 'https://script.google.com/macros/s/AKfycby4uuNWBIck-cNYP_soNzUwrN8NVX27JrErtkoTFbJpTaQAtexiSeLvTDEovK5j4bgn/exec'; // Replace with your actual API endpoint
+
         let jsonData = null;
         const uploadArea = document.getElementById('uploadArea');
         const fileInput = document.getElementById('fileInput');
         const fileInfo = document.getElementById('fileInfo');
         const fileName = document.getElementById('fileName');
         const fileDetails = document.getElementById('fileDetails');
+        const passwordInput = document.getElementById('password');
         const uploadBtn = document.getElementById('uploadBtn');
         const status = document.getElementById('status');
 
@@ -262,7 +268,7 @@
             fileInfo.classList.add('show');
 
             const reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = function (e) {
                 try {
                     const data = new Uint8Array(e.target.result);
                     const workbook = XLSX.read(data, { type: 'array' });
@@ -277,7 +283,7 @@
                     }
 
                     const headers = rawData[1];
-                    const dataRows = rawData.slice(2); // Start from 3rd row (index 2)
+                    const dataRows = rawData.slice(3); // Start from 4th row (index 3), effectively skipping the first data row
 
                     // Find last valid row (ignore empty rows at the end)
                     let lastValidIndex = dataRows.length - 1;
@@ -319,11 +325,19 @@
                 return;
             }
 
+            const password = passwordInput.value;
+            if (!password) {
+                showStatus('Please enter the API password', 'error');
+                return;
+            }
+
             showStatus('Uploading data...', 'info');
             uploadBtn.disabled = true;
 
+            const apiUrlWithPass = `${API_URL}?key=${encodeURIComponent(password)}`;
+
             try {
-                const response = await fetch(API_URL, {
+                const response = await fetch(apiUrlWithPass, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'text/plain', // Use text/plain to avoid CORS preflight
@@ -332,11 +346,19 @@
                     redirect: 'follow'
                 });
 
-                if (response.ok || response.type === 'opaque') {
-                    showStatus(`✓ Successfully posted ${jsonData.length} rows to Google Sheets`, 'success');
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.status === 'success') {
+                        showStatus(`✓ ${data.message}`, 'success');
+                    } else {
+                        showStatus(`API Error: ${data.message}`, 'error');
+                    }
+                } else if (response.type === 'opaque') {
+                    // Opaque responses can't be read, so assume success as before
+                    showStatus(`✓ Data sent to Google Sheets (${jsonData.length} rows)`, 'success');
                 } else {
-                    showStatus(`API returned error: ${response.status} ${response.statusText}`, 'error');
-                    uploadBtn.disabled = false;
+                    const responseText = await response.text();
+                    showStatus(`API returned error: ${response.status} ${response.statusText}. ${responseText}`, 'error');
                 }
             } catch (error) {
                 // For Google Apps Script, even successful requests might throw CORS errors
@@ -345,8 +367,9 @@
                     showStatus(`✓ Data sent to Google Sheets (${jsonData.length} rows)`, 'success');
                 } else {
                     showStatus('Error posting to API: ' + error.message, 'error');
-                    uploadBtn.disabled = false;
                 }
+            } finally {
+                uploadBtn.disabled = false;
             }
         });
 
@@ -356,4 +379,5 @@
         }
     </script>
 </body>
+
 </html>

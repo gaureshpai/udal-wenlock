@@ -49,11 +49,11 @@ async function pollUpdates() {
 
     console.log("Fetched rows:", data.length);
 
-    const fieldsToTranslate = ["Name", "Surgery site", "Surgery", "Surgeon Name", "Department", "Time"];
+    // const fieldsToTranslate = ["Name", "Surgery site", "Surgery", "Surgeon Name", "Department", "Time"];
 
-    const processedData = await Promise.all(
-      data.map(async (item) => {
-        const result = { ...item };
+    // const processedData = await Promise.all(
+    //   data.map(async (item) => {
+    //     const result = { ...item };
     const processedData = await Promise.all(
       data.map(async (item) => {
         const result = { ...item };
@@ -75,18 +75,18 @@ async function pollUpdates() {
       })
     );
 
-        for (const key of fieldsToTranslate) {
-          const value = item[key];
-          if (value && typeof value === "string") {
-            const knValue = await getKannadaTransliteration(value);
-            result[`kn_${key}`] = knValue;
-          } else {
-            result[`kn_${key}`] = "";
-          }
-        }
-        return result;
-      })
-    );
+    //     for (const key of fieldsToTranslate) {
+    //       const value = item[key];
+    //       if (value && typeof value === "string") {
+    //         const knValue = await getKannadaTransliteration(value);
+    //         result[`kn_${key}`] = knValue;
+    //       } else {
+    //         result[`kn_${key}`] = "";
+    //       }
+    //     }
+    //     return result;
+    //   })
+    // );
 
     const existingMap = new Map(otData.map(d => [d.SN, d]));
     for (const newItem of processedData) {
@@ -118,6 +118,7 @@ app.get("/", (req, res) => {
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get("/data", (req, res) => {
+  console.log("Serving data with", otData.length, "rows");
   res.json(otData);
 });
 
