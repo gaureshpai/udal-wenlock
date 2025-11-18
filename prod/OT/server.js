@@ -54,6 +54,26 @@ async function pollUpdates() {
     const processedData = await Promise.all(
       data.map(async (item) => {
         const result = { ...item };
+    const processedData = await Promise.all(
+      data.map(async (item) => {
+        const result = { ...item };
+
+        // Loop through all keys in the item
+        for (const key of Object.keys(item)) {
+          const value = item[key];
+
+          // Convert only if value exists and is text-like
+          if (value && typeof value === "string") {
+            const knValue = await getKannadaTransliteration(value);
+            result[`kn_${key}`] = knValue;
+          } else {
+            result[`kn_${key}`] = "";
+          }
+        }
+
+        return result;
+      })
+    );
 
         for (const key of fieldsToTranslate) {
           const value = item[key];
