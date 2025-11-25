@@ -3,6 +3,7 @@ const path = require("path");
 const http = require("http");
 const fs = require("fs");
 const fetch = require('node-fetch');
+const cron = require('node-cron');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -12,7 +13,7 @@ const PORT = process.env.PORT || 3001;
 let bloodData = [];
 let lastFetchedAt = null; // store last fetched time
 const SECRET_KEY = "lasdfaldf234232wqa122fsvsdlfjsdvnsasifjweiojsadlflkasdjflkasjflk32234234edswdsjfflas2 3rsd";
-const baseUrl = "https://script.google.com/macros/s/AKfycbweEiZ7uE7KXrQCC4Iu5gPsSGKLBRDSwa4Wi5QQsTcszvsz37ufilRu-TcBO5thRs89/exec";
+const baseUrl = "https://script.google.com/macros/s/AKfycbxAMJeFJ7mTtggHOA0IKWi3KxxrvJu25zSQVP3Wg77Dx7S0m5b-HLcUOkqbIFCLyBUW/exec";
 
 app.get("/", (req, res) => {
   res.redirect("/display.html");
@@ -48,6 +49,7 @@ async function pollUpdates() {
     lastFetchedAt = new Date().toISOString();
     const res = await fetch(url);
     const data = await res.json();
+    console.log("Raw fetched data:", data);
 
     if (!Array.isArray(data) || data.length === 0) {
       console.log("No new rows.");
@@ -60,10 +62,12 @@ async function pollUpdates() {
       const kn_name = await getKannadaTransliteration(item.Name);
       const result = { ...item, kn_name };
 
-      const componentKeys = ["PRBC", "FFP", "PLATELET_CONCENTRATE", "CRYOPRECIPITATE", "CRYOPOOR_PLASMA"];
+      const componentKeys = ["PRBC", "FFP", "Platlet Concentrate", "Cryoprecipitate", "Cryopoor Plasma"];
       for (const key of componentKeys) {
-        if (item[key] && typeof item[key] === 'string') {
+        if (item[key]) {
           result[`kn_${key}`] = await getKannadaTransliteration(item[key]);
+        }else{
+          console.log('not found key:', key, 'in item:', item);
         }
       }
       return result;
@@ -74,6 +78,7 @@ async function pollUpdates() {
       existingMap.set(newItem.SN, newItem);
     }
     bloodData = Array.from(existingMap.values());
+    console.log("Total records after update:", bloodData);
 
     bloodData.sort((a, b) => {
       if (a.Status && a.Status.toLowerCase() === 'emergency') return -1;
@@ -88,7 +93,8 @@ async function pollUpdates() {
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get("/data", (req, res) => {
-  res.json(bloodData);
+  const filteredBloodData = bloodData.filter(item => item.Status !== "Sample Received");
+  res.json(filteredBloodData);
 });
 
 const server = http.createServer(app);
@@ -97,6 +103,22 @@ server.listen(PORT, '0.0.0.0', () => {
   console.log(`HTTP Server running on http://localhost:${PORT}`);
   pollUpdates();
   setInterval(pollUpdates, 30000);
+
+  cron.schedule('48 20 * * *', () => {
+    console.log('Running cron job to send GET request');
+    const cronFetchUrl = `${baseUrl}?key=${SECRET_KEY}&sheet=cron`;
+    fetch(cronFetchUrl)
+      .then(res => {
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        return res.text(); // or res.json() if the response is JSON
+      })
+      .then(text => console.log('GET request successful:', text))
+      .catch(err => console.error('Error on GET request cron job:', err));
+  }, {
+    timezone: "Asia/Kolkata"
+  });
 });
 
 process.on('SIGTERM', () => {

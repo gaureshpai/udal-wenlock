@@ -9,7 +9,7 @@ let otData = [];
 
 let lastFetchedAt = null;
 const SECRET_KEY = "lasdfaldf234232wqa122fsvsdlfjsdvnsasifjweiojsadlflkasdjflkasjflk32234234edswdsjfflas2 3rsd";
-const baseUrl = "https://script.google.com/macros/s/AKfycbzaoIRRlwryKQ8qE_sJwuQ9L3dBwsLnRck4dkhj9nDAdQisz3SZovZl3kDoxG-BBOoa/exec";
+const baseUrl = "https://script.google.com/macros/s/AKfycbxAMJeFJ7mTtggHOA0IKWi3KxxrvJu25zSQVP3Wg77Dx7S0m5b-HLcUOkqbIFCLyBUW/exec";
 
 async function getKannadaTransliteration(text) {
   if (!text || typeof text !== 'string') return text;
@@ -70,7 +70,6 @@ async function pollUpdates() {
             result[`kn_${key}`] = "";
           }
         }
-
         return result;
       })
     );
@@ -88,16 +87,19 @@ async function pollUpdates() {
     //   })
     // );
 
-    const existingMap = new Map(otData.map(d => [d.SN, d]));
+    const existingMap = new Map(otData.map(d => [d.Sl, d]));
     for (const newItem of processedData) {
-      existingMap.set(newItem.SN, newItem);
+      existingMap.set(newItem.Sl, newItem);
     }
-    otData = Array.from(existingMap.values()).filter(d => d.Name && d.SN);
-
+    console.log("Total records before sorting:", existingMap);
+    otData = Array.from(existingMap.values()).filter(d => d["Patient Name"] && d.Sl);
     const priority = {
       'in progress': 1,
       'scheduled': 2,
-      'post-op': 3,
+      'waiting at pre-op': 3,
+      'waiting': 4,
+      'post-op': 5,
+      'completed': 6
     };
 
     otData.sort((a, b) => {
@@ -106,6 +108,7 @@ async function pollUpdates() {
 
       return aPriority - bPriority;
     });
+    console.log("Total records after update:", otData);
   } catch (err) {
     console.error("Error fetching or processing updates:", err);
   }
