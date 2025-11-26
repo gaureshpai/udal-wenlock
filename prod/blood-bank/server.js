@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 3001;
 let bloodData = [];
 let lastFetchedAt = null; // store last fetched time
 const SECRET_KEY = "lasdfaldf234232wqa122fsvsdlfjsdvnsasifjweiojsadlflkasdjflkasjflk32234234edswdsjfflas2 3rsd";
-const baseUrl = "https://script.google.com/macros/s/AKfycbxAMJeFJ7mTtggHOA0IKWi3KxxrvJu25zSQVP3Wg77Dx7S0m5b-HLcUOkqbIFCLyBUW/exec";
+const baseUrl = "https://script.google.com/macros/s/AKfycbyT6jB1emDpUEwWBQo4C_LwGtsSwZfspZyTKCbteBLr3aQs_2OmjxJ5ci1SCudEwnp3ow/exec";
 
 app.get("/", (req, res) => {
   res.redirect("/display.html");
@@ -103,8 +103,12 @@ server.listen(PORT, '0.0.0.0', () => {
   console.log(`HTTP Server running on http://localhost:${PORT}`);
   pollUpdates();
   setInterval(pollUpdates, 30000);
+  runCron();
+  cron.schedule('30 0 * * *', runCron, {
+    timezone: "Asia/Kolkata"
+  });
 
-  cron.schedule('48 20 * * *', () => {
+  function runCron(){
     console.log('Running cron job to send GET request');
     const cronFetchUrl = `${baseUrl}?key=${SECRET_KEY}&sheet=cron`;
     fetch(cronFetchUrl)
@@ -116,9 +120,7 @@ server.listen(PORT, '0.0.0.0', () => {
       })
       .then(text => console.log('GET request successful:', text))
       .catch(err => console.error('Error on GET request cron job:', err));
-  }, {
-    timezone: "Asia/Kolkata"
-  });
+  }
 });
 
 process.on('SIGTERM', () => {

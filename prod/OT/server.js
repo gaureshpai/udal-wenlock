@@ -9,7 +9,7 @@ let otData = [];
 
 let lastFetchedAt = null;
 const SECRET_KEY = "lasdfaldf234232wqa122fsvsdlfjsdvnsasifjweiojsadlflkasdjflkasjflk32234234edswdsjfflas2 3rsd";
-const baseUrl = "https://script.google.com/macros/s/AKfycbxAMJeFJ7mTtggHOA0IKWi3KxxrvJu25zSQVP3Wg77Dx7S0m5b-HLcUOkqbIFCLyBUW/exec";
+const baseUrl = "https://script.google.com/macros/s/AKfycbyT6jB1emDpUEwWBQo4C_LwGtsSwZfspZyTKCbteBLr3aQs_2OmjxJ5ci1SCudEwnp3ow/exec";
 
 async function getKannadaTransliteration(text) {
   if (!text || typeof text !== 'string') return text;
@@ -63,7 +63,7 @@ async function pollUpdates() {
           const value = item[key];
 
           // Convert only if value exists and is text-like
-          if (value && typeof value === "string") {
+          if (value && typeof value === "string" && key !='Age' ) {
             const knValue = await getKannadaTransliteration(value);
             result[`kn_${key}`] = knValue;
           } else {
