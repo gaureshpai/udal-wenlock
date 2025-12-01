@@ -65,8 +65,28 @@ To run any of the services:
     ```
 5.  Refer to the individual `README.md` file within each service's directory for more detailed setup and configuration instructions.
 
+## Documentation
+
+Comprehensive documentation is available in the `docs/` directory:
+
+### For Users
+- **[User Guide](docs/USER_GUIDE.md)** - How to use and update the displays
+
+### For Developers
+- **[Developer Guide](docs/DEVELOPER_GUIDE.md)** - Architecture, setup, and development
+- **[API Documentation](docs/API_DOCUMENTATION.md)** - Complete API reference
+
+### Service-Specific Documentation
+- **[Blood Bank Service](docs/BLOOD_BANK_SERVICE.md)** - Blood bank display system
+- **[Pharmacy Service](docs/PHARMACY_SERVICE.md)** - Medicine availability display
+- **[OT Service](docs/OT_SERVICE.md)** - Operation theatre status display
+- **[OT Submission Service](docs/OT_SUBMISSION_SERVICE.md)** - OT data entry form
+- **[Release Service](docs/RELEASE_SERVICE.md)** - Service management application
+
 ## Deployment
 
 Each service is a self-contained Node.js application. For a production environment, it is recommended to run them using a process manager like `pm2` to ensure they restart automatically if they crash.
 
 The `service.vbs` files included in each service directory are scripts used to run the Node.js servers as background processes on Windows, which is how the system is currently deployed at Wenlock Hospital.
+
+For detailed deployment instructions, see the [Developer Guide](docs/DEVELOPER_GUIDE.md#deployment).
