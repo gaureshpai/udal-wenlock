@@ -9,7 +9,7 @@ let otData = [];
 
 let lastFetchedAt = null;
 const SECRET_KEY = "lasdfaldf234232wqa122fsvsdlfjsdvnsasifjweiojsadlflkasdjflkasjflk32234234edswdsjfflas2 3rsd";
-const baseUrl = "https://script.google.com/macros/s/AKfycbyT6jB1emDpUEwWBQo4C_LwGtsSwZfspZyTKCbteBLr3aQs_2OmjxJ5ci1SCudEwnp3ow/exec";
+const baseUrl = "https://script.google.com/macros/s/AKfycbxPx3ir07CcJGv4cahv7YXkGiXP7zrk3IuNmIAgwKJ9f1imf5L3nDfDIM6mdsCF7_L4tA/exec";
 
 async function getKannadaTransliteration(text) {
   if (!text || typeof text !== 'string') return text;
@@ -94,13 +94,14 @@ async function pollUpdates() {
     console.log("Total records before sorting:", existingMap);
     otData = Array.from(existingMap.values()).filter(d => d["Patient Name"] && d.Sl);
     const priority = {
-      'in progress': 1,
+      'surgery in progress': 1,
       'scheduled': 2,
-      'waiting at pre-op': 3,
-      'waiting': 4,
-      'post-op': 5,
-      'completed': 6
+      'pre-operative ward': 3,
+      'ot cancelled - not fit': 4,
+      'post-operative ward': 5,
+      'surgery successfully': 6
     };
+
 
     otData.sort((a, b) => {
       const aPriority = priority[a.Status?.toLowerCase()] || 99;

@@ -244,6 +244,15 @@
         let lastHash = "";
         let rowsPerPage = 0;
 
+        const statusColors = {
+            'scheduled': '#B3D7FF', // Light Blue
+            'surgery in progress': '#FFC107', // Amber
+            'pre-operative ward': '#D1C4E9', // Soft Indigo
+            'ot cancelled - not fit': '#FFCC80', // Light Orange
+            'post-operative ward': '#A0E3D8', // Soft Teal
+            'surgery successfully': '#81C784' // Green
+        };
+
         function sleep(ms, cb) {
             setTimeout(cb, ms);
         }
@@ -289,40 +298,46 @@
         }
 
         function renderRows(data) {
-    return new Promise(resolve => {
-        tbody.innerHTML = "";
+            return new Promise(resolve => {
+                tbody.innerHTML = "";
 
-        if (!data || data.length === 0) {
-            empty.style.display = "block";
-            resolve();
-            return;
-        }
+                if (!data || data.length === 0) {
+                    empty.style.display = "block";
+                    resolve();
+                    return;
+                }
 
-        empty.style.display = "none";
-        data.forEach(item => {
-            const tr = document.createElement("tr");
+                empty.style.display = "none";
+                data.forEach(item => {
+                    const tr = document.createElement("tr");
 
-            const fields = [
-                "Patient Name",
-                "Age",
-                "Procedure Name",
-                "Department",
-                "Disease",
-                "Status"
-            ];
-
-            const cellsHtml = fields
-                .map(key => {
-                    const itemKey = key;
-                    const content = item[itemKey] || "-";
-                    const kannadaContent = item[`kn_${itemKey}`] || "";
-                    
-                    let glowClass = '';
-                    if (key === 'Status' && content.toLowerCase() === 'in progress') {
-                        glowClass = 'glow-text';
+                    const status = item["Status"] ? item["Status"].toLowerCase() : "";
+                    if (status && statusColors[status]) {
+                        tr.style.backgroundColor = statusColors[status];
                     }
 
-                    return `
+                    const fields = [
+                        "Patient Name",
+                        "Age",
+                        "Procedure Name",
+                        "Department",
+                        "Disease",
+                        "Status"
+                    ];
+
+                    const cellsHtml = fields
+                        .map(key => {
+                            const itemKey = key;
+                            const content = item[itemKey] || "-";
+                            const kannadaContent = item[`kn_${itemKey}`] || "";
+
+                            let glowClass = '';
+                            if (key === 'Status' && content.toLowerCase() === 'surgery in progress') {
+                                console.log("GLOWINGGUUUU")
+                                glowClass = 'glow-text';
+                            }
+
+                            return `
                         <td>
                             <div class="text-pair">
                                 <div class="english-text ${glowClass}">${content}</div>
@@ -330,42 +345,43 @@
                             </div>
                         </td>
                     `;
-                })
-                .join("");
+                        })
+                        .join("");
 
-            tr.innerHTML = cellsHtml;
-            tbody.appendChild(tr);
-        });
+                    tr.innerHTML = cellsHtml;
+                    tbody.appendChild(tr);
+                });
 
-        requestAnimationFrame(() => {
-            const firstRow = tbody.querySelector("tr");
-            if (firstRow) {
-                const style = window.getComputedStyle(firstRow);
-                rowHeight = parseFloat(style.height);
-            }
-            if (rowHeight > 0) {
-                rowsPerPage = Math.floor(viewport.clientHeight / rowHeight);
-            }
-            currentIndex = 0;
-            setScrollTop(0, false);
-            
-            tbody.querySelectorAll('.text-pair').forEach(pair => {
-                const englishDiv = pair.querySelector('.english-text');
-                const kannadaDiv = pair.querySelector('.kannada-text');
-                if (englishDiv.scrollWidth > englishDiv.clientWidth || kannadaDiv.scrollWidth > kannadaDiv.clientWidth) {
-                    const englishHTML = englishDiv.innerHTML;
-                    const kannadaHTML = kannadaDiv.innerHTML;
-                    pair.innerHTML = `<marquee behavior="scroll" direction="left" scrollamount="4">
-                                        <div class="english-text">${englishHTML}</div>
+                requestAnimationFrame(() => {
+                    const firstRow = tbody.querySelector("tr");
+                    if (firstRow) {
+                        const style = window.getComputedStyle(firstRow);
+                        rowHeight = parseFloat(style.height);
+                    }
+                    if (rowHeight > 0) {
+                        rowsPerPage = Math.floor(viewport.clientHeight / rowHeight);
+                    }
+                    currentIndex = 0;
+                    setScrollTop(0, false);
+
+                    tbody.querySelectorAll('.text-pair').forEach(pair => {
+                        const englishDiv = pair.querySelector('.english-text');
+                        const kannadaDiv = pair.querySelector('.kannada-text');
+                        if (englishDiv.scrollWidth > englishDiv.clientWidth || kannadaDiv.scrollWidth > kannadaDiv.clientWidth) {
+                            const englishHTML = englishDiv.innerHTML;
+                            const kannadaHTML = kannadaDiv.innerHTML;
+                            pair.innerHTML = `<marquee behavior="scroll" direction="left" scrollamount="4">
+                                        <div class="english-text ${englishHTML.toLowerCase()==='surgery in progress' && 'glow-text'}">${englishHTML}</div>
                                         <div class="kannada-text">${kannadaHTML}</div>
                                       </marquee>`;
-                }
-            });
+                        }
+                    });
 
-            resolve();
-        });
-    });
-}
+                    resolve();
+                });
+            });
+        }
+
         function goToPage(pageIdx) {
             if (rowsPerPage === 0) return;
 
@@ -410,19 +426,19 @@
 
             const list = Array.isArray(payload) ? payload : [];
             const newHash = hashData(list);
-            
+
             if (newHash !== lastHash) {
                 otData = list;
                 await renderRows(otData);
                 lastHash = newHash;
                 goToPage(0);
-                 if (otData.length > rowsPerPage) {
+                if (otData.length > rowsPerPage) {
                     startPager();
                 } else {
                     stopPager();
                 }
             }
-             meta.textContent = `Last updated: ${new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}`;
+            meta.textContent = `Last updated: ${new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}`;
         }
 
 
@@ -442,7 +458,7 @@
             if (document.hidden) {
                 stopPager();
             } else {
-                 if (otData.length > rowsPerPage) {
+                if (otData.length > rowsPerPage) {
                     startPager();
                 }
             }
@@ -452,7 +468,7 @@
             if (!otData.length) return;
             renderRows(otData).then(() => {
                 goToPage(0);
-                 if (otData.length > rowsPerPage) {
+                if (otData.length > rowsPerPage) {
                     startPager();
                 }
             });

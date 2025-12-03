@@ -14,7 +14,7 @@ if (!fs.existsSync(DATA_DIR)) {
   fs.mkdirSync(DATA_DIR);
 }
 
-const SHEET_ID = "1nRk_AzFRq4k5v8441nL4XPNXNCNwLVVg_5-wO2bHS6g";
+const SHEET_ID = "1Gj8-vWqLBovQ6r1yiebdG0hLaUPui7bxZLXbK21TN_I";
 const GID = "0";
 const SHEET_CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=${GID}`;
 

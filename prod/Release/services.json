@@ -1,31 +1,31 @@
 {
   "services": [
     {
-      "id": "blood_bank",
-      "department": "Blood Bank",
-      "vbs_path": "D:\\Projects\\UDAL_Fellowship_Wenlock_Hospital\\gauresh\\udal-wenlock\\prod\\blood-bank\\service.vbs",
-      "project_dir": "D:\\Projects\\UDAL_Fellowship_Wenlock_Hospital\\gauresh\\udal-wenlock\\prod\\blood-bank",
-      "csv_path": "D:\\Projects\\UDAL_Fellowship_Wenlock_Hospital\\gauresh\\udal-wenlock\\prod\\blood-bank\\public\\alerts.csv",
-      "port": "3001",
-      "status": "stopped"
-    },
-    {
       "id": "pharmacy",
       "department": "Pharmacy",
-      "vbs_path": "D:\\Projects\\UDAL_Fellowship_Wenlock_Hospital\\gauresh\\udal-wenlock\\prod\\pharmacy\\service.vbs",
-      "project_dir": "D:\\Projects\\UDAL_Fellowship_Wenlock_Hospital\\gauresh\\udal-wenlock\\prod\\pharmacy",
+      "vbs_path": "D:\\UDAL\\pharmacy\\service.vbs",
+      "project_dir": "D:\\UDAL\\pharmacy",
       "csv_path": null,
       "port": "3000",
-      "status": "stopped"
+      "status": "running"
+    },
+    {
+      "id": "blood_bank",
+      "department": "Blood Bank",
+      "vbs_path": "D:\\UDAL\\blood-bank\\service.vbs",
+      "project_dir": "D:\\UDAL\\blood-bank",
+      "csv_path": "D:\\UDAL\\blood-bank\\public\\alerts.csv",
+      "port": "3001",
+      "status": "running"
     },
     {
       "id": "operation_theatre_-_ot",
       "department": "Operation Theatre - OT",
-      "vbs_path": "D:\\Projects\\UDAL_Fellowship_Wenlock_Hospital\\gauresh\\udal-wenlock\\prod\\OT\\service.vbs",
-      "project_dir": "D:\\Projects\\UDAL_Fellowship_Wenlock_Hospital\\gauresh\\udal-wenlock\\prod\\OT",
+      "vbs_path": "D:\\UDAL\\OT\\service.vbs",
+      "project_dir": "D:\\UDAL\\OT",
       "csv_path": null,
       "port": "3002",
-      "status": "stopped"
+      "status": "running"
     }
   ]
 }
